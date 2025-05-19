@@ -30,11 +30,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
           const user = JSON.parse(userJson) as User;
           
-          // Handle date conversion for createdAt
-          if (user.createdAt && typeof user.createdAt === 'string') {
-            user.createdAt = new Date(user.createdAt);
-          }
-          
           setAuthState({
             token,
             user,
@@ -83,7 +78,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         address: response.user.address,
         agencyId: response.user.agencyId,
         shopName: response.user.shopName || '', // Provide default value if not available
-        createdAt: new Date(), // Backend might not provide this
       };
       
       // Store user in localStorage (token is already stored in advertiserApi.login)
@@ -103,6 +97,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         navigate('/advertiser/dashboard');
       } else if (user.role === 'AGENCY_MANAGER') {
         navigate('/agency/dashboard');
+      } else {
+        console.warn(`Unknown role: ${user.role}, defaulting to login page`);
+        navigate('/login');
       }
     } catch (error) {
       console.error('Login failed', error);
