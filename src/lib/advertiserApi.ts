@@ -223,9 +223,50 @@ export const advertiserApi = {
         } catch (currentUserError) {
           console.error('Failed to fetch current user:', currentUserError);
           
-          // As a last resort, create a minimal user object with just the email
-          // This will allow login to proceed, and we can fetch more user data later
-          console.log('Creating minimal user object with email:', data.email);
+          // Extract role information from the JWT token
+          console.log('Extracting role from token');
+          let role;
+          
+          try {
+            // JWT tokens are in format: header.payload.signature
+            const tokenParts = token.split('.');
+            if (tokenParts.length === 3) {
+              // Decode the payload (middle part)
+              const payload = JSON.parse(atob(tokenParts[1]));
+              console.log('Token payload:', payload);
+              
+              // Check for role in various possible locations in the token payload
+              if (payload.role) {
+                role = payload.role;
+              } else if (payload.Role) {
+                role = payload.Role;
+              } else if (payload.claims && Array.isArray(payload.claims)) {
+                // Look for role in claims array
+                const roleClaim = payload.claims.find(claim => 
+                  claim.type === 'role' || claim.type === 'Role' || claim.type === 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+                );
+                if (roleClaim && roleClaim.value) {
+                  role = roleClaim.value;
+                }
+              } else if (payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']) {
+                // Standard JWT role claim
+                role = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+              }
+              
+              console.log('Role extracted from token:', role);
+            }
+          } catch (tokenError) {
+            console.error('Failed to extract role from token:', tokenError);
+          }
+          
+          // Only use ADVERTISER as absolute last resort if no role found
+          if (!role) {
+            console.warn('No role found in token, defaulting to ADVERTISER');
+            role = 'ADVERTISER';
+          }
+          
+          // Create a minimal user object with the extracted role
+          console.log('Creating minimal user object with email:', data.email, 'and role:', role);
           const minimalUser: Advertiser = {
             id: null,
             sellerId: null,
@@ -235,7 +276,7 @@ export const advertiserApi = {
             phoneNumber: '',
             address: '',
             shopName: '',
-            role: 'ADVERTISER', // Default role
+            role: role, // Use the extracted role or default
             status: 'ACTIVE',
           };
           
