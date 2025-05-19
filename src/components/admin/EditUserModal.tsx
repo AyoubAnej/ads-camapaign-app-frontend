@@ -1,118 +1,156 @@
 
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { updateAgency } from "@/lib/agenciesApi";
-import { Agency } from "@/types/agency";
-import { AgencyFormFields, agencyFormSchema, AgencyFormValues } from "./AgencyFormFields";
+import React, { useState } from 'react';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle 
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Advertiser } from '@/lib/advertiserApi';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-
-interface EditAgencyModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  agency: Agency;
-  onSuccess: (agency: Agency) => void;
+interface EditUserModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  user: Advertiser;
+  onEditUser: (updatedUser: Advertiser) => void;
 }
 
-const EditAgencyModal = ({ isOpen, onClose, agency, onSuccess }: EditAgencyModalProps) => {
-  const [error, setError] = useState<string | null>(null);
+export const EditUserModal = ({ open, onOpenChange, user, onEditUser }: EditUserModalProps) => {
+  const [formData, setFormData] = useState<Advertiser>({...user});
 
-  // Initialize form
-  const form = useForm<AgencyFormValues>({
-    resolver: zodResolver(agencyFormSchema),
-    defaultValues: {
-      name: agency.name,
-      phoneNumber: agency.phoneNumber,
-      website: agency.website,
-      description: agency.description,
-    },
-  });
+  React.useEffect(() => {
+    if (open) {
+      setFormData({ ...user });
+    }
+  }, [open, user]);
 
-  // Update form when agency prop changes
-  useEffect(() => {
-    form.reset({
-      name: agency.name,
-      phoneNumber: agency.phoneNumber,
-      website: agency.website,
-      description: agency.description,
-    });
-  }, [agency, form]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
-  // Update agency mutation
-  const updateAgencyMutation = useMutation({
-    mutationFn: updateAgency,
-    onSuccess: (data) => {
-      onSuccess(data);
-      onClose();
-    },
-    onError: (error) => {
-      setError("Failed to update agency. Please try again.");
-      console.error("Error updating agency:", error);
-    },
-  });
+  const handleRoleChange = (value: string) => {
+    setFormData(prev => ({ ...prev, role: value }));
+  };
 
-  // Form submission handler
-  const onSubmit = (values: AgencyFormValues) => {
-    setError(null);
-    // Ensure all required fields are passed and properly trimmed
-    const agencyData = {
-      agencyId: agency.agencyId,
-      name: values.name.trim(),
-      phoneNumber: values.phoneNumber.trim(),
-      website: values.website.trim(),
-      description: values.description.trim(),
-    };
-    updateAgencyMutation.mutate(agencyData);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onEditUser(formData);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Agency</DialogTitle>
+          <DialogTitle>Edit User</DialogTitle>
+          <DialogDescription>
+            Make changes to the user's information.
+          </DialogDescription>
         </DialogHeader>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
-            <AgencyFormFields form={form} />
-
-            {error && (
-              <div className="text-sm font-medium text-red-500 dark:text-red-400">
-                {error}
-              </div>
-            )}
-
-            <DialogFooter className="pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onClose}
-                disabled={updateAgencyMutation.isPending}
-              >
-                Cancel
-              </Button>
-              <Button 
-                type="submit" 
-                disabled={updateAgencyMutation.isPending}
-              >
-                {updateAgencyMutation.isPending ? "Saving..." : "Save Changes"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+        <form onSubmit={handleSubmit}>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="firstName" className="text-right">
+                First Name
+              </Label>
+              <Input
+                id="firstName"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="lastName" className="text-right">
+                Last Name
+              </Label>
+              <Input
+                id="lastName"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="email" className="text-right">
+                Email
+              </Label>
+              <Input
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="phoneNumber" className="text-right">
+                Phone
+              </Label>
+              <Input
+                id="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="role" className="text-right">
+                Role
+              </Label>
+              <Select value={formData.role} onValueChange={handleRoleChange}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ADMIN">Admin</SelectItem>
+                  <SelectItem value="ADVERTISER">Advertiser</SelectItem>
+                  <SelectItem value="AGENCY_MANAGER">Agency Manager</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="address" className="text-right">
+                Address
+              </Label>
+              <Input
+                id="address"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="shopName" className="text-right">
+                Shop Name
+              </Label>
+              <Input
+                id="shopName"
+                name="shopName"
+                value={formData.shopName}
+                onChange={handleChange}
+                className="col-span-3"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              Cancel
+            </Button>
+            <Button type="submit">Save changes</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
 };
-
-export default EditAgencyModal;
