@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toasts";
+import { useToast } from "@/hooks/use-toast";
 import { DataTablePagination } from "@/components/ui/data-table-pagination";
 import {
   Select,
