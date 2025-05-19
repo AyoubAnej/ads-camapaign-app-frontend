@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Seller } from '@/types/seller';
 import { UserRole } from '@/types/auth';
@@ -42,6 +43,7 @@ export const SellerRegistrationModal = ({
 }: SellerRegistrationModalProps) => {
   const [selectedSellerId, setSelectedSellerId] = useState<number | null>(null);
   const [selectedRole, setSelectedRole] = useState<UserRole>('ADVERTISER');
+  const [agencyId, setAgencyId] = useState<string>('');
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -80,7 +82,7 @@ export const SellerRegistrationModal = ({
         address: seller.address,
         shopName: seller.shopName,
         role: selectedRole,
-        ...(selectedRole === 'AGENCY_MANAGER' ? { agencyId: Math.floor(Math.random() * 1_000_000) } : {})
+        ...(selectedRole === 'AGENCY_MANAGER' ? { agencyId: parseInt(agencyId, 10) || 0 } : {})
       };
       
       console.log('Sending user data:', userData);
@@ -96,6 +98,7 @@ export const SellerRegistrationModal = ({
       onOpenChange(false);
       setSelectedSellerId(null);
       setSelectedRole('ADVERTISER');
+      setAgencyId('');
     },
     onError: (error) => {
       toast({
@@ -176,6 +179,26 @@ export const SellerRegistrationModal = ({
                 </SelectContent>
               </Select>
             </div>
+            
+            {/* Agency ID input field - only shown when Agency Manager role is selected */}
+            {selectedRole === 'AGENCY_MANAGER' && (
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="agencyId" className="text-right">
+                  Agency ID
+                </Label>
+                <div className="col-span-3">
+                  <Input
+                    id="agencyId"
+                    type="number"
+                    value={agencyId}
+                    onChange={(e) => setAgencyId(e.target.value)}
+                    placeholder="Enter agency ID"
+                    className="w-full"
+                    required={selectedRole === 'AGENCY_MANAGER'}
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
