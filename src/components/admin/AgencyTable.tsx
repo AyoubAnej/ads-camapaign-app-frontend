@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getAgencies } from "@/lib/agenciesApi";
-import { Agency } from "@/types/agency";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { agencyApi } from "@/lib/agenciesApi";
+import { Agency, AgencyStatus, agencyStatusToString } from "@/types/agency";
 import { format } from "date-fns";
-import { Edit, Trash2, Plus, ChevronLeft, ChevronRight } from "lucide-react";
+import { Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 import {
   Table,
@@ -15,6 +16,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -22,34 +25,85 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import AddAgencyModal from "../ui/AddAgencyModal";
+import { ConfirmationModal } from "./ConfirmationModal";
+import AddAgencyModal from "./AddAgencyModal";
 import EditAgencyModal from "./EditAgencyModal";
 import DeleteAgencyModal from "./DeleteAgencyModal";
 
 export const AgencyTable = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
+  
+  // States for pagination and search
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
   
   // States for modal visibility
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeactivateModalOpen, setIsDeactivateModalOpen] = useState(false);
+  const [isReactivateModalOpen, setIsReactivateModalOpen] = useState(false);
   const [selectedAgency, setSelectedAgency] = useState<Agency | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
   
-  // Fetch agencies data
-  const { data: agencies, isLoading, error } = useQuery({
-    queryKey: ["agencies"],
-    queryFn: getAgencies,
+  // Check if user has admin role
+  const isAdmin = user?.role === "ADMIN";
+  
+  // Fetch agencies data with pagination
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["agencies", currentPage, pageSize, searchTerm],
+    queryFn: () => agencyApi.getAllAgencies({ page: currentPage, pageSize, searchTerm }),
+    enabled: !!user, // Only fetch if user is authenticated
   });
 
-  // Calculate pagination
-  const totalItems = agencies?.length || 0;
-  const totalPages = Math.ceil(totalItems / pageSize);
+  // Mutations
+  const deactivateAgencyMutation = useMutation({
+    mutationFn: (agencyId: number) => agencyApi.deactivateAgency(agencyId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["agencies"] });
+      toast({
+        title: "Agency Deactivated",
+        description: "The agency has been deactivated successfully.",
+      });
+      setIsDeactivateModalOpen(false);
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to deactivate agency. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const reactivateAgencyMutation = useMutation({
+    mutationFn: (agencyId: number) => agencyApi.reactivateAgency(agencyId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["agencies"] });
+      toast({
+        title: "Agency Reactivated",
+        description: "The agency has been reactivated successfully.",
+      });
+      setIsReactivateModalOpen(false);
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to reactivate agency. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Calculate pagination for client-side fallback
+  const agencies = data?.items || [];
+  const totalItems = data?.totalItems || 0;
+  const totalPages = data?.totalPages || 1;
   const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const currentAgencies = agencies?.slice(startIndex, endIndex) || [];
+  const endIndex = Math.min(startIndex + pageSize, totalItems);
+  const currentAgencies = agencies;
 
   // Handle edit button click
   const handleEditClick = (agency: Agency) => {
@@ -63,10 +117,32 @@ export const AgencyTable = () => {
     setIsDeleteModalOpen(true);
   };
 
+  // Handle toggle activation
+  const handleToggleActivation = (agency: Agency) => {
+    setSelectedAgency(agency);
+    if (agency.status === AgencyStatus.ACTIVE) {
+      setIsDeactivateModalOpen(true);
+    } else {
+      setIsReactivateModalOpen(true);
+    }
+  };
+
   // Handle successful operations
   const handleSuccess = (message: string) => {
     toast({ title: "Success", description: message });
     queryClient.invalidateQueries({ queryKey: ["agencies"] });
+  };
+
+  // Get status badge color
+  const getStatusBadgeColor = (status: AgencyStatus) => {
+    switch (status) {
+      case AgencyStatus.ACTIVE:
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      case AgencyStatus.INACTIVE:
+        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
+      default:
+        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
+    }
   };
 
   if (isLoading) {
@@ -107,13 +183,29 @@ export const AgencyTable = () => {
           <h2 className="text-2xl font-bold">Agency Management</h2>
           <p className="text-muted-foreground">Manage your agencies and their details</p>
         </div>
-        <Button 
-          onClick={() => setIsAddModalOpen(true)}
-          className="flex items-center gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          New Agency
-        </Button>
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <Input
+              placeholder="Search agencies..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="pl-8 w-64"
+            />
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
+          </div>
+          {isAdmin && (
+            <Button 
+              onClick={() => setIsAddModalOpen(true)}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              New Agency
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="rounded-md border">
@@ -124,9 +216,10 @@ export const AgencyTable = () => {
               <TableHead>Phone Number</TableHead>
               <TableHead>Website</TableHead>
               <TableHead>Description</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Created</TableHead>
               <TableHead>Last Updated</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              {isAdmin && <TableHead className="text-right">Actions</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -136,17 +229,26 @@ export const AgencyTable = () => {
                   <TableCell className="font-medium">{agency.name}</TableCell>
                   <TableCell>{agency.phoneNumber}</TableCell>
                   <TableCell>
-                    <a 
-                      href={agency.website} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline"
-                    >
-                      {agency.website}
-                    </a>
+                    {agency.website ? (
+                      <a 
+                        href={agency.website} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        {agency.website}
+                      </a>
+                    ) : (
+                      <span className="text-gray-400">N/A</span>
+                    )}
                   </TableCell>
                   <TableCell className="max-w-xs truncate" title={agency.description}>
-                    {agency.description}
+                    {agency.description || <span className="text-gray-400">N/A</span>}
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={getStatusBadgeColor(agency.status)} variant="outline">
+                      {agencyStatusToString(agency.status)}
+                    </Badge>
                   </TableCell>
                   <TableCell>
                     {format(new Date(agency.createdAt), 'MMM d, yyyy')}
@@ -154,28 +256,44 @@ export const AgencyTable = () => {
                   <TableCell>
                     {format(new Date(agency.updatedAt), 'MMM d, yyyy')}
                   </TableCell>
-                  <TableCell className="text-right space-x-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEditClick(agency)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDeleteClick(agency)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
+                  {isAdmin && (
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditClick(agency)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleToggleActivation(agency)}
+                          className={agency.status === AgencyStatus.ACTIVE 
+                            ? "text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600" 
+                            : "text-green-500 border-green-200 hover:bg-green-50 hover:text-green-600"}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                          </svg>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeleteClick(agency)}
+                          className="text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-4 text-gray-500">
+                <TableCell colSpan={isAdmin ? 8 : 7} className="text-center py-4 text-gray-500">
                   No agencies found
                 </TableCell>
               </TableRow>
@@ -257,6 +375,30 @@ export const AgencyTable = () => {
           onClose={() => setIsDeleteModalOpen(false)}
           agency={selectedAgency}
           onSuccess={(agency) => handleSuccess(`Agency "${agency.name}" was successfully deleted`)}
+        />
+      )}
+
+      {/* Deactivate Agency Modal */}
+      {selectedAgency && (
+        <ConfirmationModal
+          open={isDeactivateModalOpen}
+          onOpenChange={setIsDeactivateModalOpen}
+          onConfirm={() => deactivateAgencyMutation.mutate(selectedAgency.agencyId)}
+          title="Deactivate Agency"
+          description={`Are you sure you want to deactivate ${selectedAgency.name}?`}
+          confirmText="Deactivate"
+        />
+      )}
+
+      {/* Reactivate Agency Modal */}
+      {selectedAgency && (
+        <ConfirmationModal
+          open={isReactivateModalOpen}
+          onOpenChange={setIsReactivateModalOpen}
+          onConfirm={() => reactivateAgencyMutation.mutate(selectedAgency.agencyId)}
+          title="Reactivate Agency"
+          description={`Are you sure you want to reactivate ${selectedAgency.name}?`}
+          confirmText="Reactivate"
         />
       )}
     </div>
