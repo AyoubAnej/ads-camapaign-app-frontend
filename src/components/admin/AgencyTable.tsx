@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import AddAgencyModal from "./AddAgencyModal";
+import AddAgencyModal from "../ui/AddAgencyModal";
 import EditAgencyModal from "./EditAgencyModal";
 import DeleteAgencyModal from "./DeleteAgencyModal";
 

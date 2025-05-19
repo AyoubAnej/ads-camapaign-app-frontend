@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createAgency } from "@/lib/agenciesApi";
 import { Agency } from "@/types/agency";
-import { AgencyFormFields, agencyFormSchema, AgencyFormValues } from "./AgencyFormFields";
+import { AgencyFormFields, agencyFormSchema, AgencyFormValues } from "../admin/AgencyFormFields";
 
 import {
   Dialog,
