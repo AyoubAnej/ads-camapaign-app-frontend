@@ -13,10 +13,10 @@ import { Textarea } from "@/components/ui/textarea";
 
 // Define schema for agency form
 export const agencyFormSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  phoneNumber: z.string().min(1, "Phone number is required"),
-  website: z.string().url("Must be a valid URL").min(1, "Website is required"),
-  description: z.string().min(1, "Description is required"),
+  name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
+  phoneNumber: z.string().min(1, "Phone number is required").max(20, "Phone number must be less than 20 characters"),
+  website: z.string().url("Must be a valid URL").max(255, "Website must be less than 255 characters").optional().or(z.literal('')),
+  description: z.string().max(500, "Description must be less than 500 characters").optional().or(z.literal('')),
 });
 
 // Define types
