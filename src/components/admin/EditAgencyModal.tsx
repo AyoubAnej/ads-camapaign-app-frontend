@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { updateAgency } from "@/lib/agenciesApi";
-import { Agency } from "@/types/agency";
+import { agencyApi } from "@/lib/agenciesApi";
+import { Agency, UpdateAgencyDto } from "@/types/agency";
 import { AgencyFormFields, agencyFormSchema, AgencyFormValues } from "./AgencyFormFields";
+import { useAuth } from "@/contexts/AuthContext";
 
 import {
   Dialog,
@@ -26,6 +27,10 @@ interface EditAgencyModalProps {
 
 const EditAgencyModal = ({ isOpen, onClose, agency, onSuccess }: EditAgencyModalProps) => {
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+
+  // Check if user has admin role
+  const isAdmin = user?.role === "ADMIN";
 
   // Initialize form
   const form = useForm<AgencyFormValues>({
@@ -33,8 +38,8 @@ const EditAgencyModal = ({ isOpen, onClose, agency, onSuccess }: EditAgencyModal
     defaultValues: {
       name: agency.name,
       phoneNumber: agency.phoneNumber,
-      website: agency.website,
-      description: agency.description,
+      website: agency.website || "",
+      description: agency.description || "",
     },
   });
 
@@ -43,14 +48,14 @@ const EditAgencyModal = ({ isOpen, onClose, agency, onSuccess }: EditAgencyModal
     form.reset({
       name: agency.name,
       phoneNumber: agency.phoneNumber,
-      website: agency.website,
-      description: agency.description,
+      website: agency.website || "",
+      description: agency.description || "",
     });
   }, [agency, form]);
 
   // Update agency mutation
   const updateAgencyMutation = useMutation({
-    mutationFn: updateAgency,
+    mutationFn: (data: UpdateAgencyDto) => agencyApi.updateAgency(agency.agencyId, data),
     onSuccess: (data) => {
       onSuccess(data);
       onClose();
@@ -63,14 +68,18 @@ const EditAgencyModal = ({ isOpen, onClose, agency, onSuccess }: EditAgencyModal
 
   // Form submission handler
   const onSubmit = (values: AgencyFormValues) => {
+    if (!isAdmin) {
+      setError("You don't have permission to update agencies.");
+      return;
+    }
+
     setError(null);
     // Ensure all required fields are passed and properly trimmed
     const agencyData = {
-      agencyId: agency.agencyId,
       name: values.name.trim(),
       phoneNumber: values.phoneNumber.trim(),
-      website: values.website.trim(),
-      description: values.description.trim(),
+      website: values.website ? values.website.trim() : undefined,
+      description: values.description ? values.description.trim() : undefined,
     };
     updateAgencyMutation.mutate(agencyData);
   };
