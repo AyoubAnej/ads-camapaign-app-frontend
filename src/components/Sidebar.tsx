@@ -69,7 +69,7 @@ const Sidebar = ({ collapsed, toggle }: SidebarProps) => {
 
   const agencyNavItems = [
     { path: '/agency/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/agency/clients', label: 'Clients', icon: BriefcaseBusiness },
+    { path: '/agency/details', label: 'Agency Details', icon: Building },
     { path: '/agency/campaigns', label: 'Campaigns', icon: Target },
     { path: '/agency/analytics', label: 'Analytics', icon: LineChart },
     { path: '/agency/settings', label: 'Settings', icon: Settings },
