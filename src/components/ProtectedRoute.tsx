@@ -1,6 +1,6 @@
 
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext'; // Update import path
+import { useAuth } from '@/contexts/AuthContext'; 
 import { UserRole } from '@/types/auth';
 
 interface ProtectedRouteProps {
