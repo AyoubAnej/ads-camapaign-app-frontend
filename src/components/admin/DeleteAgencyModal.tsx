@@ -1,8 +1,9 @@
 
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { deleteAgency } from "@/lib/agenciesApi";
+import { agencyApi } from "@/lib/agenciesApi";
 import { Agency } from "@/types/agency";
+import { useAuth } from "@/contexts/AuthContext";
 
 import {
   AlertDialog,
@@ -24,10 +25,14 @@ interface DeleteAgencyModalProps {
 
 const DeleteAgencyModal = ({ isOpen, onClose, agency, onSuccess }: DeleteAgencyModalProps) => {
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+
+  // Check if user has admin role
+  const isAdmin = user?.role === "ADMIN";
 
   // Delete agency mutation
   const deleteAgencyMutation = useMutation({
-    mutationFn: deleteAgency,
+    mutationFn: () => agencyApi.deleteAgency(agency.agencyId),
     onSuccess: () => {
       onSuccess(agency);
       onClose();
@@ -40,8 +45,13 @@ const DeleteAgencyModal = ({ isOpen, onClose, agency, onSuccess }: DeleteAgencyM
 
   // Handle delete confirmation
   const handleDelete = () => {
+    if (!isAdmin) {
+      setError("You don't have permission to delete agencies.");
+      return;
+    }
+
     setError(null);
-    deleteAgencyMutation.mutate(agency.agencyId);
+    deleteAgencyMutation.mutate();
   };
 
   return (
