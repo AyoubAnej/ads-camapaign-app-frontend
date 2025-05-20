@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext'; // Update import path
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { languages, getInitials } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 import { 
   User, Settings, LogOut, Bell, Menu, X, Sun, Moon, Globe, 
   PanelLeft, PanelRightClose
@@ -30,6 +31,7 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
   const { language, setLanguage } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { t, i18n } = useTranslation();
   
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -96,7 +98,7 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
               type="button"
               className="hidden md:flex p-2 mr-3 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600"
               onClick={toggleSidebar}
-              aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-label={sidebarCollapsed ? t('sidebar.expandSidebar') : t('sidebar.collapseSidebar')}
             >
               {sidebarCollapsed ? (
                 <PanelLeft className="w-5 h-5" />
@@ -117,13 +119,16 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Select Language</DropdownMenuLabel>
+              <DropdownMenuLabel>{t('language.selectLanguage', 'Select Language')}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {languages.map((lang) => (
                 <DropdownMenuItem 
                   key={lang.code}
                   className={`cursor-pointer ${language === lang.code ? 'font-bold' : ''}`}
-                  onClick={() => setLanguage(lang.code as 'en' | 'fr')}
+                  onClick={() => {
+                    setLanguage(lang.code as 'en' | 'fr');
+                    i18n.changeLanguage(lang.code);
+                  }}
                 >
                   {lang.label}
                 </DropdownMenuItem>
@@ -170,18 +175,18 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{t('navbar.myAccount', 'My Account')}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <Link to={getProfilePath()} className="w-full">
                 <DropdownMenuItem className="flex gap-2 items-center cursor-pointer">
                   <User className="h-4 w-4" />
-                  <span>Profile</span>
+                  <span>{t('navbar.profile', 'Profile')}</span>
                 </DropdownMenuItem>
               </Link>
               <Link to={getSettingsPath()} className="w-full">
                 <DropdownMenuItem className="flex gap-2 items-center cursor-pointer">
                   <Settings className="h-4 w-4" />
-                  <span>Settings</span>
+                  <span>{t('common.settings')}</span>
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />
@@ -190,7 +195,7 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
                 className="flex gap-2 items-center text-red-600 cursor-pointer"
               >
                 <LogOut className="h-4 w-4" />
-                <span>Sign out</span>
+                <span>{t('navbar.signOut', 'Sign out')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

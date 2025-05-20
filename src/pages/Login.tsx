@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -16,14 +17,15 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !password) {
       toast({
-        title: "Validation Error",
-        description: "Please enter both email and password",
+        title: t('validation.validationError'),
+        description: t('validation.enterEmailAndPassword'),
         variant: "destructive",
       });
       return;
@@ -36,8 +38,8 @@ const Login = () => {
       // Redirect handled by auth context based on user role
     } catch (error) {
       toast({
-        title: "Login Failed",
-        description: "Invalid credentials. Please try again.",
+        title: t('validation.loginFailed'),
+        description: t('validation.invalidCredentials'),
         variant: "destructive",
       });
     } finally {
@@ -61,28 +63,28 @@ const Login = () => {
                 <line x1="12" y1="8" x2="12" y2="16" />
                 <line x1="8" y1="12" x2="16" y2="12" />
               </svg>
-              <h1 className="text-3xl md:text-4xl font-bold">Spark Ads</h1>
+              <h1 className="text-3xl md:text-4xl font-bold">{t('brandInfo.appName')}</h1>
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">Campaign Manager</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6">{t('brandInfo.appDescription')}</h2>
             <p className="text-blue-100 mb-8">
-              Manage your advertising campaigns efficiently and boost your visibility in the marketplace.
+              {t('brandInfo.marketplaceVisibility')}
             </p>
           </div>
           
           <div className="space-y-4 mt-8">
             <div className="p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-              <h3 className="font-bold text-xl mb-2">Admin Dashboard</h3>
-              <p className="text-sm text-blue-100">Manage users, track metrics, and oversee all campaigns.</p>
+              <h3 className="font-bold text-xl mb-2">{t('brandInfo.adminDashboardTitle')}</h3>
+              <p className="text-sm text-blue-100">{t('brandInfo.adminDashboardDesc')}</p>
             </div>
             
             <div className="p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-              <h3 className="font-bold text-xl mb-2">Advertiser Portal</h3>
-              <p className="text-sm text-blue-100">Create and optimize your sponsored product campaigns.</p>
+              <h3 className="font-bold text-xl mb-2">{t('brandInfo.advertiserPortalTitle')}</h3>
+              <p className="text-sm text-blue-100">{t('brandInfo.advertiserPortalDesc')}</p>
             </div>
             
             <div className="p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-              <h3 className="font-bold text-xl mb-2">Agency Manager</h3>
-              <p className="text-sm text-blue-100">Manage multiple advertisers and campaigns from one place.</p>
+              <h3 className="font-bold text-xl mb-2">{t('brandInfo.agencyManagerTitle')}</h3>
+              <p className="text-sm text-blue-100">{t('brandInfo.agencyManagerDesc')}</p>
             </div>
           </div>
         </div>
@@ -91,16 +93,16 @@ const Login = () => {
         <div className="w-full md:w-1/2 p-8 md:p-12">
           <Card className="border-0 shadow-none bg-transparent">
             <CardHeader className="space-y-1 pb-6">
-              <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
+              <CardTitle className="text-2xl font-bold">{t('login.title')}</CardTitle>
               <CardDescription>
-                Enter your credentials to access your account
+                {t('login.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <label htmlFor="email" className="text-sm font-medium leading-none dark:text-white">
-                    Email
+                    {t('login.email')}
                   </label>
                   <div className="relative">
                     <Input
@@ -108,7 +110,7 @@ const Login = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="name@example.com"
+                      placeholder={t('login.emailPlaceholder')}
                       className="bg-gray-50 dark:bg-gray-700 dark:text-white"
                       required
                     />
@@ -117,7 +119,7 @@ const Login = () => {
                 
                 <div className="space-y-2">
                   <label htmlFor="password" className="text-sm font-medium leading-none dark:text-white">
-                    Password
+                    {t('login.password')}
                   </label>
                   <div className="relative">
                     <Input
@@ -125,7 +127,7 @@ const Login = () => {
                       type={showPassword ? "text" : "password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your password"
+                      placeholder={t('login.passwordPlaceholder')}
                       className="bg-gray-50 dark:bg-gray-700 dark:text-white pr-10"
                       required
                     />
@@ -150,12 +152,12 @@ const Login = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Signing in...
+                      {t('login.signingIn')}
                     </div>
                   ) : (
                     <div className="flex items-center">
                       <LogIn className="mr-2 h-4 w-4" />
-                      Sign In
+                      {t('login.signIn')}
                     </div>
                   )}
                 </Button>
@@ -163,10 +165,10 @@ const Login = () => {
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
               <div className="text-sm text-center text-gray-500 dark:text-gray-400">
-                Need an account? Please contact your administrator.
+                {t('login.needAccount')}
               </div>
               <div className="text-xs text-center text-gray-500 dark:text-gray-400">
-                By continuing, you agree to our Terms of Service and Privacy Policy.
+                {t('login.termsAndPrivacy')}
               </div>
             </CardFooter>
           </Card>

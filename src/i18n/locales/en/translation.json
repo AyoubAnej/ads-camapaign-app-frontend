@@ -1,0 +1,82 @@
+{
+  "common": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "agencies": "Agencies",
+    "campaigns": "Campaigns",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "agencyDetails": "Agency Details",
+    "active": "Active",
+    "paused": "Paused",
+    "from": "from last month"
+  },
+  "sidebar": {
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar"
+  },
+  "login": {
+    "title": "Sign In",
+    "description": "Enter your credentials to access your account",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "name@example.com",
+    "passwordPlaceholder": "Enter your password",
+    "signingIn": "Signing in...",
+    "signIn": "Sign In",
+    "needAccount": "Need an account? Please contact your administrator.",
+    "termsAndPrivacy": "By continuing, you agree to our Terms of Service and Privacy Policy."
+  },
+  "validation": {
+    "validationError": "Validation Error",
+    "enterEmailAndPassword": "Please enter both email and password",
+    "loginFailed": "Login Failed",
+    "invalidCredentials": "Invalid credentials. Please try again."
+  },
+  "adminDashboard": {
+    "welcome": "Welcome to your admin dashboard",
+    "totalUsers": "Total Users",
+    "activeCampaigns": "Active Campaigns",
+    "totalRevenue": "Total Revenue",
+    "totalImpressions": "Total Impressions",
+    "userGrowth": "User Growth",
+    "campaignPerformanceByChannel": "Campaign Performance by Channel",
+    "campaignPerformanceOverTime": "Campaign Performance Over Time",
+    "revenueVsTarget": "Revenue vs Target",
+    "recentCampaigns": "Recent Campaigns",
+    "campaignName": "Campaign Name",
+    "status": "Status",
+    "clicks": "Clicks",
+    "impressions": "Impressions",
+    "spend": "Spend",
+    "startDate": "Start Date",
+    "endDate": "End Date"
+  },
+  "metrics": {
+    "totalClicks": "Total Clicks",
+    "totalSpend": "Total Spend",
+    "ctr": "CTR (Click-through Rate)",
+    "cpc": "CPC (Cost per Click)"
+  },
+  "brandInfo": {
+    "appName": "Spark Ads",
+    "appDescription": "Campaign Manager",
+    "marketplaceVisibility": "Manage your advertising campaigns efficiently and boost your visibility in the marketplace.",
+    "adminDashboardTitle": "Admin Dashboard",
+    "adminDashboardDesc": "Manage users, track metrics, and oversee all campaigns.",
+    "advertiserPortalTitle": "Advertiser Portal",
+    "advertiserPortalDesc": "Create and optimize your sponsored product campaigns.",
+    "agencyManagerTitle": "Agency Manager",
+    "agencyManagerDesc": "Manage multiple advertisers and campaigns from one place."
+  },
+  "language": {
+    "english": "English",
+    "french": "French",
+    "selectLanguage": "Select Language"
+  },
+  "navbar": {
+    "myAccount": "My Account",
+    "profile": "Profile",
+    "signOut": "Sign out"
+  }
+}

@@ -1,5 +1,6 @@
 
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { 
   Users, LineChart, Settings, LayoutDashboard, 
@@ -50,29 +51,30 @@ const SidebarLink = ({ to, icon: Icon, label, active }: SidebarLinkProps) => (
 const Sidebar = ({ collapsed, toggle }: SidebarProps) => {
   const location = useLocation();
   const pathname = location.pathname;
+  const { t } = useTranslation();
 
   const adminNavItems = [
-    { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/admin/users', label: 'Users', icon: Users },
-    { path: '/admin/agencies', label: 'Agencies', icon: Building },
-    { path: '/admin/campaigns', label: 'Campaigns', icon: Target },
-    { path: '/admin/analytics', label: 'Analytics', icon: LineChart },
-    { path: '/admin/settings', label: 'Settings', icon: Settings },
+    { path: '/admin/dashboard', label: t('common.dashboard'), icon: LayoutDashboard },
+    { path: '/admin/users', label: t('common.users'), icon: Users },
+    { path: '/admin/agencies', label: t('common.agencies'), icon: Building },
+    { path: '/admin/campaigns', label: t('common.campaigns'), icon: Target },
+    { path: '/admin/analytics', label: t('common.analytics'), icon: LineChart },
+    { path: '/admin/settings', label: t('common.settings'), icon: Settings },
   ];
 
   const advertiserNavItems = [
-    { path: '/advertiser/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/advertiser/campaigns', label: 'Campaigns', icon: Target },
-    { path: '/advertiser/analytics', label: 'Analytics', icon: LineChart },
-    { path: '/advertiser/settings', label: 'Settings', icon: Settings },
+    { path: '/advertiser/dashboard', label: t('common.dashboard'), icon: LayoutDashboard },
+    { path: '/advertiser/campaigns', label: t('common.campaigns'), icon: Target },
+    { path: '/advertiser/analytics', label: t('common.analytics'), icon: LineChart },
+    { path: '/advertiser/settings', label: t('common.settings'), icon: Settings },
   ];
 
   const agencyNavItems = [
-    { path: '/agency/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/agency/details', label: 'Agency Details', icon: Building },
-    { path: '/agency/campaigns', label: 'Campaigns', icon: Target },
-    { path: '/agency/analytics', label: 'Analytics', icon: LineChart },
-    { path: '/agency/settings', label: 'Settings', icon: Settings },
+    { path: '/agency/dashboard', label: t('common.dashboard'), icon: LayoutDashboard },
+    { path: '/agency/details', label: t('common.agencyDetails'), icon: Building },
+    { path: '/agency/campaigns', label: t('common.campaigns'), icon: Target },
+    { path: '/agency/analytics', label: t('common.analytics'), icon: LineChart },
+    { path: '/agency/settings', label: t('common.settings'), icon: Settings },
   ];
 
   let navItems = adminNavItems;
@@ -117,7 +119,7 @@ const Sidebar = ({ collapsed, toggle }: SidebarProps) => {
           {/* Toggle Button */}
           <button 
             onClick={toggle}
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={collapsed ? t('sidebar.expandSidebar') : t('sidebar.collapseSidebar')}
             className={cn(
               "p-2 rounded-lg transition-all duration-200",
               "text-white/70 hover:text-white hover:bg-white/10",

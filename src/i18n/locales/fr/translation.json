@@ -1,0 +1,82 @@
+{
+  "common": {
+    "dashboard": "Tableau de bord",
+    "users": "Utilisateurs",
+    "agencies": "Agences",
+    "campaigns": "Campagnes",
+    "analytics": "Analyses",
+    "settings": "Paramètres",
+    "agencyDetails": "Détails de l'agence",
+    "active": "Actif",
+    "paused": "En pause",
+    "from": "par rapport au mois dernier"
+  },
+  "sidebar": {
+    "expandSidebar": "Développer la barre latérale",
+    "collapseSidebar": "Réduire la barre latérale"
+  },
+  "login": {
+    "title": "Connexion",
+    "description": "Entrez vos identifiants pour accéder à votre compte",
+    "email": "Email",
+    "password": "Mot de passe",
+    "emailPlaceholder": "nom@exemple.com",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "signingIn": "Connexion en cours...",
+    "signIn": "Se connecter",
+    "needAccount": "Besoin d'un compte? Veuillez contacter votre administrateur.",
+    "termsAndPrivacy": "En continuant, vous acceptez nos Conditions d'utilisation et notre Politique de confidentialité."
+  },
+  "validation": {
+    "validationError": "Erreur de validation",
+    "enterEmailAndPassword": "Veuillez saisir l'email et le mot de passe",
+    "loginFailed": "Échec de connexion",
+    "invalidCredentials": "Identifiants invalides. Veuillez réessayer."
+  },
+  "adminDashboard": {
+    "welcome": "Bienvenue sur votre tableau de bord administrateur",
+    "totalUsers": "Total des utilisateurs",
+    "activeCampaigns": "Campagnes actives",
+    "totalRevenue": "Revenu total",
+    "totalImpressions": "Impressions totales",
+    "userGrowth": "Croissance des utilisateurs",
+    "campaignPerformanceByChannel": "Performance des campagnes par canal",
+    "campaignPerformanceOverTime": "Performance des campagnes dans le temps",
+    "revenueVsTarget": "Revenu vs Objectif",
+    "recentCampaigns": "Campagnes récentes",
+    "campaignName": "Nom de la campagne",
+    "status": "Statut",
+    "clicks": "Clics",
+    "impressions": "Impressions",
+    "spend": "Dépenses",
+    "startDate": "Date de début",
+    "endDate": "Date de fin"
+  },
+  "metrics": {
+    "totalClicks": "Total des clics",
+    "totalSpend": "Dépenses totales",
+    "ctr": "CTR (Taux de clics)",
+    "cpc": "CPC (Coût par clic)"
+  },
+  "brandInfo": {
+    "appName": "Spark Ads",
+    "appDescription": "Gestionnaire de campagnes",
+    "marketplaceVisibility": "Gérez efficacement vos campagnes publicitaires et augmentez votre visibilité sur le marché.",
+    "adminDashboardTitle": "Tableau de bord administrateur",
+    "adminDashboardDesc": "Gérez les utilisateurs, suivez les métriques et supervisez toutes les campagnes.",
+    "advertiserPortalTitle": "Portail annonceur",
+    "advertiserPortalDesc": "Créez et optimisez vos campagnes de produits sponsorisés.",
+    "agencyManagerTitle": "Gestionnaire d'agence",
+    "agencyManagerDesc": "Gérez plusieurs annonceurs et campagnes à partir d'un seul endroit."
+  },
+  "language": {
+    "english": "Anglais",
+    "french": "Français",
+    "selectLanguage": "Choisir la langue"
+  },
+  "navbar": {
+    "myAccount": "Mon compte",
+    "profile": "Profil",
+    "signOut": "Déconnexion"
+  }
+}

@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslation } from 'react-i18next';
 import { DollarSign, Users, Target, TrendingUp, BarChart3, LineChart, Eye, ArrowUp, ArrowDown, ChartLine, Table as TableIcon } from 'lucide-react';
 import { 
   BarChart, 
@@ -137,68 +138,69 @@ const recentCampaigns = [
 ];
 
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <p className="text-gray-500 dark:text-gray-400">Welcome to your admin dashboard</p>
+          <h1 className="text-3xl font-bold">{t('common.dashboard')}</h1>
+          <p className="text-gray-500 dark:text-gray-400">{t('adminDashboard.welcome')}</p>
         </div>
       </div>
       
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card className="dark:border-gray-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('adminDashboard.totalUsers')}</CardTitle>
             <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">1,234</div>
             <div className="flex items-center text-xs text-green-600">
               <ArrowUp className="h-3 w-3 mr-1" />
-              <span>12% from last month</span>
+              <span>12% {t('common.from')}</span>
             </div>
           </CardContent>
         </Card>
         
         <Card className="dark:border-gray-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('adminDashboard.activeCampaigns')}</CardTitle>
             <Target className="h-4 w-4 text-blue-600 dark:text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">324</div>
             <div className="flex items-center text-xs text-green-600">
               <ArrowUp className="h-3 w-3 mr-1" />
-              <span>18% from last month</span>
+              <span>18% {t('common.from')}</span>
             </div>
           </CardContent>
         </Card>
         
         <Card className="dark:border-gray-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('adminDashboard.totalRevenue')}</CardTitle>
             <DollarSign className="h-4 w-4 text-blue-600 dark:text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">$24,563</div>
             <div className="flex items-center text-xs text-green-600">
               <ArrowUp className="h-3 w-3 mr-1" />
-              <span>5% from last month</span>
+              <span>5% {t('common.from')}</span>
             </div>
           </CardContent>
         </Card>
         
         <Card className="dark:border-gray-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Impressions</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('adminDashboard.totalImpressions')}</CardTitle>
             <Eye className="h-4 w-4 text-blue-600 dark:text-blue-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">1.2M</div>
             <div className="flex items-center text-xs text-red-600">
               <ArrowDown className="h-3 w-3 mr-1" />
-              <span>3% from last month</span>
+              <span>3% {t('common.from')}</span>
             </div>
           </CardContent>
         </Card>
@@ -219,7 +221,7 @@ const AdminDashboard = () => {
                 ) : (
                   <ArrowDown className="h-3 w-3 mr-1" />
                 )}
-                <span>{Math.abs(metric.change)}% from last month</span>
+                <span>{Math.abs(metric.change)}% {t('common.from')}</span>
               </div>
             </CardContent>
           </Card>
@@ -229,7 +231,7 @@ const AdminDashboard = () => {
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>User Growth</CardTitle>
+            <CardTitle>{t('adminDashboard.userGrowth')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-80">
@@ -257,7 +259,7 @@ const AdminDashboard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Campaign Performance by Channel</CardTitle>
+            <CardTitle>{t('adminDashboard.campaignPerformanceByChannel')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-80">
@@ -288,7 +290,7 @@ const AdminDashboard = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Campaign Performance Over Time</CardTitle>
+          <CardTitle>{t('adminDashboard.campaignPerformanceOverTime')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-96">
@@ -313,7 +315,7 @@ const AdminDashboard = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Revenue vs Target</CardTitle>
+          <CardTitle>{t('adminDashboard.revenueVsTarget')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-80">
@@ -343,7 +345,7 @@ const AdminDashboard = () => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="flex items-center gap-2">
-            <TableIcon className="w-5 h-5 text-blue-500" /> Recent Campaigns
+            <TableIcon className="w-5 h-5 text-blue-500" /> {t('adminDashboard.recentCampaigns')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -351,13 +353,13 @@ const AdminDashboard = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Campaign Name</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Clicks</TableHead>
-                  <TableHead>Impressions</TableHead>
-                  <TableHead>Spend</TableHead>
-                  <TableHead>Start Date</TableHead>
-                  <TableHead>End Date</TableHead>
+                  <TableHead>{t('adminDashboard.campaignName')}</TableHead>
+                  <TableHead>{t('adminDashboard.status')}</TableHead>
+                  <TableHead>{t('adminDashboard.clicks')}</TableHead>
+                  <TableHead>{t('adminDashboard.impressions')}</TableHead>
+                  <TableHead>{t('adminDashboard.spend')}</TableHead>
+                  <TableHead>{t('adminDashboard.startDate')}</TableHead>
+                  <TableHead>{t('adminDashboard.endDate')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -366,10 +368,9 @@ const AdminDashboard = () => {
                     <TableCell className="font-medium">{campaign.name}</TableCell>
                     <TableCell>
                       <span className={`px-2 py-1 rounded text-xs font-semibold
-                        ${
-                          campaign.status === "Active"
-                            ? "bg-green-200 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
+                        ${campaign.status === t('common.active') 
+                          ? "bg-green-200 text-green-800"
+                          : "bg-yellow-100 text-yellow-800"
                         }
                       `}>
                         {campaign.status}
