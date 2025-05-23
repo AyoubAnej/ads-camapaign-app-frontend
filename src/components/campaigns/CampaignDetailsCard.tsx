@@ -36,7 +36,7 @@ export const CampaignDetailsCard: React.FC<CampaignDetailsCardProps> = ({ campai
 
   // Get campaign status badge
   const getCampaignStatusBadge = () => {
-    const isActive = campaign.globalState === 0; // 0 is OK/Active in GlobalState enum
+    const isActive = campaign.globalState === "OK"; // 0 is OK/Active in GlobalState enum
     
     return (
       <Badge variant={isActive ? "default" : "secondary"} className={isActive ? "bg-green-500 hover:bg-green-600" : ""}>

@@ -197,7 +197,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
                   ) : (
                     advertisers.map((advertiser: Advertiser) => (
                       <SelectItem key={advertiser.id} value={advertiser.id.toString()}>
-                        {advertiser.firstName} {advertiser.lastName} (ID: {advertiser.id})
+                         {advertiser.id} - {advertiser.shopName}
                       </SelectItem>
                     ))
                   )}
@@ -256,7 +256,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
               </Label>
               <Select 
                 value={globalState.toString()} 
-                onValueChange={(value) => setGlobalState(parseInt(value) as GlobalState)}
+                onValueChange={(value) => setGlobalState(value as GlobalState)}
               >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Select status" />
@@ -273,7 +273,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
               </Label>
               <Select 
                 value={campaignType.toString()} 
-                onValueChange={(value) => setCampaignType(parseInt(value) as CampaignType)}
+                onValueChange={(value) => setCampaignType(value as CampaignType)}
               >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Select type" />

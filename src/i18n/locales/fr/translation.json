@@ -78,5 +78,11 @@
     "myAccount": "Mon compte",
     "profile": "Profil",
     "signOut": "Déconnexion"
+  },
+  "settings": {
+    "appearanceP": "Gérez vos préférences d'application",
+    "appearance": "Apparence",
+    "darkMode": "Mode sombre",
+    "language": "Langue"
   }
 }

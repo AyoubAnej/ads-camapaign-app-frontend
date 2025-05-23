@@ -6,22 +6,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useTranslation } from 'react-i18next';
 
 const Settings = () => {
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
+  const { t } = useTranslation();
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-gray-500 dark:text-gray-400">Manage your application preferences</p>
+        <h1 className="text-3xl font-bold">{t('common.settings')}</h1>
+        <p className="text-gray-500 dark:text-gray-400">{t('settings.appearanceP')}</p>
       </div>
       
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Appearance</CardTitle>
+            <CardTitle>{t('settings.appearance')}</CardTitle>
             <CardDescription>
               Customize the appearance of the application
             </CardDescription>
@@ -29,7 +31,7 @@ const Settings = () => {
           <CardContent className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="dark-mode">Dark Mode</Label>
+                <Label htmlFor="dark-mode">{t('settings.darkMode')}</Label>
                 <p className="text-sm text-muted-foreground">
                   Toggle between light and dark theme
                 </p>

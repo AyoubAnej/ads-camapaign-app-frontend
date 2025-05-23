@@ -149,7 +149,7 @@ export const AdPage = () => {
   const getCampaignStatusBadge = () => {
     if (!campaign) return null;
     
-    const isActive = campaign.globalState === 0; // GlobalState.OK = 0, DISABLED = 1
+    const isActive = campaign.globalState === "OK"; // GlobalState.OK = 0, DISABLED = 1
     
     return (
       <Badge variant={isActive ? "default" : "secondary"} className={isActive ? "bg-green-500 hover:bg-green-600" : ""}>
