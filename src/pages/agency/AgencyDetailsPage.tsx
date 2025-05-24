@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Phone, Globe, Calendar, CheckCircle, UserPlus, Users, Search } from 'lucide-react';
+import { Building2, Phone, Globe, Calendar, CheckCircle, UserPlus, Users, Search, Trash2, AlertTriangle } from 'lucide-react';
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { agencyApi } from "@/lib/agenciesApi";
@@ -14,11 +14,14 @@ import { advertiserApi, Advertiser } from "@/lib/advertiserApi";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 const AgencyDetailsPage = () => {
   const { user } = useAuth();
   const [agency, setAgency] = useState<Agency | null>(null);
   const [isAddAdvertiserModalOpen, setIsAddAdvertiserModalOpen] = useState(false);
+  const [isRemoveAdvertiserModalOpen, setIsRemoveAdvertiserModalOpen] = useState(false);
+  const [advertiserToRemove, setAdvertiserToRemove] = useState<Advertiser | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAdvertiser, setSelectedAdvertiser] = useState<Advertiser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -83,10 +86,10 @@ const AgencyDetailsPage = () => {
     
     setIsLoading(true);
     try {
-      // Update the advertiser with the agency ID
-      await advertiserApi.updateAdvertiser(
+      // Use the new assignAdvertiserToAgency endpoint
+      await advertiserApi.assignAdvertiserToAgency(
         selectedAdvertiser.id,
-        { agencyId: agency.agencyId }
+        agency.agencyId
       );
       
       // Invalidate queries to refresh data
@@ -107,6 +110,44 @@ const AgencyDetailsPage = () => {
       toast({
         title: 'Error',
         description: 'Failed to add advertiser to your agency. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  // Open remove advertiser confirmation modal
+  const openRemoveAdvertiserModal = (advertiser: Advertiser) => {
+    setAdvertiserToRemove(advertiser);
+    setIsRemoveAdvertiserModalOpen(true);
+  };
+
+  // Handle removing advertiser from agency
+  const handleRemoveAdvertiserFromAgency = async () => {
+    if (!advertiserToRemove || !agency) return;
+    
+    setIsLoading(true);
+    try {
+      // Use the new removeAdvertiserFromAgency endpoint
+      await advertiserApi.removeAdvertiserFromAgency(advertiserToRemove.id);
+      
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['agency-advertisers', agency.agencyId] });
+      
+      toast({
+        title: 'Success',
+        description: `${advertiserToRemove.firstName} ${advertiserToRemove.lastName} has been removed from your agency.`,
+      });
+      
+      // Close the modal
+      setIsRemoveAdvertiserModalOpen(false);
+      setAdvertiserToRemove(null);
+    } catch (error) {
+      console.error('Error removing advertiser from agency:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to remove advertiser from your agency. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -247,7 +288,10 @@ const AgencyDetailsPage = () => {
         
         <TabsContent value="advertisers" className="space-y-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Advertisers in Your Agency</h2>
+            <div>
+              <h2 className="text-xl font-semibold">Advertisers in Your Agency</h2>
+              <p className="text-sm text-muted-foreground">Showing only users with the Advertiser role</p>
+            </div>
             <Button 
               onClick={() => setIsAddAdvertiserModalOpen(true)}
               className="flex items-center gap-2"
@@ -289,10 +333,13 @@ const AgencyDetailsPage = () => {
                       <TableHead>Email</TableHead>
                       <TableHead>Shop Name</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {advertisersData.map((advertiser) => (
+                    {advertisersData
+                      .filter(advertiser => advertiser.role === 'ADVERTISER')
+                      .map((advertiser) => (
                       <TableRow key={advertiser.id}>
                         <TableCell className="font-medium">
                           {advertiser.firstName} {advertiser.lastName}
@@ -303,6 +350,19 @@ const AgencyDetailsPage = () => {
                           <Badge variant={advertiser.status === 'ACTIVE' ? 'default' : 'secondary'} className={advertiser.status === 'ACTIVE' ? 'bg-green-500' : ''}>
                             {advertiser.status}
                           </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-100"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openRemoveAdvertiserModal(advertiser);
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -373,7 +433,7 @@ const AgencyDetailsPage = () => {
                           )}
                         </div>
                       </TableCell>
-                      <TableCell className="font-medium">
+                      <TableCell className="font-medium ">
                         {advertiser.firstName} {advertiser.lastName}
                       </TableCell>
                       <TableCell>{advertiser.email}</TableCell>
@@ -409,6 +469,42 @@ const AgencyDetailsPage = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Remove Advertiser Confirmation Modal */}
+      <AlertDialog open={isRemoveAdvertiserModalOpen} onOpenChange={setIsRemoveAdvertiserModalOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-red-500" />
+              Confirm Removal
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {advertiserToRemove && (
+                <>
+                  Are you sure you want to remove <span className="font-semibold">{advertiserToRemove.firstName} {advertiserToRemove.lastName}</span> from your agency?
+                  <p className="mt-2">This action cannot be undone.</p>
+                </>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              onClick={() => {
+                setAdvertiserToRemove(null);
+              }}
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-500 hover:bg-red-600"
+              onClick={handleRemoveAdvertiserFromAgency}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Removing...' : 'Remove'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

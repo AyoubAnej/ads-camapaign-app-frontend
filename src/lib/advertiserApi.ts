@@ -319,4 +319,43 @@ export const advertiserApi = {
       return [];
     }
   },
+  
+  /**
+   * Assigns an advertiser to an agency
+   * @param advertiserId - The ID of the advertiser to assign
+   * @param agencyId - The ID of the agency to assign the advertiser to
+   * @returns The updated advertiser data
+   */
+  assignAdvertiserToAgency: async (advertiserId: number, agencyId: number): Promise<Advertiser> => {
+    try {
+      // The endpoint returns 204 No Content on success
+      await advertiserAxios.put(`/${advertiserId}/assign-to-agency/${agencyId}`);
+      
+      // Since the endpoint doesn't return the updated advertiser, we need to fetch it
+      const updatedAdvertiser = await advertiserAxios.get(`/${advertiserId}`);
+      return normalizeAdvertiserData(updatedAdvertiser.data);
+    } catch (error) {
+      console.error(`Failed to assign advertiser ${advertiserId} to agency ${agencyId}:`, error);
+      throw error;
+    }
+  },
+  
+  /**
+   * Removes an advertiser from their current agency
+   * @param advertiserId - The ID of the advertiser to remove from agency
+   * @returns The updated advertiser data
+   */
+  removeAdvertiserFromAgency: async (advertiserId: number): Promise<Advertiser> => {
+    try {
+      // The endpoint returns 204 No Content on success
+      await advertiserAxios.put(`/${advertiserId}/remove-from-agency`);
+      
+      // Since the endpoint doesn't return the updated advertiser, we need to fetch it
+      const updatedAdvertiser = await advertiserAxios.get(`/${advertiserId}`);
+      return normalizeAdvertiserData(updatedAdvertiser.data);
+    } catch (error) {
+      console.error(`Failed to remove advertiser ${advertiserId} from agency:`, error);
+      throw error;
+    }
+  },
 };
