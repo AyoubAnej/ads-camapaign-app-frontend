@@ -22,7 +22,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { adApi } from '@/lib/adApi';
 import { GetAdResponseDto, AdPaginationParams } from '@/types/ad';
 import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight, Filter, User } from 'lucide-react';
-import { CreateAdModal } from './CreateAdModal';
+// import { CreateAdModal } from './CreateAdModal';
 import { EditAdModal } from './EditAdModal';
 import { DeleteAdModal } from './DeleteAdModal';
 import { useToast } from "@/components/ui/use-toast";
@@ -49,7 +49,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
   const pageSizeOptions = [5, 10, 25, 50];
   
   // State for modals
-  const [createModalOpen, setCreateModalOpen] = useState(false);
+  // const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedAd, setSelectedAd] = useState<GetAdResponseDto | null>(null);
@@ -208,12 +208,11 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           </div>
         </div>
         
-        <Button 
-          onClick={() => setCreateModalOpen(true)} 
-          className="flex items-center gap-2"
+        <Button
+          onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
+          className="flex items-center gap-1"
         >
-          <Plus className="h-4 w-4" />
-          <span>Create Ad</span>
+          <Plus className="h-4 w-4" /> Create Ad
         </Button>
       </div>
 
@@ -241,7 +240,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           ) : (
             <Button 
               className="mt-4"
-              onClick={() => setCreateModalOpen(true)}
+              onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
             >
               Create Your First Ad
             </Button>
@@ -370,13 +369,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
         </>
       )}
 
-      {/* Create Ad Modal */}
-      <CreateAdModal
-        campaignId={campaignId}
-        open={createModalOpen}
-        onOpenChange={setCreateModalOpen}
-        onCreateAd={handleAdChange}
-      />
+      {/* Create Ad Modal - replaced with page navigation */}
 
       {/* Edit Ad Modal */}
       {selectedAd && (

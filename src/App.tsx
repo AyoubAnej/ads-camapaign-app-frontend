@@ -16,6 +16,7 @@ import NotFound from "@/pages/NotFound";
 import Settings from "@/pages/Settings";
 import ProfilePage from "@/pages/ProfilePage";
 import { AdPage } from "@/pages/campaigns/AdPage";
+import CreateAdPage from "@/pages/CreateAdPage";
 
 // Admin Pages
 import AdminDashboard from "@/pages/admin/AdminDashboard";
@@ -58,6 +59,7 @@ const App = () => {
                       {/* Campaign and Ad Routes - Available to all authenticated users */}
                       <Route path="/campaigns/:campaignId/ads" element={<AdPage />} />
                       <Route path="/campaigns/:campaignId/ads/:adId" element={<AdPage />} />
+                      <Route path="/campaigns/:campaignId/create-ad" element={<CreateAdPage />} />
                     </Route>
                   </Route>
                   
