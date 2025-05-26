@@ -23,6 +23,33 @@ export const agencyApi = {
         searchTerm,
       },
     });
+    
+    // If the backend isn't properly handling the search, implement client-side filtering
+    if (searchTerm && response.data.items) {
+      // Apply client-side filtering
+      const filteredItems = response.data.items.filter(agency => {
+        const searchLower = searchTerm.toLowerCase();
+        return (
+          agency.name.toLowerCase().includes(searchLower) ||
+          agency.phoneNumber.toLowerCase().includes(searchLower) ||
+          (agency.website && agency.website.toLowerCase().includes(searchLower)) ||
+          (agency.description && agency.description.toLowerCase().includes(searchLower))
+        );
+      });
+      
+      // Update pagination information
+      const totalFilteredItems = filteredItems.length;
+      const totalFilteredPages = Math.ceil(totalFilteredItems / pageSize);
+      
+      // Return filtered data with updated pagination info
+      return {
+        ...response.data,
+        items: filteredItems,
+        totalItems: totalFilteredItems,
+        totalPages: totalFilteredPages,
+      };
+    }
+    
     return response.data;
   },
 

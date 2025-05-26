@@ -1,10 +1,28 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CreateAdForm } from '../components/ads/CreateAdForm';
+import { useAuth } from '@/hooks/useAuth';
 
 const CreateAdPage: React.FC = () => {
   const { campaignId } = useParams<{ campaignId: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Navigate to the appropriate campaigns page based on user role
+  const navigateToCampaigns = () => {
+    const userRole = user?.role;
+    
+    if (userRole === 'ADMIN') {
+      navigate('/admin/campaigns');
+    } else if (userRole === 'ADVERTISER') {
+      navigate('/advertiser/campaigns');
+    } else if (userRole === 'AGENCY_MANAGER') {
+      navigate('/agency/campaigns');
+    } else {
+      // Fallback to a common route if role is unknown
+      navigate('/campaigns');
+    }
+  };
 
   if (!campaignId) {
     return (
@@ -28,7 +46,7 @@ const CreateAdPage: React.FC = () => {
     <div className="container mx-auto p-6">
       <div className="flex items-center mb-6">
         <button 
-          onClick={() => navigate(`/campaigns/${campaignId}`)}
+          onClick={() => navigateToCampaigns()}
           className="text-primary hover:underline flex items-center"
         >
           <svg 

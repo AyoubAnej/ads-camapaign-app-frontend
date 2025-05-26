@@ -3,8 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { GetCampaignResponseDto, getGlobalStateString, getCampaignTypeString } from '@/types/campaign';
-import { Calendar, DollarSign, Tag, LayoutGrid, Target } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+import { Calendar, DollarSign, Tag } from 'lucide-react';
 
 interface CampaignDetailsCardProps {
   campaign: GetCampaignResponseDto;
@@ -148,50 +147,7 @@ export const CampaignDetailsCard: React.FC<CampaignDetailsCardProps> = ({ campai
           </div>
         </div>
 
-        {/* Ad Spaces Section */}
-        <div className="mt-6">
-          <Separator className="my-4" />
-          <h3 className="font-medium mb-3 flex items-center gap-2">
-            <LayoutGrid className="h-4 w-4 text-purple-500" />
-            Ad Spaces ({campaign.adsSpaceList?.length || 0})
-          </h3>
-          
-          {campaign.adsSpaceList && campaign.adsSpaceList.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {campaign.adsSpaceList.map((adSpace, index) => (
-                <Card key={index} className="border border-gray-200 dark:border-gray-700">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium">{adSpace.spaceId}</h4>
-                      <Badge>{adSpace.platform}</Badge>
-                    </div>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                        <span className="text-muted-foreground">Placement:</span>
-                        <span className="font-medium">{adSpace.placement}</span>
-                      </div>
-                      <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                        <span className="text-muted-foreground">Size:</span>
-                        <span className="font-medium">{adSpace.size}</span>
-                      </div>
-                      <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                        <span className="text-muted-foreground">Base Cost:</span>
-                        <span className="font-medium">{formatCurrency(adSpace.baseCost)}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center p-6 border border-dashed border-gray-300 dark:border-gray-700 rounded-md">
-              <Target className="h-12 w-12 text-muted-foreground mb-2" />
-              <p className="text-muted-foreground text-center">
-                No ad spaces have been added to this campaign
-              </p>
-            </div>
-          )}
-        </div>
+        {/* Ad Spaces section has been removed as it's now obsolete */}
       </CardContent>
     </Card>
   );

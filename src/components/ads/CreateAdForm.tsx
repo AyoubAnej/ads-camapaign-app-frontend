@@ -7,7 +7,8 @@ import { Product } from '@/types/product';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { adApi } from '@/lib/adApi';
 import { productApi } from '@/lib/productApi';
-import { advertiserApi, Advertiser as AdvertiserType } from '@/lib/advertiserApi';
+import { campaignApi } from '@/lib/campaignApi';
+import { advertiserApi } from '@/lib/advertiserApi';
 import { useToast } from '@/hooks/use-toast';
 
 // UI Components
@@ -20,19 +21,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { CalendarIcon, Loader2 } from 'lucide-react';
-
-// Using the Advertiser type from advertiserApi.ts
+import { CalendarIcon, Loader2, X } from 'lucide-react';
 
 // Step types
 type FormStep = 
-  | 'advertiser-selection'
   | 'ad-details'
   | 'product-selection'
+  | 'keywords-selection'
   | 'bids-budget'
   | 'review';
 
@@ -42,8 +37,6 @@ interface AdFormData {
   productId: string;
   title: string;
   description: string;
-  mediaUrl: string;
-  redirectUrl: string;
   keywords: string[];
   bid: BidObject;
   adState: StateObject;
@@ -57,23 +50,16 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
-  const userRole = user?.role;
   
   // State for current step
-  const [currentStep, setCurrentStep] = useState<FormStep>(
-    userRole === 'ADMIN' || userRole === 'AGENCY_MANAGER' 
-      ? 'advertiser-selection' 
-      : 'ad-details'
-  );
+  const [currentStep, setCurrentStep] = useState<FormStep>('ad-details');
   
   // State for form data
   const [formData, setFormData] = useState<AdFormData>({
-    advertiserId: userRole === 'ADVERTISER' ? user?.advertiserId : undefined,
+    advertiserId: undefined, // Will be set from campaign data
     productId: '',
     title: '',
     description: '',
-    mediaUrl: '',
-    redirectUrl: '',
     keywords: [],
     bid: {
       amount: 0,
@@ -94,22 +80,42 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
   // State for keyword input
   const [keywordInput, setKeywordInput] = useState('');
   
-  // Fetch advertisers from API
-  const { data: advertisers = [], isLoading: isAdvertisersLoading } = useQuery({
-    queryKey: ['advertisers'],
+  // Fetch campaign details to get the advertiser ID (tenantId)
+  const { data: campaignData, isLoading: isCampaignLoading } = useQuery({
+    queryKey: ['campaign', campaignId],
     queryFn: async () => {
-      return await advertiserApi.getAllAdvertisers();
+      console.log(`Fetching campaign details for ID: ${campaignId}`);
+      return await campaignApi.getCampaign(campaignId);
     },
-    enabled: userRole === 'ADMIN' || userRole === 'AGENCY_MANAGER'
+    enabled: !!campaignId
+  });
+
+  // Set the advertiser ID from the campaign's tenant ID
+  useEffect(() => {
+    if (campaignData && campaignData.tenantId) {
+      console.log(`Setting advertiser ID from campaign: ${campaignData.tenantId}`);
+      setFormData(prev => ({
+        ...prev,
+        advertiserId: campaignData.tenantId
+      }));
+    }
+  }, [campaignData]);
+  
+  // Fetch advertiser details to get the seller ID
+  const { data: advertiserDetails, isLoading: isAdvertiserLoading } = useQuery({
+    queryKey: ['advertiser', formData.advertiserId],
+    queryFn: async () => {
+      if (formData.advertiserId) {
+        console.log(`Fetching advertiser details for ID: ${formData.advertiserId}`);
+        return await advertiserApi.getAdvertiserById(formData.advertiserId.toString());
+      }
+      return null;
+    },
+    enabled: !!formData.advertiserId
   });
   
-  // Get the selected advertiser's sellerId if in ADMIN or AGENCY_MANAGER role
-  const selectedAdvertiserId = formData.advertiserId;
-  const selectedAdvertiser = selectedAdvertiserId ? 
-    advertisers.find(adv => adv.id === selectedAdvertiserId) : null;
-  const sellerId = userRole === 'ADVERTISER' ? 
-    user?.sellerId : 
-    (selectedAdvertiser?.sellerId || null);
+  // Get the seller ID from the advertiser details
+  const sellerId = advertiserDetails?.sellerId || null;
   
   // Fetch products query based on sellerId
   const { data: products = [], isLoading: isProductsLoading } = useQuery({
@@ -117,14 +123,34 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
     queryFn: async () => {
       if (sellerId) {
         // Use the specified endpoint to get products by seller ID
-        return await productApi.getProductsBySellerId(sellerId);
+        console.log(`Fetching products for seller ID: ${sellerId}`);
+        // Convert sellerId to number if it's a string
+        const sellerIdNumber = typeof sellerId === 'string' ? parseInt(sellerId) : sellerId;
+        return await productApi.getProductsBySellerId(sellerIdNumber);
       } else {
+        console.log('No seller ID available, cannot fetch products');
         return [];
       }
     },
     enabled: !!sellerId && (currentStep === 'product-selection' || currentStep === 'review')
   });
   
+  // Navigate to the appropriate campaigns page based on user role
+  const navigateToCampaigns = () => {
+    const userRole = user?.role;
+    
+    if (userRole === 'ADMIN') {
+      navigate('/admin/campaigns');
+    } else if (userRole === 'ADVERTISER') {
+      navigate('/advertiser/campaigns');
+    } else if (userRole === 'AGENCY_MANAGER') {
+      navigate('/agency/campaigns');
+    } else {
+      // Fallback to a common route if role is unknown
+      navigate('/campaigns');
+    }
+  };
+
   // Mutation for creating ad
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: CreateAdRequestDto) => {
@@ -132,27 +158,18 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
     },
     onSuccess: () => {
       toast({
-        title: "Ad Created Successfully",
-        description: "Your ad has been created and is now live.",
+        title: "Success!",
+        description: "Ad created successfully.",
         variant: "default",
       });
       
-      // Navigate based on user role
-      if (userRole === 'ADMIN') {
-        navigate(`/admin/campaigns`);
-      } else if (userRole === 'ADVERTISER') {
-        navigate(`/advertiser/campaigns`);
-      } else if (userRole === 'AGENCY_MANAGER') {
-        navigate(`/agency/campaigns`);
-      } else {
-        // Fallback to campaigns/campaignId/ads as a generic route
-        navigate(`/campaigns/${campaignId}/ads`);
-      }
+      // Navigate to the appropriate campaigns page based on user role
+      navigateToCampaigns();
     },
     onError: (error) => {
       toast({
-        title: "Error Creating Ad",
-        description: error instanceof Error ? error.message : "An unexpected error occurred",
+        title: "Error",
+        description: `Failed to create ad: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     }
@@ -199,33 +216,24 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
     const newErrors: Record<string, string> = {};
     
     switch (currentStep) {
-      case 'advertiser-selection':
-        if (!formData.advertiserId) {
-          newErrors.advertiserId = 'Please select an advertiser';
-        }
-        break;
-        
       case 'ad-details':
         if (!formData.title.trim()) {
           newErrors.title = 'Title is required';
+        }
+        if (!formData.description.trim()) {
+          newErrors.description = 'Description is required';
         }
         break;
         
       case 'product-selection':
         if (!formData.productId) {
-          newErrors.productId = 'Please select a product';
+          newErrors.productId = 'Product selection is required';
         }
         break;
         
       case 'bids-budget':
         if (formData.bid.amount <= 0) {
           newErrors.bidAmount = 'Bid amount must be greater than 0';
-        }
-        if (!formData.bid.strategy) {
-          newErrors.bidStrategy = 'Please select a bid strategy';
-        }
-        if (formData.adState.isActive && !formData.adState.activatedAt) {
-          newErrors.activatedAt = 'Activation date is required when ad is active';
         }
         break;
     }
@@ -239,13 +247,13 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
     if (!validateStep()) return;
     
     switch (currentStep) {
-      case 'advertiser-selection':
-        setCurrentStep('ad-details');
-        break;
       case 'ad-details':
         setCurrentStep('product-selection');
         break;
       case 'product-selection':
+        setCurrentStep('keywords-selection');
+        break;
+      case 'keywords-selection':
         setCurrentStep('bids-budget');
         break;
       case 'bids-budget':
@@ -257,16 +265,14 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
   // Handle previous step
   const handlePrevious = () => {
     switch (currentStep) {
-      case 'ad-details':
-        if (userRole === 'ADMIN' || userRole === 'AGENCY_MANAGER') {
-          setCurrentStep('advertiser-selection');
-        }
-        break;
       case 'product-selection':
         setCurrentStep('ad-details');
         break;
-      case 'bids-budget':
+      case 'keywords-selection':
         setCurrentStep('product-selection');
+        break;
+      case 'bids-budget':
+        setCurrentStep('keywords-selection');
         break;
       case 'review':
         setCurrentStep('bids-budget');
@@ -275,63 +281,53 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
   };
   
   // Handle form submission
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!validateStep()) return;
     
-    // Prepare the DTO
-    const createAdDto: CreateAdRequestDto = {
+    const adData: CreateAdRequestDto = {
       productId: formData.productId,
       title: formData.title,
       description: formData.description,
-      mediaUrl: formData.mediaUrl,
-      redirectUrl: formData.redirectUrl,
+      keywords: formData.keywords,
       adState: formData.adState,
       bid: formData.bid
     };
     
-    // Submit the form using the mutation
-    mutate(createAdDto);
+    mutate(adData);
   };
   
   // Render step content
   const renderStepContent = () => {
     switch (currentStep) {
-      case 'advertiser-selection':
-        return (
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="advertiser">Select Advertiser</Label>
-              {isAdvertisersLoading ? (
-                <div className="text-center py-4">Loading advertisers...</div>
-              ) : (
-                <Select
-                  value={formData.advertiserId?.toString()}
-                  onValueChange={(value) => handleChange('advertiserId', parseInt(value))}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select an advertiser" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {advertisers.map((advertiser) => (
-                      <SelectItem key={advertiser.id} value={advertiser.id.toString()}>
-                        {`${advertiser.firstName} ${advertiser.lastName} (${advertiser.shopName})`}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-              {errors.advertiserId && (
-                <p className="text-sm text-red-500">{errors.advertiserId}</p>
-              )}
-            </div>
-          </div>
-        );
-        
       case 'ad-details':
         return (
           <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="title">Title <span className="text-red-500">*</span></Label>
+            <div className="mb-4">
+              <Label htmlFor="advertiser">Advertiser</Label>
+              {isCampaignLoading ? (
+                <div className="flex items-center mt-2">
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  <span className="text-sm text-muted-foreground">Loading campaign information...</span>
+                </div>
+              ) : isAdvertiserLoading ? (
+                <div className="flex items-center mt-2">
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  <span className="text-sm text-muted-foreground">Loading advertiser details...</span>
+                </div>
+              ) : advertiserDetails ? (
+                <div className="p-2 border rounded-md mt-2">
+                  <p className="font-medium">{advertiserDetails.shopName || `Advertiser ID: ${advertiserDetails.id}`}</p>
+                  <p className="text-sm text-muted-foreground">This ad will be created for the advertiser associated with the campaign.</p>
+                </div>
+              ) : (
+                <div className="p-2 border border-red-200 bg-red-50 rounded-md mt-2">
+                  <p className="text-sm text-red-500">Could not load advertiser information for this campaign.</p>
+                </div>
+              )}
+            </div>
+            
+            <div className="mb-4">
+              <Label htmlFor="title">Title</Label>
               <Input
                 id="title"
                 value={formData.title}
@@ -339,60 +335,22 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
                 placeholder="Enter ad title"
               />
               {errors.title && (
-                <p className="text-sm text-red-500">{errors.title}</p>
+                <p className="text-sm text-red-500 mt-1">{errors.title}</p>
               )}
             </div>
             
-            <div className="space-y-2">
+            <div className="mb-4">
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => handleChange('description', e.target.value)}
                 placeholder="Enter ad description"
-                rows={3}
+                rows={4}
               />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="mediaUrl">Media URL</Label>
-              <Input
-                id="mediaUrl"
-                value={formData.mediaUrl}
-                onChange={(e) => handleChange('mediaUrl', e.target.value)}
-                placeholder="Enter media URL"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="redirectUrl">Redirect URL</Label>
-              <Input
-                id="redirectUrl"
-                value={formData.redirectUrl}
-                onChange={(e) => handleChange('redirectUrl', e.target.value)}
-                placeholder="Enter redirect URL"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="keywords">Keywords</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="keywords"
-                  value={keywordInput}
-                  onChange={(e) => setKeywordInput(e.target.value)}
-                  placeholder="Add keywords"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleAddKeyword();
-                    }
-                  }}
-                />
-                <Button type="button" onClick={handleAddKeyword} variant="outline">
-                  Add
-                </Button>
-              </div>
+              {errors.description && (
+                <p className="text-sm text-red-500 mt-1">{errors.description}</p>
+              )}
             </div>
           </div>
         );
@@ -400,223 +358,212 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
       case 'product-selection':
         return (
           <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="product">Select Product <span className="text-red-500">*</span></Label>
-              {isProductsLoading ? (
-                <div className="text-center py-4">Loading products...</div>
-              ) : (
-                <Select
-                  value={formData.productId}
-                  onValueChange={(value) => handleChange('productId', value)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a product" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {products.map((product) => (
-                      <SelectItem key={product.id} value={product.id}>
-                        {product.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-              {errors.productId && (
-                <p className="text-sm text-red-500">{errors.productId}</p>
-              )}
-            </div>
-            
-            {formData.productId && products.length > 0 && products.some(p => p.id === formData.productId) && (
-              <div className="mt-4 p-4 border rounded-md bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                <h4 className="font-medium">Selected Product Details</h4>
-                {products.filter(p => p.id === formData.productId).map(product => (
-                  <div key={product.id} className="mt-2 text-sm">
-                    <p><strong>Name:</strong> {product.name}</p>
-                    <p><strong>Description:</strong> {product.description}</p>
-                    <p><strong>Price:</strong> ${product.price.toFixed(2)}</p>
-                    <p><strong>Category:</strong> {product.category}</p>
-                  </div>
-                ))}
+            {isProductsLoading ? (
+              <div className="flex items-center justify-center p-8">
+                <Loader2 className="h-8 w-8 animate-spin mr-2" />
+                <span>Loading products...</span>
               </div>
+            ) : products.length === 0 ? (
+              <div className="text-center p-8 border border-dashed rounded-md">
+                <p className="text-muted-foreground mb-2">No products found for this advertiser.</p>
+                <p className="text-sm">Please ensure the advertiser has products associated with their account.</p>
+              </div>
+            ) : (
+              <>
+                <div className="mb-4">
+                  <Label htmlFor="product">Select Product</Label>
+                  <Select
+                    value={formData.productId}
+                    onValueChange={(value) => handleChange('productId', value)}
+                  >
+                    <SelectTrigger id="product">
+                      <SelectValue placeholder="Select a product" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {products.map((product) => (
+                        <SelectItem key={product.id} value={product.id}>
+                          {product.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.productId && (
+                    <p className="text-sm text-red-500 mt-1">{errors.productId}</p>
+                  )}
+                </div>
+                
+                {formData.productId && (
+                  <div className="mt-6">
+                    <h3 className="text-lg font-medium mb-3">Selected Product Details</h3>
+                    {products
+                      .filter((product) => product.id === formData.productId)
+                      .map((product) => (
+                        <div key={product.id} className="border rounded-md p-4">
+                          {product.imageUrl && (
+                            <div className="mb-4">
+                              <img
+                                src={product.imageUrl}
+                                alt={product.name}
+                                className="w-full h-48 object-cover rounded-md"
+                              />
+                            </div>
+                          )}
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <p className="font-medium">Name:</p>
+                              <p>{product.name}</p>
+                            </div>
+                            <div>
+                              <p className="font-medium">Price:</p>
+                              <p>${product.price.toFixed(2)}</p>
+                            </div>
+                            <div>
+                              <p className="font-medium">Category:</p>
+                              <p>{product.category}</p>
+                            </div>
+                            <div>
+                              <p className="font-medium">Quantity:</p>
+                              <p>{product.quantity}</p>
+                            </div>
+                            <div className="col-span-2">
+                              <p className="font-medium">Description:</p>
+                              <p className="text-sm">{product.description}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </>
             )}
+          </div>
+        );
+        
+      case 'keywords-selection':
+        return (
+          <div className="space-y-4">
+            <div className="mb-4">
+              <Label htmlFor="keywords">Keywords</Label>
+              <p className="text-sm text-muted-foreground mb-2">
+                Add keywords to help target your ad. These will be used for ad matching and relevance.
+              </p>
+              
+              <div className="flex mb-2">
+                <Input
+                  id="keywords"
+                  value={keywordInput}
+                  onChange={(e) => setKeywordInput(e.target.value)}
+                  placeholder="Enter keyword"
+                  className="mr-2"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddKeyword();
+                    }
+                  }}
+                />
+                <Button type="button" onClick={handleAddKeyword}>Add</Button>
+              </div>
+              
+              <div className="flex flex-wrap gap-2 mt-4">
+                {formData.keywords.length > 0 ? (
+                  formData.keywords.map((keyword) => (
+                    <Badge key={keyword} variant="secondary" className="px-3 py-1">
+                      {keyword}
+                      <X
+                        className="ml-1 h-3 w-3 cursor-pointer"
+                        onClick={() => handleRemoveKeyword(keyword)}
+                      />
+                    </Badge>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">No keywords added yet.</p>
+                )}
+              </div>
+              
+              <p className="text-sm text-muted-foreground mt-4">
+                If you leave this empty, the system will automatically generate keywords based on your product and ad content.
+              </p>
+            </div>
           </div>
         );
         
       case 'bids-budget':
         return (
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium">Bid Settings</h3>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="bidAmount">Bid Amount <span className="text-red-500">*</span></Label>
-                  <div className="flex">
-                    <div className="flex items-center px-3 bg-gray-100 dark:bg-gray-700 border border-r-0 dark:border-gray-600 rounded-l-md">
-                      {formData.bid.currency}
-                    </div>
-                    <Input
-                      id="bidAmount"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={formData.bid.amount || ''}
-                      onChange={(e) => handleChange('bid', {
-                        ...formData.bid,
-                        amount: parseFloat(e.target.value) || 0
-                      })}
-                      className="rounded-l-none"
-                    />
-                  </div>
-                  {errors.bidAmount && (
-                    <p className="text-sm text-red-500">{errors.bidAmount}</p>
-                  )}
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="bidCurrency">Currency</Label>
-                  <Select
-                    value={formData.bid.currency}
-                    onValueChange={(value) => handleChange('bid', {
-                      ...formData.bid,
-                      currency: value
-                    })}
-                  >
-                    <SelectTrigger id="bidCurrency">
-                      <SelectValue placeholder="Select currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="USD">USD</SelectItem>
-                      <SelectItem value="EUR">EUR</SelectItem>
-                      <SelectItem value="GBP">GBP</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+          <div className="space-y-4">
+            <div className="mb-4">
+              <Label htmlFor="bidAmount">Bid Amount</Label>
+              <div className="flex items-center">
+                <span className="mr-2">$</span>
+                <Input
+                  id="bidAmount"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  value={formData.bid.amount}
+                  onChange={(e) => handleChange('bid', { ...formData.bid, amount: parseFloat(e.target.value) || 0 })}
+                  placeholder="0.00"
+                />
               </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="bidStrategy">Bid Strategy <span className="text-red-500">*</span></Label>
-                <Select
-                  value={formData.bid.strategy}
-                  onValueChange={(value) => handleChange('bid', {
-                    ...formData.bid,
-                    strategy: value
-                  })}
-                >
-                  <SelectTrigger id="bidStrategy">
-                    <SelectValue placeholder="Select strategy" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="CPC">Cost Per Click (CPC)</SelectItem>
-                    <SelectItem value="CPM">Cost Per Mille (CPM)</SelectItem>
-                    <SelectItem value="CPA">Cost Per Action (CPA)</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.bidStrategy && (
-                  <p className="text-sm text-red-500">{errors.bidStrategy}</p>
-                )}
-              </div>
+              {errors.bidAmount && (
+                <p className="text-sm text-red-500 mt-1">{errors.bidAmount}</p>
+              )}
             </div>
             
-            <Separator />
+            <div className="mb-4">
+              <Label htmlFor="bidStrategy">Bid Strategy</Label>
+              <Select
+                value={formData.bid.strategy}
+                onValueChange={(value) => handleChange('bid', { ...formData.bid, strategy: value })}
+              >
+                <SelectTrigger id="bidStrategy">
+                  <SelectValue placeholder="Select bid strategy" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="CPC">Cost Per Click (CPC)</SelectItem>
+                  <SelectItem value="CPM">Cost Per Mille (CPM)</SelectItem>
+                  <SelectItem value="CPA">Cost Per Action (CPA)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium">Ad State</h3>
-              
+            <div className="mb-4">
+              <Label htmlFor="currency">Currency</Label>
+              <Select
+                value={formData.bid.currency}
+                onValueChange={(value) => handleChange('bid', { ...formData.bid, currency: value })}
+              >
+                <SelectTrigger id="currency">
+                  <SelectValue placeholder="Select currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="USD">USD ($)</SelectItem>
+                  <SelectItem value="EUR">EUR (€)</SelectItem>
+                  <SelectItem value="GBP">GBP (£)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="mb-4">
               <div className="flex items-center space-x-2">
                 <Switch
-                  id="isActive"
+                  id="adState"
                   checked={formData.adState.isActive}
                   onCheckedChange={(checked) => {
                     const now = new Date().toISOString();
                     handleChange('adState', {
                       ...formData.adState,
                       isActive: checked,
-                      activatedAt: checked ? now : null
+                      activatedAt: checked ? now : null,
+                      deactivatedAt: !checked ? now : null,
                     });
                   }}
                 />
-                <Label htmlFor="isActive">Active</Label>
+                <Label htmlFor="adState">Activate Ad Immediately</Label>
               </div>
-              
-              {formData.adState.isActive && (
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="activatedAt">Activation Date <span className="text-red-500">*</span></Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !formData.adState.activatedAt && "text-muted-foreground"
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {formData.adState.activatedAt ? format(new Date(formData.adState.activatedAt), "PPP") : "Pick a date"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 dark:bg-gray-800 dark:border-gray-700">
-                        <Calendar
-                          mode="single"
-                          selected={formData.adState.activatedAt ? new Date(formData.adState.activatedAt) : undefined}
-                          onSelect={(date) => handleChange('adState', {
-                            ...formData.adState,
-                            activatedAt: date ? date.toISOString() : null
-                          })}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    {errors.activatedAt && (
-                      <p className="text-sm text-red-500">{errors.activatedAt}</p>
-                    )}
-                  </div>
-                </div>
-              )}
-              
-              <div className="space-y-2">
-                <Label htmlFor="deactivatedAt">Deactivation Date (Optional)</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !formData.adState.deactivatedAt && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formData.adState.deactivatedAt ? format(new Date(formData.adState.deactivatedAt), "PPP") : "Pick a date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 dark:bg-gray-800 dark:border-gray-700">
-                    <Calendar
-                      mode="single"
-                      selected={formData.adState.deactivatedAt ? new Date(formData.adState.deactivatedAt) : undefined}
-                      onSelect={(date) => handleChange('adState', {
-                        ...formData.adState,
-                        deactivatedAt: date ? date.toISOString() : null
-                      })}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="reason">Reason (Optional)</Label>
-                <Textarea
-                  id="reason"
-                  value={formData.adState.reason || ''}
-                  onChange={(e) => handleChange('adState', {
-                    ...formData.adState,
-                    reason: e.target.value
-                  })}
-                  placeholder="Enter reason for state"
-                  rows={2}
-                />
-              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                If enabled, the ad will start running as soon as it's created.
+              </p>
             </div>
           </div>
         );
@@ -631,58 +578,50 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
                   <p className="font-medium">Title:</p>
                   <p>{formData.title}</p>
                 </div>
-                {formData.description && (
-                  <div>
-                    <p className="font-medium">Description:</p>
-                    <p>{formData.description}</p>
-                  </div>
-                )}
-                {formData.mediaUrl && (
-                  <div>
-                    <p className="font-medium">Media URL:</p>
-                    <p className="truncate">{formData.mediaUrl}</p>
-                  </div>
-                )}
-                {formData.redirectUrl && (
-                  <div>
-                    <p className="font-medium">Redirect URL:</p>
-                    <p className="truncate">{formData.redirectUrl}</p>
-                  </div>
-                )}
+                <div>
+                  <p className="font-medium">Description:</p>
+                  <p>{formData.description}</p>
+                </div>
               </div>
               
-              {formData.keywords.length > 0 && (
-                <div className="mt-2">
-                  <p className="font-medium">Keywords:</p>
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {formData.keywords.map(keyword => (
-                      <Badge key={keyword} variant="secondary">{keyword}</Badge>
-                    ))}
-                  </div>
+              <div className="mt-2">
+                <p className="font-medium">Keywords:</p>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {formData.keywords.length > 0 ? (
+                    formData.keywords.map((keyword) => (
+                      <Badge key={keyword} variant="secondary">
+                        {keyword}
+                      </Badge>
+                    ))
+                  ) : (
+                    <p className="text-sm text-muted-foreground">No keywords (will be auto-generated)</p>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
             
             <Separator />
             
             <div>
               <h3 className="text-lg font-medium mb-2">Product</h3>
-              {products.filter(p => p.id === formData.productId).map(product => (
-                <div key={product.id} className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="font-medium">Name:</p>
-                    <p>{product.name}</p>
+              {products
+                .filter((product) => product.id === formData.productId)
+                .map((product) => (
+                  <div key={product.id} className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p className="font-medium">Name:</p>
+                      <p>{product.name}</p>
+                    </div>
+                    <div>
+                      <p className="font-medium">Price:</p>
+                      <p>${product.price.toFixed(2)}</p>
+                    </div>
+                    <div>
+                      <p className="font-medium">Category:</p>
+                      <p>{product.category}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium">Category:</p>
-                    <p>{product.category}</p>
-                  </div>
-                  <div>
-                    <p className="font-medium">Price:</p>
-                    <p>${product.price.toFixed(2)}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
             
             <Separator />
@@ -698,54 +637,28 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
                   <p className="font-medium">Strategy:</p>
                   <p>{formData.bid.strategy}</p>
                 </div>
-              </div>
-            </div>
-            
-            <Separator />
-            
-            <div>
-              <h3 className="text-lg font-medium mb-2">Ad State</h3>
-              <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <p className="font-medium">Status:</p>
                   <Badge variant={formData.adState.isActive ? "default" : "secondary"}>
                     {formData.adState.isActive ? 'Active' : 'Inactive'}
                   </Badge>
                 </div>
-                {formData.adState.activatedAt && (
-                  <div>
-                    <p className="font-medium">Activated At:</p>
-                    <p>{format(new Date(formData.adState.activatedAt), "PPP")}</p>
-                  </div>
-                )}
-                {formData.adState.deactivatedAt && (
-                  <div>
-                    <p className="font-medium">Deactivated At:</p>
-                    <p>{format(new Date(formData.adState.deactivatedAt), "PPP")}</p>
-                  </div>
-                )}
-                {formData.adState.reason && (
-                  <div className="col-span-2">
-                    <p className="font-medium">Reason:</p>
-                    <p>{formData.adState.reason}</p>
-                  </div>
-                )}
               </div>
             </div>
           </div>
         );
+        
+      default:
+        return null;
     }
   };
   
   // Render step indicator
   const renderStepIndicator = () => {
     const steps = [
-      ...(userRole === 'ADMIN' || userRole === 'AGENCY_MANAGER' 
-        ? [{ key: 'advertiser-selection' as FormStep, label: 'Advertiser' }] 
-        : []
-      ),
       { key: 'ad-details' as FormStep, label: 'Ad Details' },
       { key: 'product-selection' as FormStep, label: 'Product' },
+      { key: 'keywords-selection' as FormStep, label: 'Keywords' },
       { key: 'bids-budget' as FormStep, label: 'Bids & Budget' },
       { key: 'review' as FormStep, label: 'Review' }
     ];
@@ -805,10 +718,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
         <Button
           variant="outline"
           onClick={handlePrevious}
-          disabled={
-            currentStep === 'advertiser-selection' ||
-            (currentStep === 'ad-details' && userRole === 'ADVERTISER')
-          }
+          disabled={currentStep === 'ad-details'}
         >
           Previous
         </Button>
@@ -833,5 +743,3 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
     </Card>
   );
 };
-
-

@@ -24,8 +24,7 @@ export interface CreateAdRequestDto {
   productId: string;
   title: string;
   description: string;
-  mediaUrl: string;
-  redirectUrl: string;
+  keywords: string[];
   adState: StateObject;
   bid: BidObject;
 }
@@ -33,8 +32,7 @@ export interface CreateAdRequestDto {
 export interface UpdateAdRequestDto {
   title?: string;
   description?: string;
-  mediaUrl?: string;
-  redirectUrl?: string;
+  keywords?: string[];
   adState?: StateObject;
   bid?: BidObject;
 }
@@ -45,13 +43,11 @@ export interface GetAdResponseDto {
   productId: string;
   title: string;
   description?: string;
-  mediaUrl?: string;
-  redirectUrl?: string;
+  keywords?: string[];
   adState?: StateObject;
   bid: BidObject;
   creationDate: string;
   updateDate: string;
-  globalState?: StateObject;
 }
 
 export interface SelectedProductsRequestDto {

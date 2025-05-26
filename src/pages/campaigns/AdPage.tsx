@@ -273,7 +273,7 @@ export const AdPage = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-2xl font-bold">
-                    {campaign.adsSpaceList?.length || 0} Ad Spaces
+                    {campaign.bid ? `${campaign.bid.amount} ${campaign.bid.currency}` : 'No bid set'}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     Campaign ID: {campaign.campaignId}

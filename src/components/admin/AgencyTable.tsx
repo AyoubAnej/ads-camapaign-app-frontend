@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { agencyApi } from "@/lib/agenciesApi";
 import { Agency, AgencyStatus, agencyStatusToString } from "@/types/agency";
@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDebounce } from "@/hooks/useDebounce";
 
 import {
   Table,
@@ -37,8 +38,39 @@ export const AgencyTable = () => {
   
   // States for pagination and search
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  
+  // Ref for search input to maintain focus
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  
+  // Debounce search term to prevent excessive API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+  
+  // Maintain focus on search input when data is refreshed
+  useEffect(() => {
+    // If the search input has focus before the query runs, restore focus after
+    const inputHasFocus = document.activeElement === searchInputRef.current;
+    
+    return () => {
+      if (inputHasFocus && searchInputRef.current) {
+        // Use setTimeout to ensure focus happens after render
+        setTimeout(() => {
+          searchInputRef.current?.focus();
+          // Preserve cursor position
+          const length = searchInputRef.current?.value.length || 0;
+          searchInputRef.current?.setSelectionRange(length, length);
+        }, 0);
+      }
+    };
+  }, [debouncedSearchTerm, currentPage, pageSize]);
   
   // States for modal visibility
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -53,8 +85,8 @@ export const AgencyTable = () => {
   
   // Fetch agencies data with pagination
   const { data, isLoading, error } = useQuery({
-    queryKey: ["agencies", currentPage, pageSize, searchTerm],
-    queryFn: () => agencyApi.getAllAgencies({ page: currentPage, pageSize, searchTerm }),
+    queryKey: ["agencies", currentPage, pageSize, debouncedSearchTerm],
+    queryFn: () => agencyApi.getAllAgencies({ page: currentPage, pageSize, searchTerm: debouncedSearchTerm }),
     enabled: !!user, // Only fetch if user is authenticated
   });
 
@@ -186,12 +218,10 @@ export const AgencyTable = () => {
         <div className="flex items-center gap-4">
           <div className="relative">
             <Input
+              ref={searchInputRef}
               placeholder="Search agencies..."
               value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setCurrentPage(1);
-              }}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8 w-64"
             />
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
