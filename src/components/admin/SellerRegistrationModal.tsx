@@ -48,7 +48,7 @@ export const SellerRegistrationModal = ({
   const queryClient = useQueryClient();
 
   // Fetch sellers using React Query
-  const { data: sellers = [], isLoading } = useQuery({
+  const { data: sellers = [], isLoading: isLoadingSellers } = useQuery({
     queryKey: ['sellers'],
     queryFn: async () => {
       const result = await sellersApi.getAllSellers(false);
@@ -57,10 +57,30 @@ export const SellerRegistrationModal = ({
     },
     enabled: open,
   });
+  
+  // Fetch advertisers to filter out already registered sellers
+  const { data: advertisers = [], isLoading: isLoadingAdvertisers } = useQuery({
+    queryKey: ['advertisers'],
+    queryFn: async () => {
+      const result = await advertiserApi.getAllAdvertisers();
+      console.log('Fetched advertisers data:', result);
+      return result;
+    },
+    enabled: open,
+  });
+  
+  // Filter out sellers who are already registered as advertisers
+  const unregisteredSellers = sellers.filter(seller => {
+    // Check if this seller's ID exists in any advertiser's sellerId
+    return !advertisers.some(advertiser => advertiser.sellerId === seller.sellerId);
+  });
+  
+  // Show loading state while either query is loading
+  const isLoading = isLoadingSellers || isLoadingAdvertisers;
 
-  // Convert sellers to combobox options
-  const sellerOptions: ComboboxOption[] = sellers.map((seller) => {
-    console.log('Processing seller:', seller);
+  // Convert unregistered sellers to combobox options
+  const sellerOptions: ComboboxOption[] = unregisteredSellers.map((seller) => {
+    console.log('Processing unregistered seller:', seller);
     // Use shopName if available, otherwise fallback to firstName + lastName
     const displayName = seller.shopName || `${seller.firstName} ${seller.lastName}'s Shop`;
     return {
@@ -157,8 +177,8 @@ export const SellerRegistrationModal = ({
                   value={selectedSellerId}
                   onChange={setSelectedSellerId}
                   placeholder={isLoading ? "Loading sellers..." : "Search by shop name or ID..."}
-                  emptyMessage="No sellers found"
-                  disabled={isLoading}
+                  emptyMessage={sellerOptions.length === 0 ? "All sellers are already registered" : "No sellers found"}
+                  disabled={isLoading || sellerOptions.length === 0}
                   loading={isLoading}
                 />
               </div>
@@ -204,8 +224,8 @@ export const SellerRegistrationModal = ({
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Loading...' : 'Register Seller'}
+            <Button type="submit" disabled={isLoading || sellerOptions.length === 0}>
+              {isLoading ? 'Loading...' : sellerOptions.length === 0 ? 'No Unregistered Sellers' : 'Register Seller'}
             </Button>
           </DialogFooter>
         </form>

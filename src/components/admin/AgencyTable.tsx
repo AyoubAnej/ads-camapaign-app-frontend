@@ -84,10 +84,32 @@ export const AgencyTable = () => {
   const isAdmin = user?.role === "ADMIN";
   
   // Fetch agencies data with pagination
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["agencies", currentPage, pageSize, debouncedSearchTerm],
-    queryFn: () => agencyApi.getAllAgencies({ page: currentPage, pageSize, searchTerm: debouncedSearchTerm }),
+    queryFn: async () => {
+      try {
+        return await agencyApi.getAllAgencies({ page: currentPage, pageSize, searchTerm: debouncedSearchTerm });
+      } catch (error: any) {
+        // Check if error is due to authentication
+        if (error?.response?.status === 401) {
+          toast({
+            title: "Session Expired",
+            description: "Your session has expired. Please refresh the page or log in again.",
+            variant: "destructive",
+          });
+        }
+        throw error;
+      }
+    },
     enabled: !!user, // Only fetch if user is authenticated
+    refetchOnWindowFocus: true, // Refetch when window regains focus
+    refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes (adjust as needed)
+    refetchIntervalInBackground: false, // Don't refetch when tab is not active
+    retry: (failureCount, error: any) => {
+      // Don't retry on authentication errors
+      if (error?.response?.status === 401) return false;
+      return failureCount < 3; // Retry other errors up to 3 times
+    },
   });
 
   // Mutations
