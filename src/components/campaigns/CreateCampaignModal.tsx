@@ -174,7 +174,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
                   ) : (
                     advertisers.map((advertiser: Advertiser) => (
                       <SelectItem key={advertiser.id} value={advertiser.id.toString()}>
-                        {advertiser.shopName || `Advertiser ID: ${advertiser.id}`}
+                        {advertiser.id} - {advertiser.shopName }
                       </SelectItem>
                     ))
                   )}
