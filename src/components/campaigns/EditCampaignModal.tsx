@@ -75,7 +75,6 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
         // Preserve existing values for these fields
         ownerActivation: campaign.ownerActivation,
         bid: campaign.bid,
-        adsSpaceList: campaign.adsSpaceList
       };
 
       await campaignApi.updateCampaign(campaign.campaignId, updateData);
@@ -148,7 +147,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
               </Label>
               <Select 
                 value={globalState.toString()} 
-                onValueChange={(value) => setGlobalState(parseInt(value) as GlobalState)}
+                onValueChange={(value) => setGlobalState(value as GlobalState)}
               >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Select status" />
@@ -165,7 +164,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
               </Label>
               <Select 
                 value={campaignType.toString()} 
-                onValueChange={(value) => setCampaignType(parseInt(value) as CampaignType)}
+                onValueChange={(value) => setCampaignType(value as CampaignType)}
               >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Select type" />
