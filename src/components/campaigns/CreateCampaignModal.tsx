@@ -172,7 +172,8 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
                   ) : advertisers.length === 0 ? (
                     <SelectItem value="none" disabled>No advertisers found</SelectItem>
                   ) : (
-                    advertisers.map((advertiser: Advertiser) => (
+                    advertisers.filter(advertiser => advertiser.role !== 'AGENCY_MANAGER' && advertiser.role !== 'ADMIN')
+                    .map((advertiser: Advertiser) => (
                       <SelectItem key={advertiser.id} value={advertiser.id.toString()}>
                         {advertiser.id} - {advertiser.shopName }
                       </SelectItem>
