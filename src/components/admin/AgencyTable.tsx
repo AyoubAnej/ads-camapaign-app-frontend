@@ -315,6 +315,7 @@ export const AgencyTable = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => handleEditClick(agency)}
+                          className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -323,8 +324,8 @@ export const AgencyTable = () => {
                           size="sm"
                           onClick={() => handleToggleActivation(agency)}
                           className={agency.status === AgencyStatus.ACTIVE 
-                            ? "text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600" 
-                            : "text-green-500 border-green-200 hover:bg-green-50 hover:text-green-600"}
+                            ? "text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-white" 
+                            : "border-green-600 text-green-600 hover:bg-green-600 hover:text-white"}
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -334,7 +335,7 @@ export const AgencyTable = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => handleDeleteClick(agency)}
-                          className="text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
+                          className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
