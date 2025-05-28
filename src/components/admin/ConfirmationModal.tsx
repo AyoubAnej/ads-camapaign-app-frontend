@@ -9,6 +9,7 @@ import {
 import { DialogContent } from "@/components/ui/dialog-content";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 interface ConfirmationModalProps {
   open: boolean;
@@ -26,9 +27,11 @@ export const ConfirmationModal = ({
   onConfirm,
   title,
   description,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
+  confirmText = "common.confirm",
+  cancelText = "common.cancel",
 }: ConfirmationModalProps) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
@@ -53,9 +56,11 @@ export const ConfirmationModal = ({
             onClick={() => onOpenChange(false)}
             className="mr-2"
           >
-            {cancelText}
+            {t(cancelText)}
           </Button>
-          <Button onClick={onConfirm}>{confirmText}</Button>
+          <Button onClick={onConfirm}>
+            {t(confirmText)}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

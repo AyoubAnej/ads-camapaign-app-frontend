@@ -1,11 +1,12 @@
-
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const Unauthorized = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const goBack = () => {
     navigate(-1);
@@ -28,19 +29,17 @@ const Unauthorized = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
       <div className="text-center max-w-md">
         <h1 className="text-5xl font-bold text-red-600 mb-6">403</h1>
-        <h2 className="text-2xl font-bold text-gray-800 mb-3">Access Denied</h2>
-        <p className="text-gray-600 mb-8">
-          You don't have permission to access this page. Please contact your administrator if you believe this is an error.
-        </p>
+        <h2 className="text-2xl font-bold text-gray-800 mb-3">{t('error.unauthorized.title')}</h2>
+        <p className="text-gray-600 mb-8">{t('error.unauthorized.message')}</p>
         <div className="flex flex-wrap justify-center gap-4">
           <Button variant="outline" onClick={goBack}>
-            Go Back
+            {t('error.unauthorized.goBack')}
           </Button>
           <Button onClick={goHome}>
-            Go to Dashboard
+            {t('error.unauthorized.goHome')}
           </Button>
           <Button variant="destructive" onClick={logout}>
-            Sign Out
+            {t('error.unauthorized.signOut')}
           </Button>
         </div>
       </div>

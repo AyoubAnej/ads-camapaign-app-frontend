@@ -32,7 +32,7 @@ const AdvertiserDashboard = () => {
   // Fetch advertiser data
   const { data: advertiserData, isLoading, error } = useQuery({
     queryKey: ['advertiser', user?.id],
-    queryFn: () => user?.id ? advertiserApi.getAdvertiserById(user.id) : Promise.reject('User ID not available'),
+    queryFn: () => user?.id ? advertiserApi.getAdvertiserById(user.id.toString()) : Promise.reject('User ID not available'),
     enabled: !!user?.id,
   });
 

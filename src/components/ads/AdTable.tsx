@@ -29,12 +29,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface AdTableProps {
   campaignId: number;
 }
 
 export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -181,7 +183,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           <div className="relative w-full sm:w-[200px]">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search ads..."
+              placeholder={t('ads.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
@@ -326,7 +328,11 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           {/* Pagination with page size selection */}
           <div className="flex items-center justify-between py-4">
             <div className="text-sm text-muted-foreground">
-              Showing {totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount} ads
+              {t('ui.table.showing', {
+                start: totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1,
+                end: Math.min(currentPage * pageSize, totalCount),
+                total: totalCount
+              })}
             </div>
             <div className="flex items-center space-x-2">
               <Button
@@ -338,7 +344,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                 <ChevronLeft className="h-4 w-4" />
               </Button>
               <span className="text-sm">
-                Page {currentPage} of {totalPages}
+                {t('ui.table.pagination', { currentPage, totalPages })}
               </span>
               <Button
                 variant="outline"

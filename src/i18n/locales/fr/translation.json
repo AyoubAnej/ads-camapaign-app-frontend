@@ -1,5 +1,9 @@
-{
-  "common": {
+{    "common": {
+    "notAvailable": "Non disponible",
+    "tryAgain": "Réessayer",
+    "actions": "Actions",
+    "created": "Créé le",
+    "updated": "Modifié le",
     "dashboard": "Tableau de bord",
     "users": "Utilisateurs",
     "agencies": "Agences",
@@ -8,8 +12,18 @@
     "settings": "Paramètres",
     "agencyDetails": "Détails de l'agence",
     "active": "Actif",
+    "inactive": "Inactif",
     "paused": "En pause",
-    "from": "par rapport au mois dernier"
+    "from": "par rapport au mois dernier",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "loading": "Chargement...",
+    "success": "Succès",
+    "error": "Erreur",
+    "confirm": "Confirmer",
+    "back": "Retour"
   },
   "sidebar": {
     "expandSidebar": "Développer la barre latérale",
@@ -31,7 +45,19 @@
     "validationError": "Erreur de validation",
     "enterEmailAndPassword": "Veuillez saisir l'email et le mot de passe",
     "loginFailed": "Échec de connexion",
-    "invalidCredentials": "Identifiants invalides. Veuillez réessayer."
+    "invalidCredentials": "Identifiants invalides. Veuillez réessayer.",
+    "required": "Ce champ est obligatoire",
+    "email": "Veuillez entrer une adresse email valide",
+    "minLength": "Doit contenir au moins {{count}} caractères",
+    "maxLength": "Ne doit pas dépasser {{count}} caractères",
+    "phone": "Veuillez entrer un numéro de téléphone valide",
+    "url": "Veuillez entrer une URL valide",
+    "password": {
+      "match": "Les mots de passe ne correspondent pas",
+      "minLength": "Le mot de passe doit contenir au moins {{count}} caractères",
+      "requirements": "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
+    },
+    "confirmAction": "Êtes-vous sûr de vouloir effectuer cette action ?"
   },
   "adminDashboard": {
     "welcome": "Bienvenue sur votre tableau de bord administrateur",
@@ -52,11 +78,115 @@
     "startDate": "Date de début",
     "endDate": "Date de fin"
   },
+  "ads": {
+    "title": "Publicités",
+    "description": "Gérez vos publicités",
+    "createAd": "Créer une publicité",
+    "editAd": "Modifier la publicité",
+    "deleteAd": "Supprimer la publicité",
+    "adDetails": "Détails de la publicité",
+    "fields": {
+      "title": "Titre",
+      "description": "Description",
+      "mediaUrl": "URL des médias",
+      "redirectUrl": "URL de redirection",
+      "productId": "ID du produit",
+      "status": "Statut",
+      "bidStrategy": "Stratégie d'enchères",
+      "budget": "Budget",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "createdAt": "Créé le",
+      "updatedAt": "Mis à jour le",
+      "activatedAt": "Activé le",
+      "deactivatedAt": "Désactivé le"
+    },
+    "placeholders": {
+      "title": "Titre de la publicité",
+      "description": "Décrivez votre publicité (optionnel)",
+      "mediaUrl": "https://votre-boutique.com/image.png",
+      "redirectUrl": "https://votre-boutique.com/produit",
+      "productId": "Entrez l'ID du produit"
+    },
+    "descriptions": {
+      "title": "Titre accrocheur pour votre publicité",
+      "description": "Optionnel : détails supplémentaires sur votre publicité",
+      "mediaUrl": "Image ou vidéo à afficher dans votre publicité",
+      "redirectUrl": "Où les utilisateurs iront en cliquant sur la publicité",
+      "productId": "Identifiant unique du produit",
+      "bidStrategy": "Comment votre enchère sera gérée"
+    },
+    "bidTypes": {
+      "manual": "Enchères manuelles",
+      "automatic": "Enchères automatiques",
+      "targetCpa": "CPA cible"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "En attente",
+      "rejected": "Rejetée",
+      "paused": "En pause"
+    }
+  },
+  "campaigns": {
+    "title": "Campagnes",
+    "description": "Gérez vos campagnes publicitaires",
+    "createCampaign": "Créer une campagne",
+    "editCampaign": "Modifier la campagne",
+    "deleteCampaign": "Supprimer la campagne",
+    "campaignDetails": "Détails de la campagne",
+    "fields": {
+      "name": "Nom",
+      "description": "Description",
+      "budget": "Budget",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "status": "Statut",
+      "platform": "Plateforme",
+      "placement": "Emplacement",
+      "size": "Taille",
+      "baseCost": "Coût de base"
+    },
+    "placeholders": {
+      "name": "Nom de la campagne",
+      "description": "Décrivez votre campagne",
+      "budget": "Budget quotidien",
+      "selectPlatform": "Sélectionnez une plateforme",
+      "selectPlacement": "Sélectionnez un emplacement",
+      "selectSize": "Sélectionnez une taille",
+      "baseCost": "0.00"
+    },
+    "placements": {
+      "topBanner": "Bannière supérieure",
+      "sidebar": "Barre latérale",
+      "inContent": "Dans le contenu",
+      "footer": "Pied de page"
+    },
+    "metrics": {
+      "impressions": "Impressions",
+      "clicks": "Clics",
+      "ctr": "Taux de clic",
+      "spend": "Dépenses",
+      "conversions": "Conversions",
+      "conversionRate": "Taux de conversion",
+      "cpc": "Coût par clic",
+      "cpa": "Coût par acquisition"
+    }
+  },
   "metrics": {
     "totalClicks": "Total des clics",
-    "totalSpend": "Dépenses totales",
-    "ctr": "CTR (Taux de clics)",
-    "cpc": "CPC (Coût par clic)"
+    "totalSpend": "Dépenses totales", 
+    "ctr": "CTR (Taux de clic)",
+    "cpc": "CPC (Coût par clic)",
+    "conversions": "Conversions",
+    "conversionRate": "Taux de conversion",
+    "cpa": "CPA (Coût par acquisition)",
+    "roas": "ROAS (Retour sur dépenses publicitaires)",
+    "impressions": "Impressions",
+    "reach": "Portée",
+    "frequency": "Fréquence",
+    "engagementRate": "Taux d'engagement"
   },
   "brandInfo": {
     "appName": "Spark Ads",
@@ -80,9 +210,966 @@
     "signOut": "Déconnexion"
   },
   "settings": {
-    "appearanceP": "Gérez vos préférences d'application",
-    "appearance": "Apparence",
-    "darkMode": "Mode sombre",
-    "language": "Langue"
+    "title": "Paramètres",
+    "description": "Gérez vos préférences et paramètres du compte",
+    "account": {
+      "title": "Compte",
+      "description": "Gérez les informations de votre compte",
+      "personalInfo": "Informations personnelles",
+      "security": "Sécurité",
+      "preferences": "Préférences",
+      "fields": {
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "phone": "Téléphone",
+        "company": "Entreprise",
+        "role": "Rôle",
+        "language": "Langue",
+        "timezone": "Fuseau horaire",
+        "dateFormat": "Format de date",
+        "theme": "Thème"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Gérez vos préférences de notification",
+      "email": {
+        "title": "Notifications par email",
+        "updates": "Mises à jour du compte",
+        "alerts": "Alertes",
+        "newsletter": "Newsletter",
+        "marketing": "Communications marketing"
+      },
+      "push": {
+        "title": "Notifications push",
+        "enabled": "Activées",
+        "disabled": "Désactivées",
+        "browser": "Notifications du navigateur"
+      },
+      "frequency": {
+        "title": "Fréquence",
+        "immediate": "Immédiate",
+        "daily": "Quotidienne",
+        "weekly": "Hebdomadaire",
+        "never": "Jamais"
+      }
+    },
+    "security": {
+      "title": "Sécurité",
+      "description": "Gérez vos paramètres de sécurité",
+      "password": {
+        "title": "Mot de passe",
+        "change": "Changer le mot de passe",
+        "current": "Mot de passe actuel",
+        "new": "Nouveau mot de passe",
+        "confirm": "Confirmer le mot de passe"
+      },
+      "twoFactor": {
+        "title": "Authentification à deux facteurs",
+        "description": "Ajoutez une couche de sécurité supplémentaire",
+        "enable": "Activer",
+        "disable": "Désactiver",
+        "enabled": "Activée",
+        "disabled": "Désactivée",
+        "setup": "Configuration",
+        "backup": "Codes de secours"
+      },
+      "sessions": {
+        "title": "Sessions",
+        "current": "Session actuelle",
+        "otherSessions": "Autres sessions",
+        "lastActive": "Dernière activité",
+        "logoutAll": "Déconnecter toutes les sessions",
+        "device": "Appareil",
+        "location": "Localisation",
+        "ip": "Adresse IP"
+      }
+    },
+    "billing": {
+      "title": "Facturation",
+      "description": "Gérez vos informations de paiement et l'historique des factures",
+      "paymentMethods": "Méthodes de paiement",
+      "billingHistory": "Historique de facturation",
+      "invoices": "Factures",
+      "subscription": "Abonnement",
+      "plan": "Plan",
+      "status": "Statut",
+      "nextBilling": "Prochaine facturation"
+    },
+    "appearance": {
+      "title": "Apparence",
+      "description": "Personnalisez l'apparence de l'application",
+      "theme": {
+        "title": "Thème",
+        "light": "Clair",
+        "dark": "Sombre",
+        "system": "Système"
+      },
+      "darkMode": "Mode sombre",
+      "darkModeDescription": "Basculer entre le thème clair et sombre",
+      "customizeAppearance": "Personnalisez l'apparence de votre interface",
+      "fontSize": "Taille de police",
+      "fontSizeDescription": "Ajustez la taille du texte dans l'application",
+      "density": "Densité",
+      "densityDescription": "Ajustez l'espacement entre les éléments",
+      "animations": "Animations",
+      "animationsDescription": "Activer ou désactiver les animations de l'interface"
+    },
+    "language": {
+      "title": "Langue",
+      "description": "Choisissez votre langue préférée",
+      "chooseLanguage": "Sélectionnez votre langue d'affichage",
+      "autoDetect": "Détection automatique",
+      "preferences": {
+        "title": "Préférences de langue",
+        "dateFormat": "Format de date",
+        "timeFormat": "Format d'heure",
+        "numberFormat": "Format des nombres",
+        "currency": "Devise"
+      }
+    },
+    "preferences": {
+      "display": {
+        "theme": {
+          "title": "Thème",
+          "light": "Clair",
+          "dark": "Sombre",
+          "system": "Système",
+          "description": "Choisissez l'apparence de l'interface"
+        },
+        "language": {
+          "title": "Langue",
+          "description": "Choisissez votre langue préférée",
+          "auto": "Automatique (selon le navigateur)",
+          "en": "English",
+          "fr": "Français"
+        },
+        "density": {
+          "title": "Densité d'affichage",
+          "compact": "Compact",
+          "comfortable": "Confortable",
+          "description": "Ajustez l'espacement entre les éléments"
+        }
+      },
+      "notifications": {
+        "title": "Notifications",
+        "email": {
+          "title": "Notifications par email",
+          "description": "Gérez vos préférences de notification par email",
+          "updates": "Mises à jour du compte",
+          "news": "Actualités et nouveautés",
+          "marketing": "Communications marketing"
+        },
+        "push": {
+          "title": "Notifications push",
+          "description": "Gérez vos préférences de notification push",
+          "enabled": "Activées",
+          "disabled": "Désactivées"
+        }
+      }
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "needLogin": "Vous devez être connecté pour voir votre profil",
+    "accountInfo": "Informations du compte",
+    "advertiserDetails": "Détails de l'annonceur",
+    "agencyDetails": "Détails de l'agence",
+    "adminDetails": "Détails de l'administrateur",
+    "email": "Email",
+    "role": "Rôle",
+    "advertiserId": "ID de l'annonceur",
+    "shopName": "Nom de la boutique",
+    "phoneNumber": "Numéro de téléphone",
+    "address": "Adresse",
+    "agencyId": "ID de l'agence",
+    "managerName": "Nom du gérant",
+    "contactPhone": "Téléphone de contact",
+    "contactEmail": "Email de contact",
+    "name": "Nom",
+    "adminRole": "Rôle administrateur",
+    "systemAdmin": "Administrateur système"
+  },
+  "error": {
+    "notFound": {
+      "title": "Page introuvable",
+      "message": "La page que vous recherchez n'existe pas ou a été déplacée.",
+      "goHome": "Retour à l'accueil"
+    },
+    "unauthorized": {
+      "title": "Accès refusé",
+      "message": "Vous n'avez pas l'autorisation d'accéder à cette page. Veuillez contacter votre administrateur si vous pensez qu'il s'agit d'une erreur.",
+      "goBack": "Retour",
+      "goHome": "Tableau de bord",
+      "signOut": "Déconnexion"
+    }
+  },
+  "admin": {    "userManagement": {
+      "title": "Gestion des utilisateurs",
+      "description": "Gérer les utilisateurs et leurs permissions",
+      "showing": "Affichage de {{start}} à {{end}} sur {{total}} utilisateurs",
+      "noUsers": "Aucun utilisateur à afficher",
+      "addUser": "Ajouter un utilisateur",
+      "editUser": "Modifier l'utilisateur",
+      "editDescription": "Modifier les informations de l'utilisateur",
+      "selectRole": "Sélectionner un rôle",
+      "deleteUser": "Supprimer l'utilisateur",
+      "confirmDelete": "Êtes-vous sûr ?",
+      "deleteWarning": "Cette action supprimera définitivement l'utilisateur {{userName}} et toutes les données associées. Cette action ne peut pas être annulée.",
+      "userDeleted": "Utilisateur supprimé avec succès",
+      "userAdded": "Utilisateur ajouté avec succès",
+      "userUpdated": "Utilisateur mis à jour avec succès",
+      "reactivateUser": "Réactiver l'utilisateur",
+      "reactivateWarning": "Êtes-vous sûr de vouloir réactiver cet utilisateur ? Il aura à nouveau accès à la plateforme.",
+      "deactivateUser": "Désactiver l'utilisateur",
+      "deactivateWarning": "Êtes-vous sûr de vouloir désactiver cet utilisateur ? Il n'aura plus accès à la plateforme.",
+      "fields": {
+        "name": "Nom d'utilisateur",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "password": "Mot de passe",
+        "role": "Rôle",
+        "phoneNumber": "Numéro de téléphone",
+        "address": "Adresse",
+        "agencyId": "ID de l'agence",
+        "shopName": "Nom de la boutique",
+        "status": "Statut",
+        "actions": "Actions"
+      },
+      "filters": {
+        "searchPlaceholder": "Rechercher des utilisateurs...",
+        "allRoles": "Tous les rôles",
+        "allStatuses": "Tous les statuts",
+        "role": "Filtrer par rôle",
+        "status": "Filtrer par statut"
+      }
+    },
+    "agencyManagement": {
+      "title": "Gestion des agences",
+      "description": "Gérer les agences et leurs paramètres",
+      "addAgency": "Ajouter une agence",
+      "editAgency": "Modifier l'agence",
+      "deleteAgency": "Supprimer l'agence",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette agence ?",
+      "agencyDeleted": "Agence supprimée avec succès",
+      "agencyAdded": "Agence ajoutée avec succès",
+      "agencyUpdated": "Agence mise à jour avec succès",
+      "noAgencies": "Aucune agence trouvée",
+      "loading": "Chargement des agences...",
+      "searchPlaceholder": "Rechercher des agences...",
+      "fields": {
+        "name": "Nom de l'agence",
+        "address": "Adresse",
+        "phone": "Téléphone",
+        "email": "Email",
+        "website": "Site web",
+        "description": "Description",
+        "status": "Statut"
+      },
+      "showing": "Affichage de {{start}} à {{end}} sur {{total}} agences",
+      "perPage": "Agences par page",
+      "pagination": "Page {{currentPage}} sur {{totalPages}}"
+    },
+    "sellerRegistration": {
+      "title": "Enregistrer un vendeur comme annonceur",
+      "description": "Sélectionnez un vendeur dans la liste pour l'enregistrer comme utilisateur dans le système",
+      "searchPlaceholder": "Rechercher par nom de boutique ou ID...",
+      "loading": "Chargement des vendeurs...",
+      "noSellers": "Aucun vendeur trouvé",
+      "registerSuccess": "Vendeur enregistré avec succès",
+      "registerError": "Échec de l'enregistrement du vendeur",
+      "fields": {
+        "seller": "Vendeur",
+        "role": "Rôle",
+        "agencyId": "ID de l'agence"
+      }
+    }
+  },
+  "roles": {
+    "admin": "Administrateur",
+    "advertiser": "Annonceur",
+    "agency_manager": "Gestionnaire d'agence"
+  },
+  "ui": {
+    "loading": "Chargement...",
+    "close": "Fermer",
+    "filters": {
+      "title": "Filtres",
+      "apply": "Appliquer",
+      "clear": "Effacer",
+      "search": "Rechercher",
+      "from": "Du",
+      "to": "Au",
+      "all": "Tous"
+    },    "table": {
+      "noData": "Aucune donnée trouvée",
+      "loading": "Chargement des données...",
+      "error": "Erreur lors du chargement des données",
+      "retry": "Réessayer",      "showing": "Affichage de {{start}} à {{end}} sur {{total}} éléments",
+      "pagination": "Page {{currentPage}} sur {{totalPages}}",
+      "rowsPerPage": "Lignes par page",
+      "of": "sur",
+      "search": "Rechercher...",
+      "firstPage": "Première page",
+      "lastPage": "Dernière page",
+      "nextPage": "Page suivante",
+      "previousPage": "Page précédente"
+    },
+    "form": {
+      "required": "Ce champ est requis",
+      "invalid": "Ce champ est invalide",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "upload": "Télécharger",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "saving": "Enregistrement...",
+      "saved": "Enregistré",
+      "error": "Une erreur est survenue"
+    },
+    "confirmation": {
+      "title": "Êtes-vous sûr ?",
+      "delete": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+      "cancel": "Cette action ne peut pas être annulée",
+      "confirm": "Confirmer",
+      "goBack": "Retour"
+    },
+    "notifications": {
+      "success": "Succès",
+      "error": "Erreur",
+      "warning": "Attention",
+      "info": "Information"
+    },
+    "accessibility": {
+      "skipToContent": "Passer au contenu",
+      "menuButton": "Menu",
+      "closeButton": "Fermer",
+      "moreActions": "Plus d'actions",
+      "search": "Rechercher",
+      "notifications": "Notifications",
+      "userMenu": "Menu utilisateur",
+      "themeToggle": "Changer de thème",
+      "languageSelector": "Sélecteur de langue"
+    },
+    "generic": {
+      "loadingStates": {
+        "initial": "Initialisation...",
+        "data": "Chargement des données...",
+        "submitting": "Envoi...",
+        "processing": "Traitement..."
+      },
+      "alerts": {
+        "info": "Information",
+        "success": "Succès",
+        "warning": "Attention",
+        "error": "Erreur"
+      },
+      "pagination": {
+        "previous": "Précédent",
+        "next": "Suivant",
+        "of": "sur",
+        "perPage": "par page",
+        "showing": "Affichage {{start}}-{{end}} sur {{total}}"
+      },
+      "filters": {
+        "search": "Rechercher...",
+        "dateRange": "Période",
+        "status": "Statut",
+        "type": "Type",
+        "category": "Catégorie",
+        "clear": "Effacer les filtres",
+        "apply": "Appliquer"
+      },
+      "emptyStates": {
+        "noData": "Aucune donnée",
+        "noResults": "Aucun résultat",
+        "noMatches": "Aucune correspondance",
+        "startTyping": "Commencez à taper...",
+        "selectOption": "Sélectionnez une option"
+      }
+    }
+  },
+  "errors": {
+    "generic": "Une erreur est survenue",
+    "network": "Erreur de connexion",
+    "serverError": "Erreur serveur",
+    "notFound": "Non trouvé",
+    "unauthorized": "Non autorisé",
+    "forbidden": "Interdit",
+    "validation": {
+      "required": "Ce champ est requis",
+      "email": "Veuillez entrer une adresse email valide",
+      "minLength": "Doit contenir au moins {{count}} caractères",
+      "maxLength": "Ne doit pas dépasser {{count}} caractères",
+      "passwordMatch": "Les mots de passe ne correspondent pas",
+      "invalidFormat": "Format invalide",
+      "numeric": "Doit être un nombre",
+      "url": "Doit être une URL valide",
+      "date": "Doit être une date valide",
+      "min": "Doit être supérieur ou égal à {{min}}",
+      "max": "Doit être inférieur ou égal à {{max}}"
+    },
+    "api": {
+      "default": "Une erreur est survenue lors de la requête",
+      "timeout": "La requête a expiré",
+      "offline": "Vous êtes hors ligne",
+      "badRequest": "Requête invalide",
+      "unauthorized": "Non autorisé",
+      "forbidden": "Accès refusé",
+      "notFound": "Ressource non trouvée",
+      "serverError": "Erreur serveur",
+      "maintenance": "Service temporairement indisponible"
+    }
+  },
+  "analytics": {
+    "title": "Analyses",
+    "description": "Analysez la performance de vos campagnes",
+    "summary": {
+      "title": "Résumé",
+      "period": "Période",
+      "comparison": "Comparaison",
+      "total": "Total",
+      "change": "Variation",
+      "trend": "Tendance"
+    },
+    "performance": {
+      "title": "Performance",
+      "overview": "Vue d'ensemble",
+      "byChannel": "Par canal",
+      "byDevice": "Par appareil",
+      "byLocation": "Par localisation",
+      "byTime": "Par période"
+    },
+    "reports": {
+      "title": "Rapports",
+      "generate": "Générer un rapport",
+      "download": "Télécharger",
+      "schedule": "Planifier",
+      "types": {
+        "performance": "Performance",
+        "conversion": "Conversion",
+        "audience": "Audience",
+        "revenue": "Revenus"
+      }
+    },
+    "metrics": {
+      "impressions": "Impressions",
+      "clicks": "Clics",
+      "ctr": "Taux de clic (CTR)",
+      "cpc": "Coût par clic",
+      "conversions": "Conversions",
+      "conversionRate": "Taux de conversion",
+      "cpa": "Coût par acquisition",
+      "spend": "Dépenses",
+      "revenue": "Revenus",
+      "roas": "Retour sur dépenses publicitaires",
+      "averagePosition": "Position moyenne",
+      "qualityScore": "Score de qualité",
+      "engagement": {
+        "title": "Engagement",
+        "rate": "Taux d'engagement",
+        "time": "Temps d'engagement",
+        "pageviews": "Pages vues",
+        "bounceRate": "Taux de rebond",
+        "exitRate": "Taux de sortie"
+      },
+      "audience": {
+        "title": "Audience",
+        "newUsers": "Nouveaux utilisateurs",
+        "returningUsers": "Utilisateurs récurrents",
+        "sessions": "Sessions",
+        "sessionDuration": "Durée moyenne de session",
+        "demographics": "Données démographiques",
+        "interests": "Centres d'intérêt"
+      }
+    },
+    "filters": {
+      "date": {
+        "today": "Aujourd'hui",
+        "yesterday": "Hier",
+        "last7Days": "7 derniers jours",
+        "last30Days": "30 derniers jours",
+        "thisMonth": "Ce mois",
+        "lastMonth": "Mois dernier",
+        "custom": "Personnalisé"
+      },
+      "comparison": {
+        "previousPeriod": "Période précédente",
+        "previousYear": "Année précédente",
+        "custom": "Personnalisé"
+      }
+    }
+  },
+  "export": {
+    "title": "Exporter",
+    "pdf": "PDF",
+    "excel": "Excel",
+    "csv": "CSV",
+    "preparing": "Préparation de l'export...",
+    "ready": "Export prêt",
+    "download": "Télécharger",
+    "formats": {
+      "simple": "Format simple",
+      "detailed": "Format détaillé",
+      "custom": "Format personnalisé"
+    }
+  },
+  "components": {
+    "navigation": {
+      "menu": "Menu",
+      "home": "Accueil",
+      "dashboard": "Tableau de bord",
+      "profile": "Profil",
+      "settings": "Paramètres",
+      "help": "Aide",
+      "logout": "Déconnexion",
+      "back": "Retour",
+      "next": "Suivant",
+      "previous": "Précédent",
+      "more": "Plus",
+      "breadcrumbs": {
+        "home": "Accueil",
+        "dashboard": "Tableau de bord",
+        "settings": "Paramètres",
+        "users": "Utilisateurs",
+        "agencies": "Agences",
+        "campaigns": "Campagnes",
+        "analytics": "Analyses",
+        "profile": "Profil"
+      },
+      "sidebar": {
+        "collapse": "Réduire le menu",
+        "expand": "Développer le menu",
+        "userManagement": "Gestion des utilisateurs",
+        "agencyManagement": "Gestion des agences",
+        "campaignManagement": "Gestion des campagnes",
+        "analytics": "Analyses et rapports",
+        "settings": "Paramètres",
+        "help": "Aide",
+        "logout": "Déconnexion"
+      },
+      "userMenu": {
+        "profile": "Mon profil",
+        "settings": "Paramètres",
+        "help": "Aide",
+        "logout": "Déconnexion"
+      }
+    },
+    "buttons": {
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "add": "Ajouter",
+      "create": "Créer",
+      "upload": "Télécharger",
+      "download": "Télécharger",
+      "close": "Fermer",
+      "confirm": "Confirmer",
+      "apply": "Appliquer",
+      "reset": "Réinitialiser",
+      "search": "Rechercher",
+      "filter": "Filtrer",
+      "clear": "Effacer",
+      "more": "Plus",
+      "view": "Voir",
+      "activate": "Activer",
+      "deactivate": "Désactiver",
+      "reactivate": "Réactiver"
+    },
+    "forms": {
+      "required": "Requis",
+      "optional": "Optionnel",
+      "loading": "Chargement...",
+      "submitting": "Envoi en cours...",
+      "success": "Succès !",
+      "error": "Erreur",
+      "validation": {
+        "required": "Ce champ est requis",
+        "email": "Email invalide",
+        "password": {
+          "min": "Le mot de passe doit contenir au moins {{min}} caractères",
+          "match": "Les mots de passe ne correspondent pas"
+        }
+      },
+      "placeholders": {
+        "search": "Rechercher...",
+        "email": "Entrez votre email",
+        "password": "Entrez votre mot de passe",
+        "firstName": "Prénom",
+        "lastName": "Nom"
+      }
+    },
+    "modals": {
+      "close": "Fermer",
+      "confirm": {
+        "title": "Confirmer",
+        "message": "Êtes-vous sûr ?",
+        "cancel": "Annuler",
+        "confirm": "Confirmer"
+      },
+      "delete": {
+        "title": "Supprimer",
+        "message": "Cette action est irréversible. Voulez-vous continuer ?",
+        "cancel": "Annuler",
+        "confirm": "Supprimer"
+      },
+      "common": {
+        "close": "Fermer",
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "confirm": "Confirmer",
+        "delete": "Supprimer",
+        "loading": "Chargement..."
+      },
+      "confirmation": {
+        "title": "Confirmation",
+        "deleteTitle": "Confirmer la suppression",
+        "deactivateTitle": "Confirmer la désactivation",
+        "reactivateTitle": "Confirmer la réactivation",
+        "defaultMessage": "Êtes-vous sûr de vouloir effectuer cette action ?",
+        "deleteMessage": "Cette action est irréversible. Voulez-vous continuer ?",
+        "deactivateMessage": "Voulez-vous vraiment désactiver cet élément ?",
+        "reactivateMessage": "Voulez-vous vraiment réactiver cet élément ?"
+      },
+      "forms": {
+        "required": "* Champ obligatoire",
+        "optional": "(optionnel)",
+        "error": "Une erreur est survenue",
+        "success": "Opération réussie"
+      }
+    },
+    "tables": {
+      "empty": "Aucune donnée",
+      "loading": "Chargement...",
+      "error": "Une erreur est survenue lors du chargement des données",
+      "search": "Rechercher...",
+      "filters": "Filtres",
+      "rowsPerPage": "Lignes par page",
+      "showing": "Affichage de {{start}} à {{end}} sur {{total}}"
+    },
+    "notifications": {
+      "success": "Succès",
+      "error": "Erreur",
+      "warning": "Attention",
+      "info": "Information"
+    },
+    "charts": {
+      "noData": "Aucune donnée disponible",
+      "loading": "Chargement du graphique...",
+      "error": "Erreur lors du chargement des données",
+      "filters": {
+        "timeRange": "Période",
+        "metric": "Métrique",
+        "comparison": "Comparaison"
+      }
+    }
+  },
+  "dashboards": {
+    "advertiser": {
+      "title": "Tableau de bord annonceur",
+      "welcome": "Bienvenue sur votre tableau de bord annonceur",
+      "metrics": {
+        "activeAds": "Publicités actives",
+        "totalBudget": "Budget total",
+        "remainingBudget": "Budget restant",
+        "adPerformance": "Performance des publicités",
+        "topPerforming": "Meilleures publicités",
+        "recentActivity": "Activité récente"
+      },
+      "alerts": {
+        "budgetLow": "Budget faible",
+        "performanceAlert": "Alerte de performance",
+        "newOpportunities": "Nouvelles opportunités"
+      }
+    },
+    "agency": {
+      "title": "Tableau de bord agence",
+      "welcome": "Bienvenue sur votre tableau de bord agence",
+      "metrics": {
+        "totalAdvertisers": "Total des annonceurs",
+        "totalCampaigns": "Total des campagnes",
+        "totalRevenue": "Revenu total",
+        "clientOverview": "Vue d'ensemble des clients",
+        "campaignPerformance": "Performance des campagnes",
+        "recentActivity": "Activité récente"
+      },
+      "alerts": {
+        "newClients": "Nouvelles demandes client",
+        "pendingApprovals": "Approbations en attente",
+        "performanceIssues": "Problèmes de performance"
+      }
+    }
+  },
+  "reports": {
+    "title": "Rapports",
+    "types": {
+      "performance": "Rapport de performance",
+      "financial": "Rapport financier",
+      "campaign": "Rapport de campagne",
+      "audience": "Rapport d'audience",
+      "custom": "Rapport personnalisé"
+    },
+    "timeframes": {
+      "daily": "Quotidien",
+      "weekly": "Hebdomadaire",
+      "monthly": "Mensuel",
+      "quarterly": "Trimestriel",
+      "yearly": "Annuel",
+      "custom": "Période personnalisée"
+    },
+    "status": {
+      "generating": "Génération du rapport...",
+      "ready": "Rapport prêt",
+      "failed": "Échec de la génération",
+      "scheduled": "Rapport programmé"
+    },
+    "scheduling": {
+      "title": "Programmer un rapport",
+      "frequency": "Fréquence",
+      "recipients": "Destinataires",
+      "format": "Format",
+      "saveSettings": "Enregistrer les paramètres"
+    },
+    "filters": {
+      "dateRange": "Période",
+      "campaigns": "Campagnes",
+      "metrics": "Métriques",
+      "dimensions": "Dimensions",
+      "advanced": "Filtres avancés"
+    }
+  },
+  "productManagement": {
+    "title": "Gestion des produits",
+    "description": "Gérez vos produits pour la publicité",
+    "actions": {
+      "addProduct": "Ajouter un produit",
+      "editProduct": "Modifier le produit",
+      "deleteProduct": "Supprimer le produit",
+      "importProducts": "Importer des produits",
+      "exportProducts": "Exporter des produits"
+    },
+    "fields": {
+      "name": "Nom du produit",
+      "sku": "Référence",
+      "price": "Prix",
+      "inventory": "Stock",
+      "category": "Catégorie",
+      "description": "Description",
+      "images": "Images"
+    },
+    "statuses": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "outOfStock": "En rupture de stock",
+      "discontinued": "Arrêté"
+    },
+    "validation": {
+      "required": "Champ requis",
+      "invalidPrice": "Prix invalide",
+      "invalidSku": "Référence invalide",
+      "duplicateSku": "Référence en double"
+    }
+  },
+  "interactions": {
+    "upload": {
+      "title": "Téléchargement",
+      "dropzone": "Déposez les fichiers ici ou cliquez pour télécharger",
+      "maxSize": "Taille maximale du fichier : {{size}}",
+      "allowedTypes": "Types de fichiers autorisés : {{types}}",
+      "uploading": "Téléchargement en cours...",
+      "success": "Téléchargement réussi",
+      "error": "Échec du téléchargement",
+      "remove": "Supprimer le fichier"
+    },
+    "search": {
+      "placeholder": "Rechercher...",
+      "noResults": "Aucun résultat trouvé",
+      "searching": "Recherche en cours...",
+      "clear": "Effacer la recherche",
+      "advanced": "Recherche avancée",
+      "filters": "Filtres de recherche"
+    },
+    "pagination": {
+      "showing": "Affichage de {{start}} à {{end}} sur {{total}}",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "first": "Premier",
+      "last": "Dernier",
+      "perPage": "Éléments par page"
+    },
+    "sorting": {
+      "sortBy": "Trier par",
+      "asc": "Croissant",
+      "desc": "Décroissant",
+      "clear": "Effacer le tri"
+    },
+    "selection": {
+      "all": "Tout sélectionner",
+      "none": "Tout désélectionner",
+      "selected": "{{count}} sélectionné(s)",
+      "actions": "Actions groupées"
+    }
+  },
+  "status": {
+    "loading": {
+      "default": "Chargement...",
+      "data": "Chargement des données...",
+      "page": "Chargement de la page...",
+      "submission": "Envoi en cours...",
+      "processing": "Traitement en cours..."
+    },
+    "success": {
+      "default": "Opération réussie",
+      "create": "Créé avec succès",
+      "update": "Mis à jour avec succès",
+      "delete": "Supprimé avec succès",
+      "save": "Enregistré avec succès"
+    },
+    "error": {
+      "default": "Une erreur est survenue",
+      "network": "Erreur de connexion",
+      "permission": "Vous n'avez pas les permissions nécessaires",
+      "notFound": "Ressource non trouvée",
+      "validation": "Erreur de validation",
+      "server": "Erreur serveur"
+    },
+    "loading": {
+      "default": "Chargement...",
+      "saving": "Enregistrement...",
+      "updating": "Mise à jour...",
+      "deleting": "Suppression...",
+      "processing": "Traitement en cours..."
+    },
+    "empty": {
+      "default": "Aucun élément trouvé",
+      "filtered": "Aucun résultat ne correspond à vos critères",
+      "search": "Aucun résultat trouvé pour votre recherche"
+    }
+  },
+  "notifications": {
+    "success": {
+      "default": "Opération réussie",
+      "create": "Créé avec succès",
+      "update": "Mis à jour avec succès",
+      "delete": "Supprimé avec succès",
+      "save": "Enregistré avec succès"
+    },
+    "error": {
+      "default": "Une erreur est survenue",
+      "network": "Erreur de connexion",
+      "permission": "Vous n'avez pas les permissions nécessaires",
+      "notFound": "Ressource non trouvée",
+      "validation": "Erreur de validation",
+      "server": "Erreur serveur"
+    },
+    "loadingStates": {
+      "saving": "Enregistrement...",
+      "updating": "Mise à jour...",
+      "deleting": "Suppression...",
+      "processing": "Traitement en cours..."
+    },
+    "emptyStates": {
+      "default": "Aucun élément trouvé",
+      "filtered": "Aucun résultat ne correspond à vos critères",
+      "search": "Aucun résultat trouvé pour votre recherche"
+    }
+  },
+  "layout": {
+    "navigation": {
+      "breadcrumbs": {
+        "home": "Accueil",
+        "dashboard": "Tableau de bord",
+        "settings": "Paramètres",
+        "users": "Utilisateurs",
+        "agencies": "Agences",
+        "campaigns": "Campagnes",
+        "analytics": "Analyses",
+        "profile": "Profil"
+      },
+      "sidebarActions": {
+        "collapse": "Réduire le menu",
+        "expand": "Développer le menu",
+        "userManagement": "Gestion des utilisateurs",
+        "agencyManagement": "Gestion des agences",
+        "campaignManagement": "Gestion des campagnes",
+        "analytics": "Analyses et rapports",
+        "settings": "Paramètres",
+        "help": "Aide",
+        "logout": "Déconnexion"
+      },
+      "userMenuItems": {
+        "profile": "Mon profil",
+        "settings": "Paramètres",
+        "help": "Aide",
+        "logout": "Déconnexion"
+      }
+    }
+  },
+  "dialogs": {
+    "modalActions": {
+      "close": "Fermer",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "confirm": "Confirmer",
+      "delete": "Supprimer"
+    },
+    "confirmations": {
+      "title": "Confirmation",
+      "deleteTitle": "Confirmer la suppression",
+      "deactivateTitle": "Confirmer la désactivation",
+      "reactivateTitle": "Confirmer la réactivation",
+      "defaultMessage": "Êtes-vous sûr de vouloir effectuer cette action ?",
+      "deleteMessage": "Cette action est irréversible. Voulez-vous continuer ?",
+      "deactivateMessage": "Voulez-vous vraiment désactiver cet élément ?",
+      "reactivateMessage": "Voulez-vous vraiment réactiver cet élément ?"
+    },
+    "formMessages": {
+      "requiredField": "* Champ obligatoire",
+      "optionalField": "(optionnel)",
+      "errorState": "Une erreur est survenue",
+      "successState": "Opération réussie"
+    }
+  },
+  "interface": {
+    "elements": {
+      "loadingText": {
+        "initial": "Initialisation...",
+        "data": "Chargement des données...",
+        "submitting": "Envoi...",
+        "processing": "Traitement..."
+      },
+      "messageTypes": {
+        "info": "Information",
+        "success": "Succès",
+        "warning": "Attention",
+        "error": "Erreur"
+      },
+      "paginationControls": {
+        "previous": "Précédent",
+        "next": "Suivant",
+        "of": "sur",
+        "perPage": "par page",
+        "showing": "Affichage {{start}}-{{end}} sur {{total}}"
+      },
+      "filterControls": {
+        "search": "Rechercher...",
+        "dateRange": "Période",
+        "status": "Statut",
+        "type": "Type",
+        "category": "Catégorie",
+        "clear": "Effacer les filtres",
+        "apply": "Appliquer"
+      },
+      "emptyContent": {
+        "noData": "Aucune donnée",
+        "noResults": "Aucun résultat",
+        "noMatches": "Aucune correspondance",
+        "startTyping": "Commencez à taper...",
+        "selectOption": "Sélectionnez une option"
+      }
+    }
   }
 }

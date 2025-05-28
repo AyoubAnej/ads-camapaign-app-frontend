@@ -1,4 +1,3 @@
-
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { languages } from '@/lib/utils';
@@ -16,14 +15,14 @@ const Settings = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">{t('common.settings')}</h1>
-        <p className="text-gray-500 dark:text-gray-400">{t('settings.appearanceP')}</p>
+        <h1 className="text-3xl font-bold">Settings</h1>
+        <p className="text-gray-500 dark:text-gray-400">Manage your application preferences</p>
       </div>
       
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>{t('settings.appearance')}</CardTitle>
+            <CardTitle>Appearance</CardTitle>
             <CardDescription>
               Customize the appearance of the application
             </CardDescription>
@@ -31,9 +30,9 @@ const Settings = () => {
           <CardContent className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="dark-mode">{t('settings.darkMode')}</Label>
+                <Label htmlFor="dark-mode">Dark Mode</Label>
                 <p className="text-sm text-muted-foreground">
-                  Toggle between light and dark theme
+                  {t('settings.appearance.darkModeDescription')}
                 </p>
               </div>
               <Switch 
@@ -47,15 +46,13 @@ const Settings = () => {
         
         <Card>
           <CardHeader>
-            <CardTitle>Language</CardTitle>
-            <CardDescription>
-              Choose your preferred language
-            </CardDescription>
+            <CardTitle>{t('settings.language.title')}</CardTitle>
+            <CardDescription>{t('settings.language.chooseLanguage')}</CardDescription>
           </CardHeader>
           <CardContent>
             <RadioGroup 
               value={language} 
-              onValueChange={(value) => setLanguage(value as 'en' | 'fr')}
+              onValueChange={(value) => setLanguage(value as "en" | "fr")}
               className="space-y-3"
             >
               {languages.map((lang) => (
