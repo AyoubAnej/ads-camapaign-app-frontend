@@ -7,7 +7,8 @@ import { languages, getInitials } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { 
   User, Settings, LogOut, Bell, Menu, X, Sun, Moon, Globe, 
-  PanelLeft, PanelRightClose
+  PanelLeft, PanelRightClose,
+  Languages
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -118,7 +119,7 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                <Globe className="w-5 h-5" />
+                <Languages className="w-5 h-5" />
                 <span className="sr-only">Change language</span>
               </Button>
             </DropdownMenuTrigger>
