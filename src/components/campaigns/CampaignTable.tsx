@@ -320,8 +320,8 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                       <Badge 
                         variant="outline"
                         className={campaign.globalState === GlobalState.OK ? 
-                          "bg-green-500 hover:bg-green-600 text-white border-none" : 
-                          "bg-muted text-muted-foreground"}
+                          "bg-green-200 text-green-600 dark:bg-green-600 dark:text-green-100" : 
+                          "bg-red-200 text-red-700 dark:bg-red-700 dark:text-red-100"}
                       >
                         {campaign.globalState === GlobalState.OK ? "ACTIVE" : "INACTIVE"}
                       </Badge>

@@ -190,9 +190,9 @@ export const AgencyTable = () => {
   const getStatusBadgeColor = (status: AgencyStatus) => {
     switch (status) {
       case AgencyStatus.ACTIVE:
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+        return "bg-green-200 text-green-600 dark:bg-green-600 dark:text-green-100";
       case AgencyStatus.INACTIVE:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
+        return "bg-red-200 text-red-700 dark:bg-red-700 dark:text-red-100";
       default:
         return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
     }
