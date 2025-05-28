@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { 
   Dialog, 
@@ -13,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { UserRole } from '@/types/auth';
+import { useTranslation } from 'react-i18next';
 
 interface AddUserModalProps {
   open: boolean;
@@ -40,6 +40,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
   const [address, setAddress] = useState('');
   const [agencyId, setAgencyId] = useState<string | null>(null);
   const [shopName, setShopName] = useState('');
+  const { t } = useTranslation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,17 +72,15 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New User</DialogTitle>
+          <DialogTitle>{t('admin.userManagement.addUser')}</DialogTitle>
           <DialogDescription>
-            Create a new user account with the form below.
+            {t('admin.userManagement.description')}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="firstName" className="text-right">
-                First Name
-              </Label>
+              <Label htmlFor="firstName" className="text-right">{t('admin.userManagement.fields.firstName')}</Label>
               <Input
                 id="firstName"
                 value={firstName}
@@ -92,9 +91,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="lastName" className="text-right">
-                Last Name
-              </Label>
+              <Label htmlFor="lastName" className="text-right">{t('admin.userManagement.fields.lastName')}</Label>
               <Input
                 id="lastName"
                 value={lastName}
@@ -105,9 +102,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="email" className="text-right">
-                Email
-              </Label>
+              <Label htmlFor="email" className="text-right">{t('admin.userManagement.fields.email')}</Label>
               <Input
                 id="email"
                 type="email"
@@ -119,9 +114,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="password" className="text-right">
-                Password
-              </Label>
+              <Label htmlFor="password" className="text-right">{t('admin.userManagement.fields.password')}</Label>
               <Input
                 id="password"
                 type="password"
@@ -133,9 +126,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="phoneNumber" className="text-right">
-                Phone
-              </Label>
+              <Label htmlFor="phoneNumber" className="text-right">{t('admin.userManagement.fields.phoneNumber')}</Label>
               <Input
                 id="phoneNumber"
                 value={phoneNumber}
@@ -146,9 +137,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="address" className="text-right">
-                Address
-              </Label>
+              <Label htmlFor="address" className="text-right">{t('admin.userManagement.fields.address')}</Label>
               <Input
                 id="address"
                 value={address}
@@ -159,9 +148,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="shopName" className="text-right">
-                Shop Name
-              </Label>
+              <Label htmlFor="shopName" className="text-right">{t('admin.userManagement.fields.shopName')}</Label>
               <Input
                 id="shopName"
                 value={shopName}
@@ -172,9 +159,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="role" className="text-right">
-                Role
-              </Label>
+              <Label htmlFor="role" className="text-right">{t('admin.userManagement.fields.role')}</Label>
               <Select value={role} onValueChange={(value) => setRole(value as UserRole)}>
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Select a role" />
@@ -188,9 +173,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
             </div>
             {role === 'AGENCY_MANAGER' && (
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="agencyId" className="text-right">
-                  Agency ID
-                </Label>
+                <Label htmlFor="agencyId" className="text-right">{t('admin.userManagement.fields.agencyId')}</Label>
                 <Input
                   id="agencyId"
                   value={agencyId || ''}
@@ -202,9 +185,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
             )}
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>{t('admin.userManagement.deleteAgency')}</Button>
             <Button type="submit">Add User</Button>
           </DialogFooter>
         </form>

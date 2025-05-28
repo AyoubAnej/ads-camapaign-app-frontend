@@ -18,6 +18,7 @@ import { advertiserApi } from '@/lib/advertiserApi';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Combobox, ComboboxOption } from '@/components/ui/combobox';
+import { useTranslation } from 'react-i18next';
 
 interface SellerRegistrationModalProps {
   open: boolean;
@@ -46,6 +47,7 @@ export const SellerRegistrationModal = ({
   const [agencyId, setAgencyId] = useState<string>('');
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   // Fetch sellers using React Query
   const { data: sellers = [], isLoading } = useQuery({
@@ -140,24 +142,24 @@ export const SellerRegistrationModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Register Seller as an Advertiser</DialogTitle>
+          <DialogTitle>{t('admin.sellerRegistration.title')}</DialogTitle>
           <DialogDescription>
-            Select a seller from the list to register them as a user in the system.
+            {t('admin.sellerRegistration.description')}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="seller" className="text-right">
-                Seller
+                {t('admin.sellerRegistration.fields.seller')}
               </Label>
               <div className="col-span-3">
                 <Combobox
                   options={sellerOptions}
                   value={selectedSellerId}
                   onChange={setSelectedSellerId}
-                  placeholder={isLoading ? "Loading sellers..." : "Search by shop name or ID..."}
-                  emptyMessage="No sellers found"
+                  placeholder={isLoading ? t('admin.sellerRegistration.loading') : t('admin.sellerRegistration.searchPlaceholder')}
+                  emptyMessage={t('admin.sellerRegistration.noSellers')}
                   disabled={isLoading}
                   loading={isLoading}
                 />
@@ -166,7 +168,7 @@ export const SellerRegistrationModal = ({
             
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="role" className="text-right">
-                Role
+                {t('admin.sellerRegistration.fields.role')}
               </Label>
               <Select value={selectedRole} onValueChange={(value) => setSelectedRole(value as UserRole)}>
                 <SelectTrigger className="col-span-3">
@@ -184,7 +186,7 @@ export const SellerRegistrationModal = ({
             {selectedRole === 'AGENCY_MANAGER' && (
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="agencyId" className="text-right">
-                  Agency ID
+                  {t('admin.sellerRegistration.fields.agencyId')}
                 </Label>
                 <div className="col-span-3">
                   <Input
@@ -202,10 +204,10 @@ export const SellerRegistrationModal = ({
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Loading...' : 'Register Seller'}
+              {isLoading ? t('common.loading') : t('admin.sellerRegistration.title')}
             </Button>
           </DialogFooter>
         </form>

@@ -3,9 +3,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { agencyApi } from "@/lib/agenciesApi";
 import { Agency, AgencyStatus, agencyStatusToString } from "@/types/agency";
 import { format } from "date-fns";
+import { fr, enUS } from 'date-fns/locale';
 import { Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 import {
   Table,
@@ -31,6 +33,7 @@ import EditAgencyModal from "./EditAgencyModal";
 import DeleteAgencyModal from "./DeleteAgencyModal";
 
 export const AgencyTable = () => {
+  const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user } = useAuth();
@@ -60,38 +63,36 @@ export const AgencyTable = () => {
 
   // Mutations
   const deactivateAgencyMutation = useMutation({
-    mutationFn: (agencyId: number) => agencyApi.deactivateAgency(agencyId),
-    onSuccess: () => {
+    mutationFn: (agencyId: number) => agencyApi.deactivateAgency(agencyId),    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["agencies"] });
       toast({
-        title: "Agency Deactivated",
-        description: "The agency has been deactivated successfully.",
+        title: t('admin.agencyManagement.deactivated'),
+        description: t('admin.agencyManagement.deactivatedSuccess'),
       });
       setIsDeactivateModalOpen(false);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to deactivate agency. Please try again.",
+        title: t('common.error'),
+        description: t('admin.agencyManagement.deactivateError'),
         variant: "destructive",
       });
     },
   });
 
   const reactivateAgencyMutation = useMutation({
-    mutationFn: (agencyId: number) => agencyApi.reactivateAgency(agencyId),
-    onSuccess: () => {
+    mutationFn: (agencyId: number) => agencyApi.reactivateAgency(agencyId),    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["agencies"] });
       toast({
-        title: "Agency Reactivated",
-        description: "The agency has been reactivated successfully.",
+        title: t('admin.agencyManagement.reactivated'),
+        description: t('admin.agencyManagement.reactivatedSuccess'),
       });
       setIsReactivateModalOpen(false);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to reactivate agency. Please try again.",
+        title: t('common.error'),
+        description: t('admin.agencyManagement.reactivateError'),
         variant: "destructive",
       });
     },
@@ -126,10 +127,9 @@ export const AgencyTable = () => {
       setIsReactivateModalOpen(true);
     }
   };
-
   // Handle successful operations
   const handleSuccess = (message: string) => {
-    toast({ title: "Success", description: message });
+    toast({ title: t('common.success'), description: message });
     queryClient.invalidateQueries({ queryKey: ["agencies"] });
   };
 
@@ -146,11 +146,10 @@ export const AgencyTable = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64 bg-background rounded-lg p-6">
+    return (          <div className="flex justify-center items-center h-64 bg-background rounded-lg p-6">
         <div className="flex flex-col items-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-          <p className="text-lg font-medium">Loading agencies...</p>
+          <p className="text-lg font-medium">{t('admin.agencyManagement.loading')}</p>
         </div>
       </div>
     );
@@ -162,15 +161,14 @@ export const AgencyTable = () => {
         <div className="flex items-center mb-3">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-destructive mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <h3 className="text-lg font-medium text-destructive">Error Loading Agency Data</h3>
+          </svg>          <h3 className="text-lg font-medium text-destructive">{t('admin.agencyManagement.errorLoadingTitle')}</h3>
         </div>
-        <p className="text-destructive/80 mb-3">Failed to load agency data</p>
+        <p className="text-destructive/80 mb-3">{t('admin.agencyManagement.errorLoadingMessage')}</p>
         <Button 
           onClick={() => queryClient.invalidateQueries({ queryKey: ["agencies"] })} 
           variant="destructive"
         >
-          Try Again
+          {t('common.tryAgain')}
         </Button>
       </div>
     );
@@ -180,13 +178,13 @@ export const AgencyTable = () => {
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Agency Management</h2>
-          <p className="text-muted-foreground">Manage your agencies and their details</p>
+          <h2 className="text-2xl font-bold">{t('admin.agencyManagement.title')}</h2>
+          <p className="text-muted-foreground">{t('admin.agencyManagement.description')}</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="relative">
             <Input
-              placeholder="Search agencies..."
+              placeholder={t('admin.agencyManagement.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -202,7 +200,7 @@ export const AgencyTable = () => {
               className="flex items-center gap-2"
             >
               <Plus className="h-4 w-4" />
-              New Agency
+              {t('admin.agencyManagement.addAgency')}
             </Button>
           )}
         </div>
@@ -212,14 +210,13 @@ export const AgencyTable = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Phone Number</TableHead>
-              <TableHead>Website</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead>Last Updated</TableHead>
-              {isAdmin && <TableHead className="text-right">Actions</TableHead>}
+              <TableHead>{t('admin.agencyManagement.fields.name')}</TableHead>
+              <TableHead>{t('admin.agencyManagement.fields.phone')}</TableHead>              <TableHead>{t('admin.agencyManagement.fields.website')}</TableHead>
+              <TableHead>{t('admin.agencyManagement.fields.description')}</TableHead>
+              <TableHead>{t('admin.agencyManagement.fields.status')}</TableHead>
+              <TableHead>{t('common.created')}</TableHead>
+              <TableHead>{t('common.updated')}</TableHead>
+              {isAdmin && <TableHead className="text-right">{t('common.actions')}</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -238,12 +235,11 @@ export const AgencyTable = () => {
                       >
                         {agency.website}
                       </a>
-                    ) : (
-                      <span className="text-gray-400">N/A</span>
+                    ) : (                      <span className="text-gray-400">{t('common.notAvailable')}</span>
                     )}
                   </TableCell>
                   <TableCell className="max-w-xs truncate" title={agency.description}>
-                    {agency.description || <span className="text-gray-400">N/A</span>}
+                    {agency.description || <span className="text-gray-400">{t('common.notAvailable')}</span>}
                   </TableCell>
                   <TableCell>
                     <Badge className={getStatusBadgeColor(agency.status)} variant="outline">
@@ -292,21 +288,23 @@ export const AgencyTable = () => {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={isAdmin ? 8 : 7} className="text-center py-4 text-gray-500">
-                  No agencies found
+              <TableRow>                <TableCell colSpan={isAdmin ? 8 : 7} className="text-center py-4 text-gray-500">
+                  {t('admin.agencyManagement.noAgencies')}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-between px-4 py-4 border-t">
-          <div className="flex-1 text-sm text-muted-foreground">
-            Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} agencies
+        <div className="flex items-center justify-between px-4 py-4 border-t">          <div className="flex-1 text-sm text-muted-foreground">
+            {t('admin.agencyManagement.showing', { 
+              start: startIndex + 1,
+              end: Math.min(endIndex, totalItems),
+              total: totalItems
+            })}
           </div>
           <div className="flex items-center space-x-6 lg:space-x-8">
             <div className="flex items-center space-x-2">
-              <p className="text-sm font-normal text-muted-foreground">Agencies per page</p>
+              <p className="text-sm font-normal text-muted-foreground">{t('admin.agencyManagement.perPage')}</p>
               <Select
                 value={pageSize.toString()}
                 onValueChange={(value) => {
@@ -325,9 +323,8 @@ export const AgencyTable = () => {
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-            <div className="flex w-[100px] items-center text-muted-foreground justify-center text-sm font-normal">
-              Page {currentPage} of {totalPages}
+            </div>            <div className="flex w-[100px] items-center text-muted-foreground justify-center text-sm font-normal">
+              {t('admin.agencyManagement.pagination', { currentPage, totalPages })}
             </div>
             <div className="flex items-center space-x-2">
               <Button
@@ -351,54 +348,48 @@ export const AgencyTable = () => {
         </div>
       </div>
 
-      {/* Add Agency Modal */}
+      {/* Confirmation modals at the bottom of the component */}
+      {selectedAgency && (
+        <>
+          <ConfirmationModal
+            open={isDeactivateModalOpen}
+            onOpenChange={setIsDeactivateModalOpen}
+            onConfirm={() => deactivateAgencyMutation.mutate(selectedAgency.agencyId)}
+            title={t('admin.agencyManagement.deactivateAgency')}
+            description={t('admin.agencyManagement.deactivateWarning', { agencyName: selectedAgency.name })}
+            confirmText={t('admin.agencyManagement.deactivate')}
+          />
+          <ConfirmationModal
+            open={isReactivateModalOpen}
+            onOpenChange={setIsReactivateModalOpen}
+            onConfirm={() => reactivateAgencyMutation.mutate(selectedAgency.agencyId)}
+            title={t('admin.agencyManagement.reactivateAgency')}
+            description={t('admin.agencyManagement.reactivateWarning', { agencyName: selectedAgency.name })}
+            confirmText={t('admin.agencyManagement.reactivate')}
+          />
+          <DeleteAgencyModal
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+            agency={selectedAgency}
+            onSuccess={(agency) => handleSuccess(t('admin.agencyManagement.agencyDeleted'))}
+          />
+        </>
+      )}
+
+      {/* Add/Edit Agency Modals */}
       <AddAgencyModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onSuccess={(agency) => handleSuccess(`Agency "${agency.name}" was successfully added`)}
+        onSuccess={(agency) => handleSuccess(t('admin.agencyManagement.agencyAdded'))}
       />
-
-      {/* Edit Agency Modal */}
+      
       {selectedAgency && (
         <EditAgencyModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
+          // 
           agency={selectedAgency}
-          onSuccess={(agency) => handleSuccess(`Agency "${agency.name}" was successfully updated`)}
-        />
-      )}
-
-      {/* Delete Agency Modal */}
-      {selectedAgency && (
-        <DeleteAgencyModal
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          agency={selectedAgency}
-          onSuccess={(agency) => handleSuccess(`Agency "${agency.name}" was successfully deleted`)}
-        />
-      )}
-
-      {/* Deactivate Agency Modal */}
-      {selectedAgency && (
-        <ConfirmationModal
-          open={isDeactivateModalOpen}
-          onOpenChange={setIsDeactivateModalOpen}
-          onConfirm={() => deactivateAgencyMutation.mutate(selectedAgency.agencyId)}
-          title="Deactivate Agency"
-          description={`Are you sure you want to deactivate ${selectedAgency.name}?`}
-          confirmText="Deactivate"
-        />
-      )}
-
-      {/* Reactivate Agency Modal */}
-      {selectedAgency && (
-        <ConfirmationModal
-          open={isReactivateModalOpen}
-          onOpenChange={setIsReactivateModalOpen}
-          onConfirm={() => reactivateAgencyMutation.mutate(selectedAgency.agencyId)}
-          title="Reactivate Agency"
-          description={`Are you sure you want to reactivate ${selectedAgency.name}?`}
-          confirmText="Reactivate"
+          onSuccess={(agency) => handleSuccess(t('admin.agencyManagement.agencyUpdated'))}
         />
       )}
     </div>

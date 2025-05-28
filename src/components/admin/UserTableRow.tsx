@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { formatDate } from '@/lib/utils';
 import { UserRole } from '@/types/auth';
 import { Advertiser } from '@/lib/advertiserApi';
+import { useTranslation } from 'react-i18next';
 
 interface UserTableRowProps {
   user: Advertiser;
@@ -17,7 +18,18 @@ interface UserTableRowProps {
   setIsReactivateModalOpen: (open: boolean) => void;
 }
 
-export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, reactivateUserMutation, setSelectedActionUser, setIsDeactivateModalOpen, setIsReactivateModalOpen }: UserTableRowProps) => {
+export const UserTableRow = ({ 
+  user, 
+  onEdit, 
+  onDelete, 
+  deactivateUserMutation, 
+  reactivateUserMutation, 
+  setSelectedActionUser, 
+  setIsDeactivateModalOpen, 
+  setIsReactivateModalOpen 
+}: UserTableRowProps) => {
+  const { t } = useTranslation();
+
   if (!user) {
     return null;
   }
@@ -35,32 +47,19 @@ export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, r
     }
   };
 
-  const formatRole = (role: string): string => {
-    switch (role?.toUpperCase()) {
-      case 'ADMIN':
-        return 'Admin';
-      case 'ADVERTISER':
-        return 'Advertiser';
-      case 'AGENCY_MANAGER':
-        return 'Agency Manager';
-      default:
-        return role || 'Unknown';
-    }
-  };
-
   const getStatusBadgeColor = (status: string) => {
     switch (status?.toUpperCase()) {
       case 'ACTIVE':
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
       case 'INACTIVE':
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-      case 'SUSPENDED':
         return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-      case 'PENDING':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
       default:
         return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
     }
+  };
+
+  const formatRole = (role: string) => {
+    return t(`roles.${role.toLowerCase()}`);
   };
 
   return (
@@ -74,17 +73,17 @@ export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, r
         </div>
       </TableCell>
       <TableCell>{user.email}</TableCell>
-      <TableCell>{user.phoneNumber || 'N/A'}</TableCell>
+      <TableCell>{user.phoneNumber || t('common.notAvailable')}</TableCell>
       <TableCell>
         <Badge className={getRoleBadgeColor(user.role)} variant="outline">
           {formatRole(user.role)}
         </Badge>
       </TableCell>
-      <TableCell>{user.shopName || 'N/A'}</TableCell>
-      <TableCell>{user.address || 'N/A'}</TableCell>
+      <TableCell>{user.shopName || t('common.notAvailable')}</TableCell>
+      <TableCell>{user.address || t('common.notAvailable')}</TableCell>
       <TableCell>
         <Badge className={getStatusBadgeColor(user.status)} variant="outline">
-          {user.status || 'Unknown'}
+          {t(`common.${user.status?.toLowerCase()}`) || t('common.unknown')}
         </Badge>
       </TableCell>
       <TableCell className="text-right">
@@ -93,6 +92,7 @@ export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, r
             variant="outline"
             size="sm"
             onClick={() => onEdit(user)}
+            title={t('admin.userManagement.editUser')}
           >
             <Pencil className="h-4 w-4" />
           </Button>
@@ -104,6 +104,7 @@ export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, r
                 setSelectedActionUser(user);
                 setIsDeactivateModalOpen(true);
               }}
+              title={t('admin.userManagement.deactivateUser')}
               className="text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -118,6 +119,7 @@ export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, r
                 setSelectedActionUser(user);
                 setIsReactivateModalOpen(true);
               }}
+              title={t('admin.userManagement.reactivateUser')}
               className="text-green-500 border-green-200 hover:bg-green-50 hover:text-green-600"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -129,6 +131,7 @@ export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, r
             variant="outline"
             size="sm"
             onClick={() => onDelete(user)}
+            title={t('admin.userManagement.deleteUser')}
             className="text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
           >
             <Trash className="h-4 w-4" />
