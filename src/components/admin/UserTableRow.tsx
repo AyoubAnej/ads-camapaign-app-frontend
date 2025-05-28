@@ -1,4 +1,4 @@
-import { User as UserIcon, Pencil, Trash } from 'lucide-react';
+import { User as UserIcon, Pencil, Trash, Edit } from 'lucide-react';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -93,8 +93,9 @@ export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, r
             variant="outline"
             size="sm"
             onClick={() => onEdit(user)}
+            className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
           >
-            <Pencil className="h-4 w-4" />
+            <Edit className="h-4 w-4" />
           </Button>
           {user.status?.toLowerCase() === 'active' ? (
             <Button
@@ -104,7 +105,7 @@ export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, r
                 setSelectedActionUser(user);
                 setIsDeactivateModalOpen(true);
               }}
-              className="text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600"
+              className="text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-white"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -118,7 +119,7 @@ export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, r
                 setSelectedActionUser(user);
                 setIsReactivateModalOpen(true);
               }}
-              className="text-green-500 border-green-200 hover:bg-green-50 hover:text-green-600"
+              className="text-green-500 border-green-600 hover:bg-green-600 hover:text-white"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -129,7 +130,7 @@ export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, r
             variant="outline"
             size="sm"
             onClick={() => onDelete(user)}
-            className="text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
+            className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
           >
             <Trash className="h-4 w-4" />
           </Button>
