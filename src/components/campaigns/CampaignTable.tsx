@@ -32,7 +32,7 @@ import {
 import { CreateCampaignModal } from './CreateCampaignModal';
 import { EditCampaignModal } from './EditCampaignModal';
 import { DeleteCampaignModal } from './DeleteCampaignModal';
-import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight, Trash } from 'lucide-react';
 import { ExportButtons } from '@/components/ui/export-buttons';
 import { TableColumn } from '@/lib/exportUtils';
 
@@ -335,9 +335,9 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                     <TableCell>
                       <div className="flex space-x-1">
                         <Button 
-                          variant="ghost" 
-                          size="icon"
-                          className="h-8 w-8 p-0"
+                          variant="outline" 
+                          size="sm"
+                          className= "border-blue-600 text-blue-600 hover:bg-blue-500 hover:text-white"
                           onClick={() => handleViewAds(campaign.campaignId)}
                           title="View Ads"
                         >
@@ -347,22 +347,22 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                         {canEditCampaigns() && (
                           <>
                             <Button 
-                              variant="ghost" 
-                              size="icon"
-                              className="h-8 w-8 p-0"
+                              variant="outline" 
+                              size="sm"
+                              className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
                               onClick={() => openEditModal(campaign)}
                               title="Edit Campaign"
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
                             <Button 
-                              variant="ghost" 
-                              size="icon"
-                              className="h-8 w-8 p-0 text-destructive hover:text-destructive/80"
+                              variant="outline" 
+                              size="sm"
+                              className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
                               onClick={() => openDeleteModal(campaign)}
                               title="Delete Campaign"
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Trash className="h-4 w-4" />
                             </Button>
                           </>
                         )}
