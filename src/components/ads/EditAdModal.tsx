@@ -28,7 +28,7 @@ import { adApi } from '@/lib/adApi';
 import { GetAdResponseDto, UpdateAdRequestDto } from '@/types/ad';
 import { StateObject, BidObject } from '@/types/campaign';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DollarSign, Image, Link2, Info, Tag, BarChart3, CheckCircle2 } from 'lucide-react';
+import { DollarSign, Info, Tag, BarChart3, CheckCircle2, Tags } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
 
@@ -43,8 +43,7 @@ interface EditAdModalProps {
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
-  mediaUrl: z.string().url("Must be a valid URL").optional().or(z.literal('')),
-  redirectUrl: z.string().url("Must be a valid URL").optional().or(z.literal('')),
+  keywords: z.array(z.string()).default([]),
   isActive: z.boolean().default(true),
   activatedAt: z.string().datetime({ message: 'Must be a valid ISO date-time' }).optional().or(z.literal('')),
   deactivatedAt: z.string().datetime({ message: 'Must be a valid ISO date-time' }).optional().or(z.literal('')),
@@ -69,8 +68,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
     defaultValues: {
       title: "",
       description: "",
-      mediaUrl: "",
-      redirectUrl: "",
+      keywords: [],
       isActive: true,
       activatedAt: '',
       deactivatedAt: '',
@@ -87,8 +85,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
       form.reset({
         title: ad.title || "",
         description: ad.description || "",
-        mediaUrl: ad.mediaUrl || "",
-        redirectUrl: ad.redirectUrl || "",
+        keywords: ad.keywords || [],
         isActive: ad.adState?.isActive ?? true,
         activatedAt: ad.adState?.activatedAt || '',
         deactivatedAt: ad.adState?.deactivatedAt || '',
@@ -131,32 +128,54 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
 
   // Handle form submission
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // Create state object
+    // Create clean adState object that conforms to StateObject interface
     const adState: StateObject = {
-      isActive: values.isActive,
-      activatedAt: values.activatedAt ? values.activatedAt : (values.isActive ? new Date().toISOString() : null),
-      deactivatedAt: values.deactivatedAt ? values.deactivatedAt : (!values.isActive ? new Date().toISOString() : null),
-      reason: values.reason || undefined,
+      isActive: values.isActive
     };
-
-    // Create bid object
+    
+    // Only add date fields if they have values
+    if (values.isActive && values.activatedAt) {
+      adState.activatedAt = values.activatedAt;
+    }
+    
+    if (!values.isActive && values.deactivatedAt) {
+      adState.deactivatedAt = values.deactivatedAt;
+    }
+    
+    if (!values.isActive && values.reason) {
+      adState.reason = values.reason;
+    }
+    
+    // Create clean bid object
     const bid: BidObject = {
       amount: values.bidAmount,
       currency: values.bidCurrency,
       strategy: values.bidStrategy,
     };
-
-    // Create update request
-    const updateRequest: UpdateAdRequestDto = {
+    
+    // Prepare the update request with only defined values
+    const updateData: UpdateAdRequestDto = {
       title: values.title,
-      description: values.description || undefined,
-      mediaUrl: values.mediaUrl || undefined,
-      redirectUrl: values.redirectUrl || undefined,
-      adState: adState,
-      bid: bid,
+      bid: bid
     };
-
-    mutate(updateRequest);
+    
+    // Only add optional fields if they have values
+    if (values.description) {
+      updateData.description = values.description;
+    }
+    
+    if (values.keywords && values.keywords.length > 0) {
+      updateData.keywords = values.keywords;
+    }
+    
+    // Only add adState if it has properties beyond isActive
+    updateData.adState = adState;
+    
+    // Log the request data for debugging
+    console.log('Updating ad with data:', JSON.stringify(updateData));
+    
+    // Submit the update
+    mutate(updateData);
   };
 
   return (
@@ -209,28 +228,28 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                   />
                   <FormField
                     control={form.control}
-                    name="mediaUrl"
+                    name="keywords"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Media URL</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="https://your-store.com/image.png" />
-                        </FormControl>
-                        <FormDescription>Image or video to display in your ad</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="redirectUrl"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Redirect URL</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="https://your-store.com/product" />
-                        </FormControl>
-                        <FormDescription>Where users will go when clicking the ad</FormDescription>
+                        <FormLabel>Keywords</FormLabel>
+                        <div className="relative">
+                          <div className="absolute left-2 top-2.5 text-muted-foreground">
+                            <Tags className="h-4 w-4" />
+                          </div>
+                          <FormControl>
+                            <Input 
+                              value={field.value.join(', ')} 
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                const keywords = value.split(',').map(k => k.trim()).filter(Boolean);
+                                field.onChange(keywords);
+                              }}
+                              className="pl-8" 
+                              placeholder="shoes, sports, running" 
+                            />
+                          </FormControl>
+                        </div>
+                        <FormDescription>Keywords related to this ad (comma separated)</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}

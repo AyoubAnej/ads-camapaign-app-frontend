@@ -307,15 +307,13 @@ export const UserTable = () => {
         </Table>
         <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-3 gap-2">
           <div className="w-full sm:w-auto flex justify-start">
-            <span className="text-sm text-muted-foreground">
-              {totalItems === 0
-                ? "No users to display"
-                : `Showing ${
-                    indexOfFirstItem + (totalItems ? 1 : 0)
-                  } to ${Math.min(
-                    indexOfLastItem,
-                    totalItems
-                  )} of ${totalItems} users`}
+            <span className="text-sm text-muted-foreground">              {totalItems === 0
+                ? t('admin.userManagement.noUsers')
+                : t('admin.userManagement.showing', {
+                    start: indexOfFirstItem + (totalItems ? 1 : 0),
+                    end: Math.min(indexOfLastItem, totalItems),
+                    total: totalItems
+                  })}
             </span>
           </div>
           <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-2 justify-end">

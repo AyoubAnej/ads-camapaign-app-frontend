@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { 
   Dialog, 
@@ -9,9 +9,6 @@ import {
   DialogTitle 
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Trash2, Plus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -27,8 +24,7 @@ import {
   BidStrategy,
   BidType,
   getGlobalStateString,
-  getCampaignTypeString,
-  AdsSpaceObject
+  getCampaignTypeString
 } from '@/types/campaign';
 
 interface CreateCampaignModalProps {
@@ -51,17 +47,8 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
   const [selectedAdvertiserId, setSelectedAdvertiserId] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [adsSpaces, setAdsSpaces] = useState<AdsSpaceObject[]>([]);
-  const [showAddAdsSpace, setShowAddAdsSpace] = useState(false);
-  const [newAdsSpace, setNewAdsSpace] = useState<AdsSpaceObject>({
-    spaceId: '',
-    platform: 'Web',
-    placement: 'TopBanner',
-    size: '300x250',
-    baseCost: 0
-  });
-
-  // Fetch advertisers
+  
+  // Fetch advertisers for dropdown
   const { data: advertisers = [], isLoading: isLoadingAdvertisers } = useQuery({
     queryKey: ['advertisers'],
     queryFn: async () => {
@@ -75,7 +62,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
     },
     enabled: open, // Only fetch when modal is open
   });
-
+  
   // Reset form when modal opens
   useEffect(() => {
     if (open) {
@@ -85,15 +72,6 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
       setGlobalState(GlobalState.OK);
       setCampaignType(CampaignType.SPONSORED);
       setSelectedAdvertiserId('');
-      setAdsSpaces([]);
-      setShowAddAdsSpace(false);
-      setNewAdsSpace({
-        spaceId: '',
-        platform: 'Web',
-        placement: 'TopBanner',
-        size: '300x250',
-        baseCost: 0
-      });
       setError(null);
     }
   }, [open]);
@@ -112,6 +90,10 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
         throw new Error('Start date is required');
       }
 
+      // Format dates as ISO strings to ensure proper serialization
+      const startDateISO = new Date(startDate).toISOString();
+      const endDateISO = endDate ? new Date(endDate).toISOString() : null;
+
       if (!selectedAdvertiserId) {
         throw new Error('Advertiser selection is required');
       }
@@ -121,15 +103,11 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
         throw new Error('Invalid advertiser ID');
       }
 
-      // Format dates as ISO strings to ensure proper serialization
-      const startDateISO = new Date(startDate).toISOString();
-      const endDateISO = endDate ? new Date(endDate).toISOString() : null;
-
       // Create campaign with properly formatted data
-      const newCampaign: CreateCampaignRequestDto = {
+      const campaignData: CreateCampaignRequestDto = {
         campaignName: name,
-        campaignStartDate: new Date(startDate), // Keep as Date object for type compatibility
-        campaignEndDate: endDate ? new Date(endDate) : null, // Keep as Date object for type compatibility
+        campaignStartDate: new Date(startDateISO),
+        campaignEndDate: endDateISO ? new Date(endDateISO) : null,
         globalState: globalState,
         tenantId: tenantId,
         campaignType: campaignType,
@@ -142,13 +120,12 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
           amount: 1.0, // Match the BidObject interface
           currency: 'USD',
           strategy: BidStrategy.MANUAL.toString()
-        },
-        adsSpaceList: adsSpaces
+        }
       };
 
-      console.log('Sending campaign data:', JSON.stringify(newCampaign, null, 2));
+      console.log('Sending campaign data:', JSON.stringify(campaignData, null, 2));
       
-      await campaignApi.createCampaign(newCampaign);
+      await campaignApi.createCampaign(campaignData);
       onCreateCampaign();
       onOpenChange(false);
     } catch (err) {
@@ -195,9 +172,10 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
                   ) : advertisers.length === 0 ? (
                     <SelectItem value="none" disabled>No advertisers found</SelectItem>
                   ) : (
-                    advertisers.map((advertiser: Advertiser) => (
+                    advertisers.filter(advertiser => advertiser.role !== 'AGENCY_MANAGER' && advertiser.role !== 'ADMIN')
+                    .map((advertiser: Advertiser) => (
                       <SelectItem key={advertiser.id} value={advertiser.id.toString()}>
-                        {advertiser.firstName} {advertiser.lastName} (ID: {advertiser.id})
+                        {advertiser.id} - {advertiser.shopName }
                       </SelectItem>
                     ))
                   )}
@@ -256,7 +234,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
               </Label>
               <Select 
                 value={globalState.toString()} 
-                onValueChange={(value) => setGlobalState(parseInt(value) as GlobalState)}
+                onValueChange={(value) => setGlobalState(value as GlobalState)}
               >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Select status" />
@@ -273,7 +251,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
               </Label>
               <Select 
                 value={campaignType.toString()} 
-                onValueChange={(value) => setCampaignType(parseInt(value) as CampaignType)}
+                onValueChange={(value) => setCampaignType(value as CampaignType)}
               >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder="Select type" />
@@ -284,164 +262,6 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
                   <SelectItem value={CampaignType.HEADLINE.toString()}>{getCampaignTypeString(CampaignType.HEADLINE)}</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-            
-            {/* Ad Spaces Section */}
-            <div className="grid grid-cols-1 gap-4">
-              <Separator className="my-2" />
-              <div className="flex justify-between items-center">
-                <Label className="text-md font-semibold">Ad Spaces</Label>
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => setShowAddAdsSpace(!showAddAdsSpace)}
-                >
-                  <Plus className="h-4 w-4 mr-1" />
-                  Add Ad Space
-                </Button>
-              </div>
-              
-              {/* Add Ad Space Form */}
-              {showAddAdsSpace && (
-                <Card className="border border-dashed p-2">
-                  <CardContent className="p-3">
-                    <div className="grid grid-cols-2 gap-3 mb-3">
-                      <div>
-                        <Label htmlFor="spaceId">Space ID</Label>
-                        <Input
-                          id="spaceId"
-                          value={newAdsSpace.spaceId}
-                          onChange={(e) => setNewAdsSpace({...newAdsSpace, spaceId: e.target.value})}
-                          placeholder="e.g., SPACE_001"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="platform">Platform</Label>
-                        <Select 
-                          value={newAdsSpace.platform} 
-                          onValueChange={(value) => setNewAdsSpace({...newAdsSpace, platform: value})}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select platform" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Web">Web</SelectItem>
-                            <SelectItem value="Mobile">Mobile</SelectItem>
-                            <SelectItem value="TV">TV</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-3 mb-3">
-                      <div>
-                        <Label htmlFor="placement">Placement</Label>
-                        <Select 
-                          value={newAdsSpace.placement} 
-                          onValueChange={(value) => setNewAdsSpace({...newAdsSpace, placement: value})}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select placement" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="TopBanner">Top Banner</SelectItem>
-                            <SelectItem value="Sidebar">Sidebar</SelectItem>
-                            <SelectItem value="InContent">In Content</SelectItem>
-                            <SelectItem value="Footer">Footer</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label htmlFor="size">Size</Label>
-                        <Select 
-                          value={newAdsSpace.size} 
-                          onValueChange={(value) => setNewAdsSpace({...newAdsSpace, size: value})}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select size" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="300x250">300x250</SelectItem>
-                            <SelectItem value="728x90">728x90</SelectItem>
-                            <SelectItem value="160x600">160x600</SelectItem>
-                            <SelectItem value="320x50">320x50</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-3 mb-3">
-                      <div>
-                        <Label htmlFor="baseCost">Base Cost</Label>
-                        <Input
-                          id="baseCost"
-                          type="number"
-                          min="0"
-                          step="0.01"
-                          value={newAdsSpace.baseCost.toString()}
-                          onChange={(e) => setNewAdsSpace({...newAdsSpace, baseCost: parseFloat(e.target.value) || 0})}
-                          placeholder="0.00"
-                        />
-                      </div>
-                      <div className="flex items-end">
-                        <Button 
-                          type="button" 
-                          className="w-full" 
-                          onClick={() => {
-                            if (!newAdsSpace.spaceId) {
-                              setError('Space ID is required');
-                              return;
-                            }
-                            setAdsSpaces([...adsSpaces, {...newAdsSpace}]);
-                            setNewAdsSpace({
-                              spaceId: '',
-                              platform: 'Web',
-                              placement: 'TopBanner',
-                              size: '300x250',
-                              baseCost: 0
-                            });
-                            setShowAddAdsSpace(false);
-                            setError(null);
-                          }}
-                        >
-                          Add
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-              
-              {/* Ad Spaces List */}
-              {adsSpaces.length > 0 ? (
-                <div className="space-y-2 max-h-60 overflow-y-auto p-1">
-                  {adsSpaces.map((space, index) => (
-                    <Card key={index} className="p-2">
-                      <CardContent className="p-2 flex justify-between items-center">
-                        <div>
-                          <div className="font-medium">{space.spaceId}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {space.platform} | {space.placement} | {space.size} | ${space.baseCost.toFixed(2)}
-                          </div>
-                        </div>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setAdsSpaces(adsSpaces.filter((_, i) => i !== index))}
-                        >
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-4 text-muted-foreground">
-                  No ad spaces added yet. Click "Add Ad Space" to add one.
-                </div>
-              )}
             </div>
           </div>
           <DialogFooter>

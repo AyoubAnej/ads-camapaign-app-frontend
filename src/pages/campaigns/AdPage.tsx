@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { campaignApi } from '@/lib/campaignApi';
 import { adApi } from '@/lib/adApi';
 import { productApi } from '@/lib/productApi';
+import { useAuth } from '@/contexts/AuthContext';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ChevronLeft, Calendar, DollarSign, Tag, BarChart2, Target, Clock, Plus, ArrowLeft } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +18,7 @@ import { CampaignDetailsCard } from '@/components/campaigns/CampaignDetailsCard'
 export const AdPage = () => {
   const { campaignId, adId } = useParams<{ campaignId: string; adId?: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
   
   // Fetch campaign data
   const { data: campaign, isLoading: isLoadingCampaign, error: campaignError } = useQuery({
@@ -61,7 +63,23 @@ export const AdPage = () => {
       // If we're viewing an ad, go back to the campaign's ads list
       navigate(`/campaigns/${campaignId}/ads`);
     } else {
-      // If we're viewing the campaign's ads list, go back to campaigns
+      // If we're viewing the campaign's ads list, go back to campaigns based on user role
+      navigateToCampaigns();
+    }
+  };
+  
+  // Navigate to the appropriate campaigns page based on user role
+  const navigateToCampaigns = () => {
+    const userRole = user?.role;
+    
+    if (userRole === 'ADMIN') {
+      navigate('/admin/campaigns');
+    } else if (userRole === 'ADVERTISER') {
+      navigate('/advertiser/campaigns');
+    } else if (userRole === 'AGENCY_MANAGER') {
+      navigate('/agency/campaigns');
+    } else {
+      // Fallback to a common route if role is unknown
       navigate('/campaigns');
     }
   };
@@ -123,8 +141,11 @@ export const AdPage = () => {
             <h3 className="text-lg font-medium text-red-800 dark:text-red-300">Error Loading Campaign</h3>
           </div>
           <p className="text-red-700 dark:text-red-300 mb-4">{adId ? (adError instanceof Error ? adError.message : 'Failed to load ad details') : (campaignError instanceof Error ? campaignError.message : 'Failed to load campaign details')}</p>
-          <Button asChild variant="default">
-            <Link to="/campaigns">Back to Campaigns</Link>
+          <Button 
+            variant="default"
+            onClick={navigateToCampaigns}
+          >
+            Back to Campaigns
           </Button>
         </div>
       </div>
@@ -149,7 +170,7 @@ export const AdPage = () => {
   const getCampaignStatusBadge = () => {
     if (!campaign) return null;
     
-    const isActive = campaign.globalState === 0; // GlobalState.OK = 0, DISABLED = 1
+    const isActive = campaign.globalState === "OK"; // GlobalState.OK = 0, DISABLED = 1
     
     return (
       <Badge variant={isActive ? "default" : "secondary"} className={isActive ? "bg-green-500 hover:bg-green-600" : ""}>
@@ -252,7 +273,7 @@ export const AdPage = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-2xl font-bold">
-                    {campaign.adsSpaceList?.length || 0} Ad Spaces
+                    {campaign.bid ? `${campaign.bid.amount} ${campaign.bid.currency}` : 'No bid set'}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     Campaign ID: {campaign.campaignId}

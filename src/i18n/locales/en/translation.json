@@ -7,8 +7,7 @@
     "updated": "Updated on",
     "dashboard": "Dashboard",
     "users": "Users",
-    "agencies": "Agencies",
-    "campaigns": "Campaigns",
+    "agencies": "Agencies",    "campaigns": "Campaigns",
     "analytics": "Analytics",
     "settings": "Settings",
     "agencyDetails": "Agency Details",
@@ -199,6 +198,7 @@
     "signOut": "Sign out"
   },
   "settings": {
+
     "title": "Settings",
     "description": "Manage your account preferences and settings",
     "account": {
@@ -917,7 +917,11 @@
       "filtered": "No items match your filters",
       "search": "No search results",
       "custom": "{{message}}"
-    }
+    },
+    "appearanceP": "Manage your application preferences",
+    "appearance": "Appearance",
+    "darkMode": "Dark Mode",
+    "language": "Language"
   }
 }
 

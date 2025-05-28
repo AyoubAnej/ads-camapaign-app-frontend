@@ -405,10 +405,11 @@
       "signOut": "Déconnexion"
     }
   },
-  "admin": {
-    "userManagement": {
+  "admin": {    "userManagement": {
       "title": "Gestion des utilisateurs",
       "description": "Gérer les utilisateurs et leurs permissions",
+      "showing": "Affichage de {{start}} à {{end}} sur {{total}} utilisateurs",
+      "noUsers": "Aucun utilisateur à afficher",
       "addUser": "Ajouter un utilisateur",
       "editUser": "Modifier l'utilisateur",
       "editDescription": "Modifier les informations de l'utilisateur",
@@ -502,20 +503,19 @@
       "from": "Du",
       "to": "Au",
       "all": "Tous"
-    },
-    "table": {
+    },    "table": {
       "noData": "Aucune donnée trouvée",
       "loading": "Chargement des données...",
       "error": "Erreur lors du chargement des données",
-      "retry": "Réessayer",
+      "retry": "Réessayer",      "showing": "Affichage de {{start}} à {{end}} sur {{total}} éléments",
+      "pagination": "Page {{currentPage}} sur {{totalPages}}",
       "rowsPerPage": "Lignes par page",
       "of": "sur",
       "search": "Rechercher...",
       "firstPage": "Première page",
       "lastPage": "Dernière page",
       "nextPage": "Page suivante",
-      "previousPage": "Page précédente",
-      "showing": "Affichage de {{start}} à {{end}} sur {{total}} entrées"
+      "previousPage": "Page précédente"
     },
     "form": {
       "required": "Ce champ est requis",
@@ -1173,5 +1173,3 @@
     }
   }
 }
-
-

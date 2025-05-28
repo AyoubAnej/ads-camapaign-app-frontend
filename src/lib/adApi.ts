@@ -50,31 +50,68 @@ export const adApi = {
     }
   },
 
-    // Get ads with pagination
-    getAdsWithPagination: async (campaignId: number, params: AdPaginationParams): Promise<PaginationResponse<GetAdResponseDto>> => {
-      try {
-        const { page, pageSize, searchTerm, statusFilter } = params;
-        let url = `/${campaignId}/ads?page=${page}&pageSize=${pageSize}`;
+  // Get ads with pagination
+  getAdsWithPagination: async (campaignId: number, params: AdPaginationParams): Promise<PaginationResponse<GetAdResponseDto>> => {
+    try {
+      const { page, pageSize, searchTerm, statusFilter } = params;
+      let url = `/${campaignId}/ads?page=${page}&pageSize=${pageSize}`;
+      
+      if (searchTerm) {
+        url += `&search=${encodeURIComponent(searchTerm)}`;
+      }
+      
+      if (statusFilter && statusFilter !== 'all') {
+        const isActive = statusFilter === 'active';
+        url += `&isActive=${isActive}`;
+      }
+      
+      console.log(`Fetching paginated ads for campaign ${campaignId} with params:`, params);
+      const response = await adAxios.get(url);
+      console.log('Paginated ads response:', response.data);
+      
+      // If the backend isn't properly handling the search and filter, implement client-side filtering
+      let filteredData = response.data;
+      
+      // If we have items and the backend didn't filter properly
+      if (filteredData.items && Array.isArray(filteredData.items)) {
+        let filteredItems = [...filteredData.items];
         
+        // Apply client-side search if searchTerm is provided
         if (searchTerm) {
-          url += `&search=${encodeURIComponent(searchTerm)}`;
+          const searchLower = searchTerm.toLowerCase();
+          filteredItems = filteredItems.filter(ad => 
+            ad.title.toLowerCase().includes(searchLower) ||
+            (ad.description && ad.description.toLowerCase().includes(searchLower))
+          );
         }
         
+        // Apply client-side status filter if statusFilter is provided and not 'all'
         if (statusFilter && statusFilter !== 'all') {
           const isActive = statusFilter === 'active';
-          url += `&isActive=${isActive}`;
+          filteredItems = filteredItems.filter(ad => ad.adState?.isActive === isActive);
         }
         
-        console.log(`Fetching paginated ads for campaign ${campaignId} with params:`, params);
-        const response = await adAxios.get(url);
-        console.log('Paginated ads response:', response.data);
-        return response.data;
-      } catch (error) {
-        console.error(`Error fetching paginated ads for campaign ${campaignId}:`, error);
-        throw error;
+        // Update the response with filtered items
+        const totalFilteredCount = filteredItems.length;
+        const totalFilteredPages = Math.ceil(totalFilteredCount / pageSize);
+        
+        // Return filtered data with updated pagination info
+        return {
+          ...filteredData,
+          items: filteredItems,
+          totalCount: totalFilteredCount,
+          totalPages: totalFilteredPages,
+          hasPrevious: page > 1,
+          hasNext: page < totalFilteredPages
+        };
       }
-    },
-  
+      
+      return filteredData;
+    } catch (error) {
+      console.error(`Error fetching paginated ads for campaign ${campaignId}:`, error);
+      throw error;
+    }
+  },
 
   // Get a specific ad
   getAd: async (adId: number): Promise<GetAdResponseDto> => {

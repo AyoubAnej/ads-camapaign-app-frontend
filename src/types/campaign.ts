@@ -64,13 +64,7 @@ export interface PlacementObject {
   strategy: string;
 }
 
-export interface AdsSpaceObject {
-  spaceId: string;
-  platform: string; // e.g., "Web", "Mobile", "TV"
-  placement: string; // e.g., "TopBanner", "Sidebar", etc.
-  size: string; // e.g., "300x250"
-  baseCost: number;
-}
+// AdsSpaceObject has been removed as it's now obsolete
 
 // DTOs for Campaign Service
 export interface CreateCampaignRequestDto {
@@ -82,7 +76,6 @@ export interface CreateCampaignRequestDto {
   campaignType: CampaignType;
   ownerActivation?: StateObject;
   bid?: BidObject;
-  adsSpaceList?: AdsSpaceObject[];
 }
 
 export interface UpdateCampaignRequestDto {
@@ -93,7 +86,6 @@ export interface UpdateCampaignRequestDto {
   campaignType: CampaignType;
   ownerActivation?: StateObject;
   bid?: BidObject;
-  adsSpaceList?: AdsSpaceObject[];
 }
 
 export interface GetCampaignResponseDto {
@@ -106,7 +98,6 @@ export interface GetCampaignResponseDto {
   campaignType: CampaignType;
   ownerActivation?: StateObject;
   bid?: BidObject;
-  adsSpaceList?: AdsSpaceObject[];
   creationDate: string;
   updateDate: string;
 }

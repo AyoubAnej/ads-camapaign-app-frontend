@@ -39,8 +39,12 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
 
   // Create a display name from firstName and lastName
   const getUserInitials = () => {
-    if (user) {
+    if (user && user.firstName && user.lastName) {
+      // Ensure we have both first and last name before trying to get initials
       return getInitials(`${user.firstName} ${user.lastName}`);
+    } else if (user && user.email) {
+      // Fallback to first letter of email if name is not available
+      return user.email.charAt(0).toUpperCase();
     }
     return 'U';
   };
@@ -111,7 +115,7 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
         
         <div className="flex items-center gap-3">
           {/* Language Switcher */}
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                 <Globe className="w-5 h-5" />
@@ -162,7 +166,7 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
           </Button>
           
           {/* User menu */}
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button className="h-8 w-8 p-0 rounded-full overflow-hidden bg-gray-800 dark:bg-gray-600">
                 <span className="sr-only">Open user menu</span>
@@ -174,7 +178,7 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align="end" className="w-56" sideOffset={5}>
               <DropdownMenuLabel>{t('navbar.myAccount', 'My Account')}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <Link to={getProfilePath()} className="w-full">

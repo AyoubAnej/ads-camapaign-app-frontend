@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/components/ui/use-toast';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useAuth } from '@/contexts/AuthContext';
 import { campaignApi } from '@/lib/campaignApi';
 import { 
   GetCampaignResponseDto, 
@@ -79,6 +80,8 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
     { header: 'Tenant ID', accessor: 'tenantId' },
   ];
 
+  const { toast } = useToast();
+  
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['campaigns'],
     queryFn: async () => {
@@ -97,10 +100,26 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
         // Fallback to getting all campaigns without pagination
         const allCampaigns = await campaignApi.getAllCampaigns();
         return Array.isArray(allCampaigns) ? allCampaigns : [allCampaigns].filter(Boolean);
-      } catch (error) {
+      } catch (error: any) {
+        // Check if error is due to authentication
+        if (error?.response?.status === 401) {
+          toast({
+            title: "Session Expired",
+            description: "Your session has expired. Please refresh the page or log in again.",
+            variant: "destructive",
+          });
+        }
         console.error('Error fetching campaigns:', error);
         throw new Error('Failed to fetch campaigns');
       }
+    },
+    refetchOnWindowFocus: true, // Refetch when window regains focus
+    refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes
+    refetchIntervalInBackground: false, // Don't refetch when tab is not active
+    retry: (failureCount, error: any) => {
+      // Don't retry on authentication errors
+      if (error?.response?.status === 401) return false;
+      return failureCount < 3; // Retry other errors up to 3 times
     },
   });
 

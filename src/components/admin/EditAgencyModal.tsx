@@ -56,8 +56,15 @@ const EditAgencyModal = ({ isOpen, onClose, agency, onSuccess }: EditAgencyModal
   // Update agency mutation
   const updateAgencyMutation = useMutation({
     mutationFn: (data: UpdateAgencyDto) => agencyApi.updateAgency(agency.agencyId, data),
-    onSuccess: (data) => {
-      onSuccess(data);
+    onSuccess: (updatedAgency) => {
+      // If the API doesn't return the updated agency with all fields, create a complete agency object
+      const completeAgency: Agency = {
+        ...agency,
+        ...updatedAgency,
+        // Ensure name is available for the toast message
+        name: updatedAgency.name || agency.name
+      };
+      onSuccess(completeAgency);
       onClose();
     },
     onError: (error) => {

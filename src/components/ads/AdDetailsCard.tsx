@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { GetAdResponseDto } from '@/types/ad';
 import { Product } from '@/types/product';
-import { DollarSign, Calendar, Tag, Link as LinkIcon, Image, Box, ShoppingCart } from 'lucide-react';
+import { DollarSign, Calendar, Tag, Box, ShoppingCart, Hash } from 'lucide-react';
 
 interface AdDetailsCardProps {
   ad: GetAdResponseDto;
@@ -37,7 +37,7 @@ export const AdDetailsCard: React.FC<AdDetailsCardProps> = ({ ad, product, isLoa
 
   // Get ad status badge
   const getAdStatusBadge = () => {
-    const isActive = ad.adState?.isActive || ad.globalState?.isActive; // Check isActive property
+    const isActive = ad.adState?.isActive; // Check isActive property from adState
     
     return (
       <Badge variant={isActive ? "default" : "secondary"} className={isActive ? "bg-green-500 hover:bg-green-600" : ""}>
@@ -79,26 +79,18 @@ export const AdDetailsCard: React.FC<AdDetailsCardProps> = ({ ad, product, isLoa
                 <span className="font-medium">{formatDate(ad.updateDate)}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                <span className="text-muted-foreground">Media URL:</span>
-                <span className="font-medium">
-                  {ad.mediaUrl ? (
-                    <a href={ad.mediaUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline flex items-center gap-1">
-                      <LinkIcon className="h-3 w-3" />
-                      View Media
-                    </a>
-                  ) : 'N/A'}
-                </span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                <span className="text-muted-foreground">Redirect URL:</span>
-                <span className="font-medium">
-                  {ad.redirectUrl ? (
-                    <a href={ad.redirectUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline flex items-center gap-1">
-                      <LinkIcon className="h-3 w-3" />
-                      Visit Link
-                    </a>
-                  ) : 'N/A'}
-                </span>
+                <span className="text-muted-foreground">Keywords:</span>
+                <div className="flex flex-wrap justify-end gap-1">
+                  {ad.keywords && ad.keywords.length > 0 ? (
+                    ad.keywords.map((keyword, index) => (
+                      <Badge key={index} variant="outline" className="text-xs">
+                        {keyword}
+                      </Badge>
+                    ))
+                  ) : (
+                    <span className="font-medium">No keywords</span>
+                  )}
+                </div>
               </div>
             </div>
 

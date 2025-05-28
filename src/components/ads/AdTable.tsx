@@ -22,19 +22,21 @@ import { useAuth } from '@/contexts/AuthContext';
 import { adApi } from '@/lib/adApi';
 import { GetAdResponseDto, AdPaginationParams } from '@/types/ad';
 import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight, Filter, User } from 'lucide-react';
-import { CreateAdModal } from './CreateAdModal';
+// import { CreateAdModal } from './CreateAdModal';
 import { EditAdModal } from './EditAdModal';
 import { DeleteAdModal } from './DeleteAdModal';
 import { useToast } from "@/components/ui/use-toast";
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface AdTableProps {
   campaignId: number;
 }
 
 export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -49,7 +51,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
   const pageSizeOptions = [5, 10, 25, 50];
   
   // State for modals
-  const [createModalOpen, setCreateModalOpen] = useState(false);
+  // const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedAd, setSelectedAd] = useState<GetAdResponseDto | null>(null);
@@ -181,7 +183,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           <div className="relative w-full sm:w-[200px]">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search ads..."
+              placeholder={t('ads.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
@@ -208,12 +210,11 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           </div>
         </div>
         
-        <Button 
-          onClick={() => setCreateModalOpen(true)} 
-          className="flex items-center gap-2"
+        <Button
+          onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
+          className="flex items-center gap-1"
         >
-          <Plus className="h-4 w-4" />
-          <span>Create Ad</span>
+          <Plus className="h-4 w-4" /> Create Ad
         </Button>
       </div>
 
@@ -241,7 +242,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           ) : (
             <Button 
               className="mt-4"
-              onClick={() => setCreateModalOpen(true)}
+              onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
             >
               Create Your First Ad
             </Button>
@@ -325,7 +326,11 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           {/* Pagination with page size selection */}
           <div className="flex items-center justify-between py-4">
             <div className="text-sm text-muted-foreground">
-              Showing {totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount} ads
+              {t('ui.table.showing', {
+                start: totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1,
+                end: Math.min(currentPage * pageSize, totalCount),
+                total: totalCount
+              })}
             </div>
             <div className="flex items-center space-x-2">
               <Button
@@ -337,7 +342,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                 <ChevronLeft className="h-4 w-4" />
               </Button>
               <span className="text-sm">
-                Page {currentPage} of {totalPages}
+                {t('ui.table.pagination', { currentPage, totalPages })}
               </span>
               <Button
                 variant="outline"
@@ -370,13 +375,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
         </>
       )}
 
-      {/* Create Ad Modal */}
-      <CreateAdModal
-        campaignId={campaignId}
-        open={createModalOpen}
-        onOpenChange={setCreateModalOpen}
-        onCreateAd={handleAdChange}
-      />
+      {/* Create Ad Modal - replaced with page navigation */}
 
       {/* Edit Ad Modal */}
       {selectedAd && (
