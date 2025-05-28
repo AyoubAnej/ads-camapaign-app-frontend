@@ -21,7 +21,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { adApi } from '@/lib/adApi';
 import { GetAdResponseDto, AdPaginationParams } from '@/types/ad';
-import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight, Filter, User } from 'lucide-react';
+import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight, Filter, User, Trash } from 'lucide-react';
 // import { CreateAdModal } from './CreateAdModal';
 import { EditAdModal } from './EditAdModal';
 import { DeleteAdModal } from './DeleteAdModal';
@@ -285,8 +285,9 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button
-                          variant="ghost"
-                          size="icon"
+                          variant="outline"
+                          size="sm"
+                          className= "border-blue-600 text-blue-600 hover:bg-blue-500 hover:text-white"
                           onClick={() => {
                             // Navigate to ad details page
                             navigate(`/campaigns/${campaignId}/ads/${ad.adId}`);
@@ -295,8 +296,9 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                           <Eye className="h-4 w-4" />
                         </Button>
                         <Button
-                          variant="ghost"
-                          size="icon"
+                          variant="outline"
+                          size="sm"
+                          className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
                           onClick={() => {
                             setSelectedAd(ad);
                             setEditModalOpen(true);
@@ -305,15 +307,15 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-destructive hover:text-destructive/90"
+                          variant="outline"
+                          size="sm"
+                          className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
                           onClick={() => {
                             setSelectedAd(ad);
                             setDeleteModalOpen(true);
                           }}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash className="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>

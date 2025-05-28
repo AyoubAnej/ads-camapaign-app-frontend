@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Phone, Globe, Calendar, CheckCircle, UserPlus, Users, Search, Trash2, AlertTriangle } from 'lucide-react';
+import { Building2, Phone, Globe, Calendar, CheckCircle, UserPlus, Users, Search, Trash2, AlertTriangle, Trash } from 'lucide-react';
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { agencyApi } from "@/lib/agenciesApi";
@@ -353,15 +353,15 @@ const AgencyDetailsPage = () => {
                         </TableCell>
                         <TableCell className="text-right">
                           <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-100"
+                            variant="outline"
+                            size="sm"
+                            className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
                             onClick={(e) => {
                               e.stopPropagation();
                               openRemoveAdvertiserModal(advertiser);
                             }}
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash className="h-4 w-4" />
                           </Button>
                         </TableCell>
                       </TableRow>

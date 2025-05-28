@@ -1,4 +1,4 @@
-import { User as UserIcon, Pencil, Trash } from 'lucide-react';
+import { User as UserIcon, Pencil, Trash, Edit } from 'lucide-react';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -92,9 +92,8 @@ export const UserTableRow = ({
             variant="outline"
             size="sm"
             onClick={() => onEdit(user)}
-            title={t('admin.userManagement.editUser')}
           >
-            <Pencil className="h-4 w-4" />
+            <Edit className="h-4 w-4" />
           </Button>
           {user.status?.toLowerCase() === 'active' ? (
             <Button
@@ -104,7 +103,6 @@ export const UserTableRow = ({
                 setSelectedActionUser(user);
                 setIsDeactivateModalOpen(true);
               }}
-              title={t('admin.userManagement.deactivateUser')}
               className="text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -119,7 +117,6 @@ export const UserTableRow = ({
                 setSelectedActionUser(user);
                 setIsReactivateModalOpen(true);
               }}
-              title={t('admin.userManagement.reactivateUser')}
               className="text-green-500 border-green-200 hover:bg-green-50 hover:text-green-600"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -131,7 +128,6 @@ export const UserTableRow = ({
             variant="outline"
             size="sm"
             onClick={() => onDelete(user)}
-            title={t('admin.userManagement.deleteUser')}
             className="text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
           >
             <Trash className="h-4 w-4" />
