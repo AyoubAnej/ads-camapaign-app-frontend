@@ -65,14 +65,103 @@
     "spend": "Spend",
     "startDate": "Start date",
     "endDate": "End date"
-  },
-  "ads": {
+  },  "ads": {
     "title": "Ads",
     "description": "Manage your ads",
     "createAd": "Create Ad",
     "editAd": "Edit Ad",
     "deleteAd": "Delete Ad",
     "adDetails": "Ad Details",
+    "createNew": {
+      "title": "Create New Ad",
+      "advertisingInfo": "This ad will be created for the advertiser associated with the campaign.",
+      "loadingCampaign": "Loading campaign information...",
+      "loadingAdvertiser": "Loading advertiser details...",
+      "loadingProducts": "Loading products...",
+      "noProducts": "No products found for this advertiser.",
+      "noProductsHelp": "Please ensure the advertiser has products associated with their account.",
+      "advertiserError": "Could not load advertiser information for this campaign.",
+      "steps": {
+        "adDetails": "Ad Details",
+        "product": "Product",
+        "keywords": "Keywords",
+        "bids": "Bids & Budget",
+        "review": "Review"
+      },
+      "advertiser": {
+        "title": "Advertiser",
+        "shopName": "Advertiser ID: {{id}}"
+      },
+      "validation": {
+        "titleRequired": "Title is required",
+        "descriptionRequired": "Description is required",
+        "productRequired": "Product selection is required",
+        "bidAmountRequired": "Bid amount must be greater than 0"
+      },
+      "form": {
+        "title": {
+          "label": "Title",
+          "placeholder": "Enter ad title"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter ad description"
+        },
+        "product": {
+          "label": "Select Product",
+          "placeholder": "Select a product",
+          "details": "Selected Product Details"
+        },
+        "keywords": {
+          "title": "Keywords",
+          "placeholder": "Enter a keyword...",
+          "add": "Add",
+          "empty": "No keywords added yet.",
+          "hint": "Add keywords to help target your ad"
+        },
+        "bids": {
+          "title": "Bid Settings",
+          "amount": {
+            "label": "Bid Amount",
+            "placeholder": "Enter bid amount"
+          },
+          "currency": {
+            "label": "Currency",
+            "placeholder": "Select currency"
+          },
+          "strategy": {
+            "label": "Bid Strategy",
+            "placeholder": "Select strategy",
+            "CPC": "Cost per Click (CPC)",
+            "CPM": "Cost per Thousand Impressions (CPM)"
+          }
+        }
+      },
+      "success": {
+        "title": "Success!",
+        "description": "Ad created successfully."
+      },
+      "error": {
+        "title": "Error",
+        "description": "Failed to create ad: {{message}}"
+      },
+      "navigation": {
+        "previous": "Previous",
+        "next": "Next",
+        "submit": "Create Ad"
+      },
+      "loading": {
+        "submitting": "Creating ad..."
+      },
+      "review": {
+        "title": "Review Your Ad",
+        "adDetails": "Ad Details",
+        "productDetails": "Product Details",
+        "keywordsList": "Keywords",
+        "bidSettings": "Bid Settings",
+        "noKeywords": "No keywords specified"
+      }
+    },
     "fields": {
       "title": "Title",
       "description": "Description",
@@ -115,6 +204,50 @@
       "pending": "Pending",
       "rejected": "Rejected",
       "paused": "Paused"
+    },
+    "form": {
+      "steps": {
+        "adDetails": "Ad Details",
+        "product": "Product",
+        "keywords": "Keywords",
+        "bidsAndBudget": "Bids & Budget",
+        "review": "Review"
+      },
+      "fields": {
+        "description": "Description",
+        "title": "Title",
+        "keywords": "Keywords",
+        "bidAmount": "Bid Amount",
+        "bidStrategy": "Bid Strategy",
+        "bidCurrency": "Currency",
+        "status": "Status",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "placeholders": {
+        "addKeywords": "Add keywords",
+        "selectCurrency": "Select currency",
+        "selectStrategy": "Select strategy",
+        "bidAmount": "0.00",
+        "enterAdTitle": "Enter ad title",
+        "enterAdDescription": "Enter ad description"
+      },
+      "tooltips": {
+        "keywordsHelp": "Add keywords that describe your ad. These will help improve targeting and visibility.",
+        "keywordsAutoGen": "You can leave this empty for automatic keyword generation.",
+        "requiredField": "This field is required"
+      },
+      "messages": {
+        "noKeywords": "No keywords added yet.",
+        "productDetails": "Selected Product Details",
+        "productInfo": "Product Information",
+        "reviewTitle": "Review your ad details before submitting"
+      },
+      "bidStrategies": {
+        "cpc": "Cost Per Click (CPC)",
+        "cpm": "Cost Per Mille (CPM)",
+        "cpa": "Cost Per Action (CPA)"
+      }
     }
   },
   "campaigns": {
@@ -198,7 +331,6 @@
     "signOut": "Sign out"
   },
   "settings": {
-
     "title": "Settings",
     "description": "Manage your account preferences and settings",
     "account": {
@@ -358,9 +490,13 @@
     "userManagement": {
       "title": "User management",
       "description": "Manage users and their permissions",
+      "addAdmin": "Register Admin",
+      "newUser": "Create a new user in the system either from an existing seller or as an admin.",
+      "sellerToadvertiser":"Register from Seller",
+      "registerUser": "Register New User",
       "addUser": "Add user",
       "editUser": "Edit user",
-      "editDescription": "Edit user information",
+      "editDescription": "Edit user informations",
       "selectRole": "Select a role",
       "deleteUser": "Delete user",
       "confirmDelete": "Are you sure?",
@@ -372,6 +508,7 @@
       "reactivateWarning": "Are you sure you want to reactivate this user? They will regain access to the platform.",
      "deactivateUser": "Deactivate User",
      "deactivateWarning": "Are you sure you want to deactivate this user? They will no longer have access to the platform.",
+     "showing": "Showing {{start}} to {{end}} of {{total}} users",
       "fields": {
         "name": "Username",
         "firstName": "First name",
@@ -385,6 +522,13 @@
         "shopName": "Shop name",
         "status": "Status",
         "actions": "Actions"
+      },
+      "mdpconditions": {
+        "minLength": "Password must be at least 6 characters long",
+        "uppercase": "Password must contain at least one uppercase letter",
+        "lowercase": "Password must contain at least one lowercase letter",
+        "number": "Password must contain at least one number",
+        "specialChar": "Password must contain at least one special character"
       },
       "filters": {
         "searchPlaceholder": "Search users...",
@@ -441,6 +585,7 @@
       "noSellers": "No sellers found",
       "registerSuccess": "Seller successfully registered",
       "registerError": "Failed to register the seller",
+      "shortTitle":"Add Advertiser",
       "fields": {
         "seller": "Seller",
         "role": "Role",
@@ -451,7 +596,9 @@
   "roles": {
     "admin": "Administrator",
     "advertiser": "Advertiser",
-    "agencyManager": "Agency Manager"
+    "agency_manager": "AgencyManager",
+    "agencyManager": "AgencyManager",
+    "seller": "Seller"
   },
   "ui": {
     "loading": "Loading...",

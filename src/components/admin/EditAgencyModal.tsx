@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { t } from "i18next";
 
 interface EditAgencyModalProps {
   isOpen: boolean;
@@ -95,7 +96,7 @@ const EditAgencyModal = ({ isOpen, onClose, agency, onSuccess }: EditAgencyModal
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Edit Agency</DialogTitle>
+          <DialogTitle>{t('admin.agencyManagement.editAgency')}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -115,7 +116,7 @@ const EditAgencyModal = ({ isOpen, onClose, agency, onSuccess }: EditAgencyModal
                 onClick={onClose}
                 disabled={updateAgencyMutation.isPending}
               >
-                Cancel
+              {t('common.cancel')}
               </Button>
               <Button 
                 type="submit" 

@@ -15,6 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { t } from "i18next";
 
 interface DeleteAgencyModalProps {
   isOpen: boolean;
@@ -58,11 +59,11 @@ const DeleteAgencyModal = ({ isOpen, onClose, agency, onSuccess }: DeleteAgencyM
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete Agency</AlertDialogTitle>
+          <AlertDialogTitle>{t('admin.agencyManagement.deleteAgency')}</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete <span className="font-semibold">{agency.name}</span>?
+            {t('admin.agencyManagement.confirmDelete')} <span className="font-semibold">{agency.name}</span>?
             <br />
-            This action cannot be undone.
+            <span className="text-red-600 font-semibold">{t('admin.agencyManagement.actionIrreversible', 'common.delete.message')}</span>
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -74,9 +75,8 @@ const DeleteAgencyModal = ({ isOpen, onClose, agency, onSuccess }: DeleteAgencyM
 
         <AlertDialogFooter>
           <AlertDialogCancel
-            disabled={deleteAgencyMutation.isPending}
-          >
-            Cancel
+            disabled={deleteAgencyMutation.isPending}>
+            {t('common.cancel')}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}

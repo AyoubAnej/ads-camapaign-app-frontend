@@ -165,9 +165,9 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
                   <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ADMIN">Admin</SelectItem>
-                  <SelectItem value="ADVERTISER">Advertiser</SelectItem>
-                  <SelectItem value="AGENCY_MANAGER">Agency Manager</SelectItem>
+                  <SelectItem value="ADMIN">{t('admin.userManagement.roles.admin')}</SelectItem>
+                  <SelectItem value="ADVERTISER">{t('admin.userManagement.roles.advertiser')}</SelectItem>
+                  <SelectItem value="AGENCY_MANAGER">{t('admin.userManagement.roles.agencyManager')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -186,7 +186,7 @@ export const AddUserModal = ({ open, onOpenChange, onAddUser }: AddUserModalProp
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>{t('admin.userManagement.deleteAgency')}</Button>
-            <Button type="submit">Add User</Button>
+            <Button type="submit">{t('admin.userManagement.addUser')}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

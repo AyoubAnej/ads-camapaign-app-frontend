@@ -261,7 +261,8 @@ export const AgencyTable = () => {
           <TableHeader>
             <TableRow>
               <TableHead>{t('admin.agencyManagement.fields.name')}</TableHead>
-              <TableHead>{t('admin.agencyManagement.fields.phone')}</TableHead>              <TableHead>{t('admin.agencyManagement.fields.website')}</TableHead>
+              <TableHead>{t('admin.agencyManagement.fields.phone')}</TableHead>              
+              <TableHead>{t('admin.agencyManagement.fields.website')}</TableHead>
               <TableHead>{t('admin.agencyManagement.fields.description')}</TableHead>
               <TableHead>{t('admin.agencyManagement.fields.status')}</TableHead>
               <TableHead>{t('common.created')}</TableHead>
@@ -346,7 +347,8 @@ export const AgencyTable = () => {
             )}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-between px-4 py-4 border-t">          <div className="flex-1 text-sm text-muted-foreground">
+        <div className="flex items-center justify-between px-4 py-4 border-t">          
+          <div className="flex-1 text-sm text-muted-foreground">
             {t('admin.agencyManagement.showing', { 
               start: startIndex + 1,
               end: Math.min(endIndex, totalItems),

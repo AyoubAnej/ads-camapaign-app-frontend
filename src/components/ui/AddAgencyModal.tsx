@@ -3,9 +3,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { createAgency } from "@/lib/agenciesApi";
+import { agencyApi } from "@/lib/agenciesApi";
 import { Agency } from "@/types/agency";
 import { AgencyFormFields, agencyFormSchema, AgencyFormValues } from "../admin/AgencyFormFields";
+import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 import {
   Dialog,
@@ -25,6 +27,10 @@ interface AddAgencyModalProps {
 
 const AddAgencyModal = ({ isOpen, onClose, onSuccess }: AddAgencyModalProps) => {
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+  const { t } = useTranslation();
+  
+  const isAdmin = user?.role === "ADMIN";
 
   // Initialize form
   const form = useForm<AgencyFormValues>({
@@ -36,32 +42,55 @@ const AddAgencyModal = ({ isOpen, onClose, onSuccess }: AddAgencyModalProps) => 
       description: "",
     },
   });
-
   // Create agency mutation
   const createAgencyMutation = useMutation({
-    mutationFn: createAgency,
+    mutationFn: agencyApi.createAgency,
     onSuccess: (data) => {
       onSuccess(data);
       onClose();
       form.reset();
+      setError(null);
     },
-    onError: (error) => {
-      setError("Failed to create agency. Please try again.");
+    onError: (error: any) => {
+      if (!isAdmin) {
+        setError(t('admin.agencyManagement.feedback.noPermission'));
+      } else if (error.response?.status === 400) {
+        setError(t('admin.agencyManagement.feedback.invalidData'));
+      } else if (error.message === 'Network Error') {
+        setError(t('admin.agencyManagement.feedback.networkError'));
+      } else {
+        setError(t('admin.agencyManagement.feedback.createError'));
+      }
       console.error("Error creating agency:", error);
     },
   });
-
   // Form submission handler
-  const onSubmit = (values: AgencyFormValues) => {
-    setError(null);
-    // Ensure all required fields are passed and properly trimmed
-    const agencyData = {
-      name: values.name.trim(),
-      phoneNumber: values.phoneNumber.trim(),
-      website: values.website.trim(),
-      description: values.description.trim(),
-    };
-    createAgencyMutation.mutate(agencyData);
+  const onSubmit = async (values: AgencyFormValues) => {
+    try {
+      if (!isAdmin) {
+        setError(t('admin.agencyManagement.feedback.noPermission'));
+        return;
+      }
+
+      setError(null);
+
+      // Validate required fields
+      if (!values.name || !values.phoneNumber) {
+        setError(t('admin.agencyManagement.feedback.invalidData'));
+        return;
+      }
+
+      const agencyData = {
+        name: values.name.trim(),
+        phoneNumber: values.phoneNumber.trim(),
+        website: values.website ? values.website.trim() : undefined,
+        description: values.description ? values.description.trim() : undefined,
+      };
+
+      await createAgencyMutation.mutateAsync(agencyData);
+    } catch (err) {
+      console.error("Error in form submission:", err);
+    }
   };
 
   return (

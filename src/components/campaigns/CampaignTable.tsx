@@ -35,6 +35,7 @@ import { DeleteCampaignModal } from './DeleteCampaignModal';
 import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight, Trash } from 'lucide-react';
 import { ExportButtons } from '@/components/ui/export-buttons';
 import { TableColumn } from '@/lib/exportUtils';
+import { useTranslation } from 'react-i18next';
 
 interface CampaignTableProps {
   className?: string;
@@ -80,6 +81,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
     { header: 'Tenant ID', accessor: 'tenantId' },
   ];
 
+  const { t } = useTranslation();
   const { toast } = useToast();
   
   const { data, isLoading, error, refetch } = useQuery({
@@ -226,18 +228,20 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
   return (
     <div className={className + " space-y-4"}>
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Campaign Management</h2>
+        <h2 className="text-2xl font-bold">
+          {t('campaigns.title')}
+        </h2>
         {canEditCampaigns() && showCreateButton && (
           <Button 
             onClick={() => setShowCreateModal(true)}
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
           >
             <Plus className="h-4 w-4" />
-            Register Campaign
+            {t('campaigns.createCampaign')}
           </Button>
         )}
       </div>
-      <p className="text-muted-foreground">Manage your advertising campaigns</p>
+      <p className="text-muted-foreground">{t('campaigns.manageYourAdvertisingCampaigns')}</p>
 
       <div className="space-y-4">
         {/* Filters and Actions */}
@@ -247,7 +251,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Search by name or ID..."
+                placeholder={t('campaigns.searchPlaceholder')}
                 className="pl-8"
                 value={filters.search}
                 onChange={(e) => setFilters({...filters, search: e.target.value})}
@@ -258,12 +262,12 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
               onValueChange={(value) => setFilters({...filters, status: value})}
             >
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="All Statuses" />
+                <SelectValue placeholder={t('campaigns.allStatuses')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="All Statuses">All Statuses</SelectItem>
-                <SelectItem value="Active">Active</SelectItem>
-                <SelectItem value="Inactive">Inactive</SelectItem>
+                <SelectItem value="All Statuses">{t('campaigns.allStatuses')}</SelectItem>
+                <SelectItem value="Active">{t('campaigns.active')}</SelectItem>
+                <SelectItem value="Inactive">{t('campaigns.inactive')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -282,7 +286,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                 className="flex items-center gap-2"
               >
                 <Plus className="h-4 w-4" />
-                New Campaign
+                {t('campaigns.newCampaign')}
               </Button>
             )}
           </div>
@@ -293,13 +297,13 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
               <TableHeader className="bg-muted/50">
                 <TableRow>
                   <TableHead className="w-[50px]"></TableHead>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Start Date</TableHead>
-                  <TableHead>End Date</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>{t('campaigns.fields.id')}</TableHead>
+                  <TableHead>{t('campaigns.fields.name')}</TableHead>
+                  <TableHead>{t('campaigns.fields.type')}</TableHead>
+                  <TableHead>{t('campaigns.fields.status')}</TableHead>
+                  <TableHead>{t('campaigns.fields.startDate')}</TableHead>
+                  <TableHead>{t('campaigns.fields.endDate')}</TableHead>
+                  <TableHead>{t('campaigns.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
             <TableBody>
@@ -323,14 +327,14 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                           "bg-green-200 text-green-600 dark:bg-green-600 dark:text-green-100" : 
                           "bg-red-200 text-red-700 dark:bg-red-700 dark:text-red-100"}
                       >
-                        {campaign.globalState === GlobalState.OK ? "ACTIVE" : "INACTIVE"}
+                        {campaign.globalState === GlobalState.OK ? t('campaigns.status.active') : t('campaigns.status.inactive')}
                       </Badge>
                     </TableCell>
                     <TableCell>{new Date(campaign.campaignStartDate).toLocaleDateString()}</TableCell>
                     <TableCell>
                       {campaign.campaignEndDate 
                         ? new Date(campaign.campaignEndDate).toLocaleDateString() 
-                        : 'No end date'}
+                        : t('campaigns.noEndDate')}
                     </TableCell>
                     <TableCell>
                       <div className="flex space-x-1">
@@ -339,7 +343,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                           size="sm"
                           className= "border-blue-600 text-blue-600 hover:bg-blue-500 hover:text-white"
                           onClick={() => handleViewAds(campaign.campaignId)}
-                          title="View Ads"
+                          title={t('campaigns.viewAds')}
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
@@ -351,7 +355,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                               size="sm"
                               className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
                               onClick={() => openEditModal(campaign)}
-                              title="Edit Campaign"
+                              title={t('campaigns.editCampaign')}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
@@ -360,7 +364,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                               size="sm"
                               className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
                               onClick={() => openDeleteModal(campaign)}
-                              title="Delete Campaign"
+                              title={t('campaigns.deleteCampaign')}
                             >
                               <Trash className="h-4 w-4" />
                             </Button>
@@ -375,7 +379,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                   <TableCell colSpan={8} className="h-24 text-center">
                     <div className="flex flex-col items-center justify-center">
                       <p className="text-muted-foreground pb-2">
-                        No campaigns found
+                        {t('campaigns.noCampaignsFound')}
                       </p>
                       {canEditCampaigns() && showCreateButton && (
                         <Button 
@@ -384,7 +388,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                           className="flex items-center gap-2"
                         >
                           <Plus className="h-4 w-4" />
-                          New Campaign
+                          {t('campaigns.newCampaign')}
                         </Button>
                       )}
                     </div>
@@ -398,7 +402,11 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
         {/* Pagination */}
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {paginatedCampaigns.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to {Math.min(currentPage * itemsPerPage, filteredCampaigns.length)} of {filteredCampaigns.length} campaigns
+            {t('campaigns.showing', { 
+              from: paginatedCampaigns.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0, 
+              to: Math.min(currentPage * itemsPerPage, filteredCampaigns.length), 
+              total: filteredCampaigns.length 
+            })}
           </p>
           <div className="flex items-center space-x-2">
             <Button

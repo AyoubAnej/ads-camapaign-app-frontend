@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { t } from "i18next";
 
 // Define schema for agency form
 export const agencyFormSchema = z.object({
@@ -34,7 +35,7 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Agency Name</FormLabel>
+            <FormLabel>{t('admin.agencyManagement.fields.name')}</FormLabel>
             <FormControl>
               <Input placeholder="Enter agency name" {...field} />
             </FormControl>
@@ -48,7 +49,7 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="phoneNumber"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Phone Number</FormLabel>
+            <FormLabel>{t('admin.agencyManagement.fields.phone')}</FormLabel>
             <FormControl>
               <Input placeholder="Enter phone number" {...field} />
             </FormControl>
@@ -62,7 +63,7 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="website"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Website</FormLabel>
+            <FormLabel>{t('admin.agencyManagement.fields.website')}</FormLabel>
             <FormControl>
               <Input placeholder="https://example.com" {...field} />
             </FormControl>
@@ -76,7 +77,7 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Description</FormLabel>
+            <FormLabel>{t('admin.agencyManagement.fields.description')}</FormLabel>
             <FormControl>
               <Textarea 
                 placeholder="Enter agency description" 
