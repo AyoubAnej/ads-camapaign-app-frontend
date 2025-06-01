@@ -309,8 +309,8 @@ export const UserTable = () => {
           <div className="w-full sm:w-auto flex justify-start">
             <span className="text-sm text-muted-foreground">              
               {totalItems === 0
-                ? t('admin.userManagement.noUsers')
-                : t('admin.userManagement.showing', {
+                ? t('interactions.pagination.noItems')
+                : t('interactions.pagination.showing', {
                     start: indexOfFirstItem + (totalItems ? 1 : 0),
                     end: Math.min(indexOfLastItem, totalItems),
                     total: totalItems

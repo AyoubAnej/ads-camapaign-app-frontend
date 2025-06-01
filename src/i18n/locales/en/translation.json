@@ -372,6 +372,7 @@
       "reactivateWarning": "Are you sure you want to reactivate this user? They will regain access to the platform.",
      "deactivateUser": "Deactivate User",
      "deactivateWarning": "Are you sure you want to deactivate this user? They will no longer have access to the platform.",
+     "showing": "Showing {{start}} to {{end}} of {{total}} users",
       "fields": {
         "name": "Username",
         "firstName": "First name",
