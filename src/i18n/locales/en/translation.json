@@ -1,6 +1,7 @@
 {
   "common": {
     "notAvailable": "Not available",
+    "unknown": "Unknown",
     "tryAgain": "Try again",
     "actions": "Actions",
     "created": "Created on",
@@ -72,6 +73,22 @@
     "editAd": "Edit Ad",
     "deleteAd": "Delete Ad",
     "adDetails": "Ad Details",
+    "adInformations": "Ad Informations",
+    "table": {
+      "title": "Title",
+      "productId": "Product ID",
+      "status": "Status",
+      "bidAmount": "Bid Amount",
+      "created": "Created",
+      "actions": "Actions",
+      "noAdsFound": "No ads found",
+      "clearFilters": "Clear Filters",
+      "createFirstAd": "Create Your First Ad",
+      "filterStatus": "Filter Status",
+      "allStatus": "All Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
     "createNew": {
       "title": "Create New Ad",
       "advertisingInfo": "This ad will be created for the advertiser associated with the campaign.",
@@ -106,34 +123,59 @@
         "description": {
           "label": "Description",
           "placeholder": "Enter ad description"
-        },
-        "product": {
+        },        "product": {
           "label": "Select Product",
-          "placeholder": "Select a product",
-          "details": "Selected Product Details"
+          "placeholder": "Select a product from your inventory",
+          "loadingProducts": "Loading products...",
+          "noProductsFound": "No products found",
+          "searchPlaceholder": "Search products...",
+          "details": {
+            "title": "Selected Product Details",
+            "name": "Name",
+            "price": "Price",
+            "category": "Category",
+            "quantity": "Quantity",
+            "description": "Description",
+            "sku": "SKU",
+            "stock": "Stock Status"
+          }
         },
         "keywords": {
           "title": "Keywords",
-          "placeholder": "Enter a keyword...",
-          "add": "Add",
-          "empty": "No keywords added yet.",
-          "hint": "Add keywords to help target your ad"
+          "subtitle": "Add keywords to help target your ad",
+          "inputPlaceholder": "Type a keyword and press Enter",
+          "addButton": "Add",
+          "noKeywords": "No keywords added yet",
+          "autoGenerate": "Keywords will be automatically generated if none are provided",
+          "currentKeywords": "Current Keywords"
         },
         "bids": {
           "title": "Bid Settings",
           "amount": {
             "label": "Bid Amount",
-            "placeholder": "Enter bid amount"
+            "placeholder": "Enter bid amount",
+            "prefix": "$"
           },
           "currency": {
             "label": "Currency",
-            "placeholder": "Select currency"
+            "options": {
+              "usd": "USD ($)",
+              "eur": "EUR (€)",
+              "gbp": "GBP (£)"
+            }
           },
           "strategy": {
             "label": "Bid Strategy",
-            "placeholder": "Select strategy",
-            "CPC": "Cost per Click (CPC)",
-            "CPM": "Cost per Thousand Impressions (CPM)"
+            "options": {
+              "cpc": "Cost Per Click (CPC)",
+              "cpm": "Cost Per Thousand Impressions (CPM)",
+              "cpa": "Cost Per Action (CPA)"
+            }
+          },
+          "adState": {
+            "label": "Ad State",
+            "active": "Activate Ad Immediately",
+            "help": "If enabled, the ad will start running as soon as it's created"
           }
         }
       },
@@ -176,7 +218,8 @@
       "createdAt": "Created At",
       "updatedAt": "Updated At",
       "activatedAt": "Activated At",
-      "deactivatedAt": "Deactivated At"
+      "deactivatedAt": "Deactivated At",
+      "adId": "Ad ID"
     },
     "placeholders": {
       "title": "Ad title",
@@ -248,6 +291,25 @@
         "cpm": "Cost Per Mille (CPM)",
         "cpa": "Cost Per Action (CPA)"
       }
+    },
+    "details": {
+      "created": "Created",
+      "updated": "Updated",
+      "keywords": "Keywords",
+      "noKeywords": "No keywords",
+      "biddingInformation": "Bidding Information",
+      "bidAmount": "Bid Amount",
+      "currency": "Currency",
+      "strategy": "Strategy",
+      "productInformation": "Product Information",
+      "productId": "Product ID",
+      "productName": "Name",
+      "productPrice": "Price",
+      "productQuantity": "Quantity",
+      "productCategory": "Category",
+      "sellerId": "Seller ID",
+      "productDescription": "Description",
+      "noProductInfo": "Product information not available"
     }
   },
   "campaigns": {
@@ -509,6 +571,7 @@
      "deactivateUser": "Deactivate User",
      "deactivateWarning": "Are you sure you want to deactivate this user? They will no longer have access to the platform.",
      "showing": "Showing {{start}} to {{end}} of {{total}} users",
+     "noUsers": "No users found",
       "fields": {
         "name": "Username",
         "firstName": "First name",

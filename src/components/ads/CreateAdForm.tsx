@@ -22,6 +22,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CalendarIcon, Loader2, X } from 'lucide-react';
+import { t } from 'i18next';
 
 // Step types
 type FormStep = 
@@ -214,26 +215,24 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
   // Validate current step
   const validateStep = (): boolean => {
     const newErrors: Record<string, string> = {};
-    
-    switch (currentStep) {
+      switch (currentStep) {
       case 'ad-details':
         if (!formData.title.trim()) {
-          newErrors.title = 'Title is required';
+          newErrors.title = t('ads.createNew.validation.titleRequired');
         }
         if (!formData.description.trim()) {
-          newErrors.description = 'Description is required';
+          newErrors.description = t('ads.createNew.validation.descriptionRequired');
         }
         break;
         
       case 'product-selection':
         if (!formData.productId) {
-          newErrors.productId = 'Product selection is required';
+          newErrors.productId = t('ads.createNew.validation.productRequired');
         }
         break;
-        
-      case 'bids-budget':
+        case 'bids-budget':
         if (formData.bid.amount <= 0) {
-          newErrors.bidAmount = 'Bid amount must be greater than 0';
+          newErrors.bidAmount = t('ads.createNew.validation.bidAmountRequired');
         }
         break;
     }
@@ -306,13 +305,12 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
               <Label htmlFor="advertiser">Advertiser</Label>
               {isCampaignLoading ? (
                 <div className="flex items-center mt-2">
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  <span className="text-sm text-muted-foreground">Loading campaign information...</span>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />                  <span className="text-sm text-muted-foreground">{t('ads.createNew.loadingCampaign')}</span>
                 </div>
               ) : isAdvertiserLoading ? (
                 <div className="flex items-center mt-2">
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  <span className="text-sm text-muted-foreground">Loading advertiser details...</span>
+                  <span className="text-sm text-muted-foreground">{t('ads.createNew.loadingAdvertiser')}</span>
                 </div>
               ) : advertiserDetails ? (
                 <div className="p-2 border rounded-md mt-2">
@@ -326,26 +324,24 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
               )}
             </div>
             
-            <div className="mb-4">
-              <Label htmlFor="title">Title</Label>
+            <div className="mb-4">              <Label htmlFor="title">{t('ads.createNew.form.title.label')}</Label>
               <Input
                 id="title"
                 value={formData.title}
                 onChange={(e) => handleChange('title', e.target.value)}
-                placeholder="Enter ad title"
+                placeholder={t('ads.createNew.form.title.placeholder')}
               />
               {errors.title && (
                 <p className="text-sm text-red-500 mt-1">{errors.title}</p>
               )}
             </div>
             
-            <div className="mb-4">
-              <Label htmlFor="description">Description</Label>
+            <div className="mb-4">              <Label htmlFor="description">{t('ads.createNew.form.description.label')}</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => handleChange('description', e.target.value)}
-                placeholder="Enter ad description"
+                placeholder={t('ads.createNew.form.description.placeholder')}
                 rows={4}
               />
               {errors.description && (
@@ -654,13 +650,12 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
   };
   
   // Render step indicator
-  const renderStepIndicator = () => {
-    const steps = [
-      { key: 'ad-details' as FormStep, label: 'Ad Details' },
-      { key: 'product-selection' as FormStep, label: 'Product' },
-      { key: 'keywords-selection' as FormStep, label: 'Keywords' },
-      { key: 'bids-budget' as FormStep, label: 'Bids & Budget' },
-      { key: 'review' as FormStep, label: 'Review' }
+  const renderStepIndicator = () => {    const steps = [
+      { key: 'ad-details' as FormStep, label: t('ads.createNew.steps.adDetails') },
+      { key: 'product-selection' as FormStep, label: t('ads.createNew.steps.product') },
+      { key: 'keywords-selection' as FormStep, label: t('ads.createNew.steps.keywords') },
+      { key: 'bids-budget' as FormStep, label: t('ads.createNew.steps.bids') },
+      { key: 'review' as FormStep, label: t('ads.createNew.steps.review') }
     ];
     
     return (

@@ -1,7 +1,7 @@
 {  "common": {
     "notAvailable": "Non disponible",
+    "unknown": "Inconnu",
     "tryAgain": "Réessayer",
-    "actions": "Actions",
     "created": "Créé le",
     "updated": "Mis à jour le",
     "dashboard": "Tableau de bord",
@@ -11,25 +11,20 @@
     "analytics": "Analyses",
     "settings": "Paramètres",
     "agencyDetails": "Détails de l'agence",
-    "globalStates": {
-      "active": "Actif",
-      "inactive": "Inactif",
-      "paused": "En pause",
-      "pending": "En attente",
-      "suspended": "Suspendu",
-      "rejected": "Rejeté"
-    },
-    "buttons": {
-      "cancel": "Annuler",
-      "save": "Enregistrer",
-      "delete": "Supprimer",
-      "edit": "Modifier",
-      "confirm": "Confirmer",
-      "actions": "Actions",
-      "previous": "Précédent",
-      "next": "Suivant",
-      "submit": "Soumettre"
-    },
+    "active": "Actif",
+    "inactive": "Inactif",
+    "paused": "En pause",
+    "pending": "En attente",
+    "suspended": "Suspendu",
+    "rejected": "Rejeté",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "confirm": "Confirmer",
+    "actions": "Actions",
+    "previous": "Précédent",
+    "next": "Suivant",  
+    "submit": "Soumettre",
     "feedback": {
       "loading": "Chargement...",
       "success": "Succès",
@@ -151,21 +146,6 @@
           }
         }
       },
-      "sellerRegistration": {
-      "title": "Register a Seller as an Advertiser",
-      "description": "Select a seller from the list to register them as an advertiser in the system",
-      "searchPlaceholder": "Search by shop name or ID...",
-      "loading": "Loading sellers...",
-      "noSellers": "No sellers found",
-      "registerSuccess": "Seller successfully registered",
-      "registerError": "Failed to register the seller",
-      "shortTitle":"Add Advertiser",
-      "fields": {
-        "seller": "Seller",
-        "role": "Role",
-        "agencyId": "Agency ID"
-      }
-    },
       "form": {
         "fields": {
           "name": {
@@ -268,6 +248,21 @@
         }
       }
     },
+    "sellerRegistration": {
+      "title": "Register a Seller as an Advertiser",
+      "description": "Select a seller from the list to register them as an advertiser in the system",
+      "searchPlaceholder": "Search by shop name or ID...",
+      "loading": "Loading sellers...",
+      "noSellers": "No sellers found",
+      "registerSuccess": "Seller successfully registered",
+      "registerError": "Failed to register the seller",
+      "shortTitle":"Add Advertiser",
+      "fields": {
+        "seller": "Seller",
+        "role": "Role",
+        "agencyId": "Agency ID"
+      }
+    },
     "userManagement": {
       "title": "Gestion des Utilisateurs",
       "description": "Gérez les utilisateurs et leurs rôles",
@@ -282,6 +277,8 @@
       "reactivateWarning": "Êtes-vous sûr de vouloir réactiver cet utilisateur ? Il retrouvera l'accès à la plateforme.",
       "deactivateUser": "Désactiver l'utilisateur",
       "deactivateWarning": "Êtes-vous sûr de vouloir désactiver cet utilisateur ? Il n’aura plus accès à la plateforme.",
+      "showing": "Affichage {{start}} à {{end}} sur {{total}} utilisateurs",
+      "noUsers": "Aucun utilisateur trouvé",
       "fields": {
         "name": "Nom d'utilisateur",
         "firstName": "Prénom",
@@ -294,6 +291,20 @@
         "shopName": "Nom de la boutique",
         "status": "Statut",
         "actions": "Actions"
+      },
+      "mdpconditions": {
+        "minLength": "Le mot de passe doit contenir au moins 6 caractères",
+        "uppercase": "Le mot de passe doit contenir au moins une lettre majuscule",
+        "lowercase": "Le mot de passe doit contenir au moins une lettre minuscule",
+        "number": "Le mot de passe doit contenir au moins un chiffre",
+        "specialChar": "Le mot de passe doit contenir au moins un caractère spécial"
+      },
+      "filters": {
+        "searchPlaceholder": "Rechercher des utilisateurs...",
+        "allRoles": "Tous les rôles",
+        "allStatuses": "Tous les statuts",
+        "role": "Filtrer par rôle",
+        "status": "Filtrer par statut"
       },
       "roles": {
         "admin": "Administrateur",
@@ -311,7 +322,11 @@
         "agencyId": "ID de l'agence",
         "shopName": "Nom de la boutique"
       },
-      "selectRole": "Sélectionner un rôle"
+      "selectRole": "Sélectionner un rôle",
+      "editDescription": "Modifier les informations de l'utilisateur",
+      "confirmDelete": "Êtes-vous sûr ?",
+      "deleteWarning": "Cette action supprimera définitivement l'utilisateur {{userName}} et toutes les données associées. Cette action est irréversible.",
+      "userDeleted": "Utilisateur supprimé avec succès"
     }
   },
   "login": {
@@ -365,203 +380,125 @@
       }
     },
     "notifications": {
-      "title": "Notifications"
-    }
-  },
-  "agencies": {
-    "details": {
-      "title": "Détails de l'agence",
-      "subtitle": "Voir les informations sur votre agence",
-      "information": "Informations de l'agence",
-      "contact": "Coordonnées",
-      "dates": {
-        "title": "Dates",
-        "created": "Créé le",
-        "updated": "Mis à jour le"
+      "title": "Notifications",
+      "description": "Gérez vos préférences de notification",
+      "email": {
+        "title": "Notifications par email",
+        "updates": "Mises à jour du compte",
+        "alerts": "Alertes",
+        "newsletter": "Newsletter"
       },
-      "fields": {
-        "name": "Nom de l'agence",
-        "phone": "Numéro de téléphone",
-        "website": "Site web",
-        "description": "Description"
+      "push": {
+        "title": "Notifications push",
+        "enabled": "Activé",
+        "disabled": "Désactivé",
+        "browser": "Notifications du navigateur"
       },
-      "noAgency": "Aucune agence disponible."
+      "frequency": {
+        "title": "Fréquence",
+        "immediate": "Immédiate",
+        "daily": "Quotidienne",
+        "weekly": "Hebdomadaire",
+        "never": "Jamais"
+      }
     },
-    "advertisers": {
-      "title": "Annonceurs de votre agence",
-      "subtitle": "Affiche uniquement les utilisateurs avec le rôle Annonceur",
-      "add": "Ajouter un annonceur",
-      "search": {
-        "placeholder": "Rechercher un annonceur...",
-        "title": "Rechercher des annonceurs",
-        "description": "Recherchez des annonceurs à ajouter à votre agence"
+    "security": {
+      "title": "Sécurité",
+      "description": "Gérez vos paramètres de sécurité",
+      "password": {
+        "title": "Mot de passe",
+        "change": "Changer le mot de passe",
+        "current": "Mot de passe actuel",
+        "new": "Nouveau mot de passe",
+        "confirm": "Confirmer le mot de passe"
       },
-      "table": {
-        "name": "Nom",
-        "email": "Email",
-        "actions": "Actions"
+      "twoFactor": {
+        "title": "Authentification à deux facteurs",
+        "description": "Ajoutez une couche de sécurité supplémentaire",
+        "enable": "Activer",
+        "disable": "Désactiver",
+        "enabled": "Activé",
+        "disabled": "Désactivé",
+        "setup": "Configuration",
+        "backup": "Codes de secours"
       },
-      "loading": "Chargement des annonceurs...",
-      "error": "Erreur lors du chargement des annonceurs. Veuillez réessayer.",
-      "empty": "Aucun annonceur trouvé",
-      "remove": {
-        "title": "Confirmer la suppression",
-        "description": "Êtes-vous sûr de vouloir retirer {name} de votre agence ?",
-        "warning": "Cette action ne peut pas être annulée.",
-        "confirm": "Retirer",
-        "cancel": "Annuler"
+      "sessions": {
+        "title": "Sessions",
+        "current": "Session actuelle",
+        "otherSessions": "Autres sessions",
+        "lastActive": "Dernière activité",
+        "logoutAll": "Déconnecter toutes les sessions",
+        "device": "Appareil",
+        "location": "Emplacement",
+        "ip": "Adresse IP"
+      }
+    },
+    "billing": {
+      "title": "Facturation",
+      "description": "Gérez vos informations de paiement et l'historique de facturation",
+      "paymentMethods": "Modes de paiement",
+      "billingHistory": "Historique de facturation",
+      "invoices": "Factures",
+      "subscription": "Abonnement",
+      "plan": "Forfait",
+      "status": "Statut",
+      "nextBilling": "Prochaine facturation"
+    },
+    "appearance": {
+      "title": "Apparence",
+      "description": "Personnalisez l'apparence de l'application",
+      "theme": {
+        "title": "Thème",
+        "light": "Clair",
+        "dark": "Sombre",
+        "system": "Système"
+      },
+      "darkMode": "Mode sombre",
+      "darkModeDescription": "Basculer entre le thème clair et sombre",
+      "customizeAppearance": "Personnalisez l'apparence de votre interface",
+      "fontSize": "Taille de police",
+      "fontSizeDescription": "Ajustez la taille du texte dans toute l'application",
+      "density": "Densité",
+      "densityDescription": "Ajustez l'espacement entre les éléments",
+      "animations": "Animations",
+      "animationsDescription": "Activer ou désactiver les animations de l'interface"
+    },
+    "language": {
+      "title": "Langue",
+      "description": "Choisissez votre langue préférée",
+      "chooseLanguage": "Sélectionnez votre langue d'affichage",
+      "autoDetect": "Détection automatique",
+      "preferences": {
+        "title": "Préférences de langue",
+        "dateFormat": "Format de date",
+        "timeFormat": "Format d'heure",
+        "numberFormat": "Format des nombres",
+        "currency": "Devise"
       }
     }
   },
-  "adminDashboard": {
-    "welcome": "Bienvenue sur votre tableau de bord administrateur",
-    "totalUsers": "Nombre total d'utilisateurs",
-    "activeCampaigns": "Campagnes actives",
-    "totalRevenue": "Revenu total",
-    "totalImpressions": "Impressions totales",
-    "userGrowth": "Croissance des utilisateurs",
-    "campaignPerformanceByChannel": "Performance des campagnes par canal",
-    "campaignPerformanceOverTime": "Performance des campagnes dans le temps",
-    "revenueVsTarget": "Revenu vs Objectif",
-    "recentCampaigns": "Campagnes récentes",
-    "campaignName": "Nom de la campagne",
-    "status": "Statut",
-    "clicks": "Clics",
-    "impressions": "Impressions",
-    "spend": "Dépenses",
-    "startDate": "Date de début",
-    "endDate": "Date de fin"
+  "profile": {
+    "title": "Profil",
+    "needLogin": "Vous devez être connecté pour voir votre profil",
+    "accountInfo": "Informations du compte",
+    "advertiserDetails": "Détails de l'annonceur",
+    "agencyDetails": "Détails de l'agence",
+    "adminDetails": "Détails de l'administrateur",
+    "email": "Email",
+    "role": "Rôle",
+    "advertiserId": "ID de l'annonceur",
+    "shopName": "Nom de la boutique",
+    "phoneNumber": "Numéro de téléphone",
+    "address": "Adresse",
+    "agencyId": "ID de l'agence",
+    "managerName": "Nom du gestionnaire",
+    "contactPhone": "Téléphone de contact",
+    "contactEmail": "Email de contact",
+    "name": "Nom",
+    "adminRole": "Rôle administrateur",
+    "systemAdmin": "Administrateur système"
   },
-  "analytics": {
-    "title": "Analyses",
-    "description": "Analysez la performance de vos campagnes",
-    "summary": {
-      "title": "Résumé",
-      "period": "Période",
-      "comparison": "Comparaison",
-      "total": "Total",
-      "change": "Évolution",
-      "trend": "Tendance"
-    },
-    "performance": {
-      "title": "Performance",
-      "overview": "Vue d'ensemble",
-      "byChannel": "Par canal",
-      "byDevice": "Par appareil",
-      "byLocation": "Par localisation",
-      "byTime": "Par période"
-    },
-    "reports": {
-      "title": "Rapports",
-      "generate": "Générer un rapport",
-      "download": "Télécharger",
-      "schedule": "Planifier",
-      "types": {
-        "performance": "Performance",
-        "conversion": "Conversion",
-        "audience": "Audience",
-        "revenue": "Revenu"
-      }
-    },
-    "filters": {
-      "date": {
-        "today": "Aujourd'hui",
-        "yesterday": "Hier",
-        "last7Days": "7 derniers jours",
-        "last30Days": "30 derniers jours",
-        "thisMonth": "Ce mois-ci",
-        "lastMonth": "Mois dernier",
-        "custom": "Personnalisé"
-      },
-      "comparison": {
-        "previousPeriod": "Période précédente",
-        "previousYear": "Année précédente",
-        "custom": "Personnalisé"
-      }
-    }
-  },
-  "metrics": {
-    "totalClicks": "Total des clics",
-    "totalSpend": "Dépenses totales",
-    "ctr": "Taux de clic (CTR)",
-    "cpc": "Coût par clic (CPC)",
-    "conversions": "Conversions",
-    "conversionRate": "Taux de conversion",
-    "cpa": "Coût par acquisition (CPA)",
-    "roas": "Retour sur dépenses publicitaires (ROAS)",
-    "impressions": "Impressions",
-    "reach": "Portée",
-    "frequency": "Fréquence",
-    "engagementRate": "Taux d'engagement"
-  },
-  "components": {
-    "navigation": {
-      "menu": "Menu",
-      "home": "Accueil",
-      "dashboard": "Tableau de bord",
-      "profile": "Profil",
-      "settings": "Paramètres",
-      "help": "Aide",
-      "logout": "Déconnexion",
-      "back": "Retour",
-      "next": "Suivant",
-      "previous": "Précédent",
-      "more": "Plus",
-      "breadcrumbs": {
-        "home": "Accueil",
-        "separator": "/"
-      }
-    },
-    "forms": {
-      "required": "Obligatoire",
-      "optional": "Optionnel",
-      "loading": "Chargement...",
-      "submitting": "Envoi en cours...",
-      "success": "Succès !",
-      "error": "Erreur",
-      "validation": {
-        "required": "Ce champ est obligatoire",
-        "email": "Email invalide",
-        "password": {
-          "min": "Le mot de passe doit contenir au moins {{min}} caractères",
-          "match": "Les mots de passe ne correspondent pas"
-        }
-      }
-    },
-    "modals": {
-      "close": "Fermer",
-      "confirm": {
-        "title": "Confirmer",
-        "message": "Êtes-vous sûr ?",
-        "cancel": "Annuler",
-        "confirm": "Confirmer"
-      },
-      "delete": {
-        "title": "Supprimer",
-        "message": "Cette action ne peut pas être annulée. Voulez-vous continuer ?",
-        "cancel": "Annuler",
-        "confirm": "Supprimer"
-      }
-    },
-    "tables": {
-      "empty": "Aucune donnée",
-      "loading": "Chargement...",
-      "search": "Rechercher...",
-      "rowsPerPage": "Lignes par page",
-      "filter": "Filtrer",
-      "columns": "Colonnes",
-      "actions": "Actions",
-      "showing": "Affichage de {{start}} à {{end}} sur {{total}} entrées",
-      "noResults": "Aucun résultat trouvé"
-    },
-    "notifications": {
-      "success": "Succès",
-      "error": "Erreur",
-      "warning": "Avertissement",
-      "info": "Information"
-    }
-  },
-  "errors": {
+  "error": {
     "generic": "Une erreur est survenue",
     "network": "Erreur réseau",
     "serverError": "Erreur serveur",
@@ -590,188 +527,192 @@
       "product": "Produit non trouvé",
       "campaign": "Campagne non trouvée",
       "ad": "Publicité non trouvée"
-    }
-  },
-  "pages": {
-    "notFound": {
-      "title": "Page non trouvée",
-      "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
-      "backHome": "Retour à l'accueil"
     },
     "unauthorized": {
-      "title": "Non autorisé",
-      "description": "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",
-      "backHome": "Retour à l'accueil"
-    },
-    "profile": {
-      "title": "Profil",
-      "personalInfo": "Informations personnelles",
-      "accountSettings": "Paramètres du compte",
-      "changePassword": "Changer le mot de passe",
-      "deleteAccount": "Supprimer le compte"
-    },
-    "settings": {
-      "account": {
-        "title": "Compte",
-        "description": "Gérez les informations de votre compte",
-        "personalInfo": "Informations personnelles",
-        "security": "Sécurité",
-        "preferences": "Préférences",
-        "fields": {
-          "company": "Entreprise",
-          "language": "Langue",
-          "timezone": "Fuseau horaire",
-          "dateFormat": "Format de date",
-          "theme": "Thème"
-        }
-      },
-      "notifications": {
-        "title": "Notifications",
-        "email": "Notifications par email",
-        "push": "Notifications push",
-        "marketing": "Communications marketing"
-      },
-      "security": {
-        "title": "Sécurité",
-        "twoFactor": "Authentification à deux facteurs",
-        "sessions": "Sessions actives",
-        "devices": "Appareils connectés"
-      }
+      "title": "Accès refusé",
+      "message": "Vous n'avez pas la permission d'accéder à cette page. Veuillez contacter votre administrateur si vous pensez qu'il s'agit d'une erreur.",
+      "goBack": "Retour",
+      "goHome": "Tableau de bord",
+      "signOut": "Déconnexion"
     }
-  },
-  "ads": {
-    "title": "Publicités",
-    "create": "Créer une publicité",
-    "edit": "Modifier la publicité",
-    "delete": "Supprimer la publicité",
-    "details": "Détails de la publicité",
-    "status": {
-      "active": "Active",
-      "paused": "En pause",
-      "deleted": "Supprimée",
-      "draft": "Brouillon",
-      "pending": "En attente",
-      "rejected": "Rejetée"
-    },
-    "form": {
+  },  "ads": {
+    "description": "Gérer vos publicités",
+    "createAd": "Créer une publicité",
+    "table": {
       "title": "Titre",
-      "description": "Description",
-      "image": "Image",
-      "url": "URL",
-      "campaignId": "ID de campagne",
-      "budget": "Budget",
-      "startDate": "Date de début",
-      "endDate": "Date de fin",
-      "targetAudience": "Public cible",
-      "placement": "Emplacement",
-      "format": "Format",
+      "productId": "ID du produit",
+      "status": "Statut",
+      "bidAmount": "Montant de l'enchère",
+      "created": "Créé le",
+      "actions": "Actions",
+      "noAdsFound": "Aucune publicité trouvée",
+      "clearFilters": "Effacer les filtres",
+      "createFirstAd": "Créer votre première publicité",
+      "filterStatus": "Filtrer par statut",
+      "allStatus": "Tous les statuts",
+      "active": "Actif",
+      "inactive": "Inactif"
+    },
+    "createNew": {
+      "title": "Créer une nouvelle publicité",
+      "advertisingInfo": "Cette publicité sera créée pour l'annonceur associé à la campagne.",
+      "loadingCampaign": "Chargement des informations de la campagne...",
+      "loadingAdvertiser": "Chargement des détails de l'annonceur...",
+      "loadingProducts": "Chargement des produits...",
+      "noProducts": "Aucun produit trouvé pour cet annonceur.",
+      "noProductsHelp": "Veuillez vous assurer que l'annonceur a des produits associés à son compte.",
+      "advertiserError": "Impossible de charger les informations de l'annonceur pour cette campagne.",
+      "steps": {
+        "adDetails": "Détails de la publicité",
+        "product": "Produit",
+        "keywords": "Mots-clés",
+        "bids": "Enchères et budget",
+        "review": "Révision"
+      },
+      "advertiser": {
+        "title": "Annonceur",
+        "shopName": "ID Annonceur: {{id}}"
+      },
       "validation": {
         "titleRequired": "Le titre est requis",
         "descriptionRequired": "La description est requise",
-        "imageRequired": "L'image est requise",
-        "urlRequired": "L'URL est requise",
-        "campaignRequired": "La campagne est requise",
-        "budgetRequired": "Le budget est requis",
-        "datesRequired": "Les dates sont requises",
-        "invalidUrl": "URL invalide"
+        "productRequired": "La sélection du produit est requise",
+        "bidAmountRequired": "Le montant de l'enchère doit être supérieur à 0"
+      },
+      "form": {
+        "title": {
+          "label": "Titre",
+          "placeholder": "Entrez le titre de l'annonce"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Entrez la description de l'annonce"
+        },
+        "product": {
+          "label": "Sélectionner un Produit",
+          "placeholder": "Sélectionnez un produit de votre inventaire",
+          "loadingProducts": "Chargement des produits...",
+          "noProductsFound": "Aucun produit trouvé",          "searchPlaceholder": "Rechercher des produits...",
+          "details": {
+            "title": "Détails du Produit Sélectionné",
+            "name": "Nom",
+            "price": "Prix",
+            "category": "Catégorie",
+            "quantity": "Quantité",
+            "description": "Description",
+            "sku": "Référence",
+            "stock": "État du stock"
+          }
+        },
+        "keywords": {
+          "title": "Mots-clés",
+          "subtitle": "Ajoutez des mots-clés pour aider à cibler votre publicité",
+          "inputPlaceholder": "Tapez un mot-clé et appuyez sur Entrée",
+          "addButton": "Ajouter",
+          "noKeywords": "Aucun mot-clé ajouté",
+          "autoGenerate": "Les mots-clés seront générés automatiquement si aucun n'est fourni",
+          "currentKeywords": "Mots-clés Actuels"
+        },
+        "bids": {
+          "title": "Paramètres d'Enchère",
+          "amount": {
+            "label": "Montant de l'Enchère",
+            "placeholder": "Entrez le montant de l'enchère",
+            "prefix": "€"
+          },
+          "currency": {
+            "label": "Devise",
+            "options": {
+              "usd": "USD ($)",
+              "eur": "EUR (€)",
+              "gbp": "GBP (£)"
+            }
+          },
+          "strategy": {
+            "label": "Stratégie d'Enchère",
+            "options": {
+              "cpc": "Coût par Clic (CPC)",
+              "cpm": "Coût pour Mille Impressions (CPM)",
+              "cpa": "Coût par Action (CPA)"
+            }
+          },
+          "adState": {
+            "label": "État de l'Annonce",
+            "active": "Activer l'annonce immédiatement",
+            "help": "Si activé, l'annonce commencera à s'exécuter dès sa création"
+          }
+        },
+        "review": {
+          "title": "Vérifier Votre Annonce",
+          "sections": {
+            "adDetails": "Détails de l'Annonce",
+            "product": "Informations sur le Produit",
+            "keywords": "Mots-clés",
+            "bidSettings": "Paramètres d'Enchère"
+          },
+          "fields": {
+            "title": "Titre",
+            "description": "Description",
+            "name": "Nom",
+            "price": "Prix",
+            "category": "Catégorie",
+            "bidAmount": "Montant de l'Enchère",
+            "strategy": "Stratégie",
+            "status": "Statut"
+          },
+          "status": {
+            "active": "Actif",
+            "inactive": "Inactif"
+          }
+        },
+        "buttons": {
+          "previous": "Précédent",
+          "next": "Suivant", 
+          "createAd": "Créer l'annonce",
+          "submitting": "Création en cours..."
+        }
+      },
+      "steps": {
+        "adDetails": "Détails de l'annonce",
+        "product": "Produit",
+        "keywords": "Mots-clés", 
+        "bids": "Enchères & Budget",
+        "review": "Vérification"
       }
-    },
-    "messages": {
-      "createSuccess": "Publicité créée avec succès",
-      "updateSuccess": "Publicité mise à jour avec succès",
-      "deleteSuccess": "Publicité supprimée avec succès",
-      "createError": "Erreur lors de la création de la publicité",
-      "updateError": "Erreur lors de la mise à jour de la publicité",
-      "deleteError": "Erreur lors de la suppression de la publicité"
-    },
-    "filters": {
-      "status": "Statut",
-      "campaign": "Campagne",
-      "dateRange": "Période",
-      "search": "Rechercher une publicité"
-    },
-    "table": {
+    }
+  },
+  "campaigns": {
+    "description": "Gérer vos campagnes publicitaires",
+    "createCampaign": "Créer une campagne",
+    "editCampaign": "Modifier la campagne",
+    "deleteCampaign": "Supprimer la campagne",
+    "campaignDetails": "Détails de la campagne",
+    "fields": {
       "name": "Nom",
-      "status": "Statut",
-      "campaign": "Campagne",
+      "description": "Description",
       "budget": "Budget",
-      "impressions": "Impressions",
-      "clicks": "Clics",
-      "ctr": "CTR",
-      "spend": "Dépenses",
-      "actions": "Actions"
-    }
-  },
-  "products": {
-    "title": "Produits",
-    "select": "Sélectionner des produits",
-    "search": "Rechercher des produits",
-    "noResults": "Aucun produit trouvé",
-    "table": {
-      "name": "Nom",
-      "price": "Prix",
-      "stock": "Stock",
-      "category": "Catégorie",
-      "status": "Statut"
-    }
-  },
-  "pageNotFound": {
-    "title": "Page non trouvée",
-    "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
-    "backHome": "Retour à l'accueil"
-  },
-  "unauthorizedPage": {
-    "title": "Non autorisé",
-    "description": "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",
-    "backHome": "Retour à l'accueil"
-  },
-  "profilePage": {
-    "title": "Profil",
-    "personalInfo": "Informations personnelles",
-    "accountSettings": "Paramètres du compte",
-    "changePassword": "Changer le mot de passe",
-    "deleteAccount": "Supprimer le compte"
-  },
-  "settingsPage": {
-    "appearance": {
-      "title": "Apparence",
-      "theme": "Thème",
-      "language": "Langue"
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "status": "Statut",
+      "platform": "Plateforme",
+      "placement": "Emplacement",
+      "size": "Taille",
+      "baseCost": "Coût de base"
     },
-    "notifications": {
-      "title": "Notifications",
-      "email": "Notifications par email",
-      "push": "Notifications push",
-      "marketing": "Communications marketing"
+    "placeholders": {
+      "name": "Nom de la campagne",
+      "description": "Décrivez votre campagne",
+      "budget": "Budget quotidien",
+      "selectPlatform": "Sélectionner la plateforme",
+      "selectPlacement": "Sélectionner l'emplacement",
+      "selectSize": "Sélectionner la taille",
+      "baseCost": "0,00"
     },
-    "security": {
-      "title": "Sécurité",
-      "twoFactor": "Authentification à deux facteurs",
-      "sessions": "Sessions actives",
-      "devices": "Appareils connectés"
-    }
-  },
-  "uploaders": {
-    "image": {
-      "dragDrop": "Glissez-déposez une image ici",
-      "or": "ou",
-      "browse": "Parcourir",
-      "maxSize": "Taille maximale : {{size}}",
-      "formats": "Formats acceptés : {{formats}}"
-    }
-  },
-  "confirmations": {
-    "delete": {
-      "title": "Confirmer la suppression",
-      "message": "Cette action est irréversible. Êtes-vous sûr de vouloir continuer ?",
-      "confirm": "Supprimer",
-      "cancel": "Annuler"
-    },
-    "discard": {
-      "title": "Annuler les modifications",
-      "message": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter ?",
-      "confirm": "Quitter",
-      "cancel": "Continuer les modifications"
+    "placements": {
+      "topBanner": "Bannière supérieure",
+      "sidebar": "Barre latérale",
+      "inContent": "Dans le contenu",
+      "footer": "Pied de page"
     }
   }
 }

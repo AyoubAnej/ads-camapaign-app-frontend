@@ -39,7 +39,7 @@ export const UserFilters = ({
     { value: "all_statuses", label: t("admin.userManagement.filters.allStatuses") },
     { value: "ACTIVE", label: t("common.active") },
     { value: "INACTIVE", label: t("common.inactive") },
-    { value: "PENDING", label: t("common.pending") },
+    // { value: "PENDING", label: t("common.pending") },
   ];
 
   const safeRoleFilter = roleFilter || "all_roles";
@@ -59,7 +59,7 @@ export const UserFilters = ({
         >
           <SelectTrigger className="min-w-[140px]">
             <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
-            <SelectValue placeholder={t("admin.userManagement.filters.role")} />
+            <SelectValue placeholder={t("admin.userManagement.fields.role")} />
           </SelectTrigger>
           <SelectContent>
             {roleOptions.map((opt) => (
@@ -75,7 +75,7 @@ export const UserFilters = ({
         >
           <SelectTrigger className="min-w-[140px]">
             <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
-            <SelectValue placeholder={t("admin.userManagement.filters.status")} />
+            <SelectValue placeholder={t("admin.userManagement.fields.status")} />
           </SelectTrigger>
           <SelectContent>
             {statusOptions.map((opt) => (
