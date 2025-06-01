@@ -207,9 +207,24 @@ export const UserTable = () => {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4 space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-        <div>
-          <h2 className="text-2xl font-bold">{t('admin.userManagement.title')}</h2>
-          <p className="text-muted-foreground">{t('admin.userManagement.description')}</p>
+        <div className="flex-1">
+          <UserFilters
+            searchQuery={searchQuery}
+            roleFilter={roleFilter}
+            statusFilter={statusFilter}
+            onSearchChange={(value) => {
+              setSearchQuery(value);
+              setCurrentPage(1);
+            }}
+            onRoleFilterChange={(value) => {
+              setRoleFilter(value);
+              setCurrentPage(1);
+            }}
+            onStatusFilterChange={(value) => {
+              setStatusFilter(value);
+              setCurrentPage(1);
+            }}
+          />
         </div>
         
         <div className="flex items-center gap-2">
@@ -228,26 +243,6 @@ export const UserTable = () => {
             {t('admin.sellerRegistration.title')}
           </Button>
         </div>
-      </div>
-
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <UserFilters
-          searchQuery={searchQuery}
-          roleFilter={roleFilter}
-          statusFilter={statusFilter}
-          onSearchChange={(value) => {
-            setSearchQuery(value);
-            setCurrentPage(1);
-          }}
-          onRoleFilterChange={(value) => {
-            setRoleFilter(value);
-            setCurrentPage(1);
-          }}
-          onStatusFilterChange={(value) => {
-            setStatusFilter(value);
-            setCurrentPage(1);
-          }}
-        />
       </div>
 
       <div className="rounded-md border bg-white dark:bg-gray-900">
