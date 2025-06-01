@@ -1,11 +1,10 @@
-import { User as UserIcon, Pencil, Trash, Edit } from 'lucide-react';
+import { User as UserIcon, Pencil, Trash } from 'lucide-react';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { formatDate } from '@/lib/utils';
 import { UserRole } from '@/types/auth';
 import { Advertiser } from '@/lib/advertiserApi';
-import { useTranslation } from 'react-i18next';
 
 interface UserTableRowProps {
   user: Advertiser;
@@ -18,18 +17,7 @@ interface UserTableRowProps {
   setIsReactivateModalOpen: (open: boolean) => void;
 }
 
-export const UserTableRow = ({ 
-  user, 
-  onEdit, 
-  onDelete, 
-  deactivateUserMutation, 
-  reactivateUserMutation, 
-  setSelectedActionUser, 
-  setIsDeactivateModalOpen, 
-  setIsReactivateModalOpen 
-}: UserTableRowProps) => {
-  const { t } = useTranslation();
-
+export const UserTableRow = ({ user, onEdit, onDelete, deactivateUserMutation, reactivateUserMutation, setSelectedActionUser, setIsDeactivateModalOpen, setIsReactivateModalOpen }: UserTableRowProps) => {
   if (!user) {
     return null;
   }
@@ -37,29 +25,42 @@ export const UserTableRow = ({
   const getRoleBadgeColor = (role: string) => {
     switch (role?.toUpperCase()) {
       case 'ADMIN':
-        return 'bg-red-200 text-red-700 dark:bg-red-700 dark:text-red-100';
+        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
       case 'ADVERTISER':
-        return 'bg-green-200 text-green-600 dark:bg-green-600 dark:text-green-100';
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
       case 'AGENCY_MANAGER':
-        return 'bg-blue-200 text-blue-700 dark:bg-blue-700 dark:text-blue-100';
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
       default:
         return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+    }
+  };
+
+  const formatRole = (role: string): string => {
+    switch (role?.toUpperCase()) {
+      case 'ADMIN':
+        return 'Admin';
+      case 'ADVERTISER':
+        return 'Advertiser';
+      case 'AGENCY_MANAGER':
+        return 'Agency Manager';
+      default:
+        return role || 'Unknown';
     }
   };
 
   const getStatusBadgeColor = (status: string) => {
     switch (status?.toUpperCase()) {
       case 'ACTIVE':
-        return 'bg-green-200 text-green-600 dark:bg-green-600 dark:text-green-100';
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
       case 'INACTIVE':
-        return 'bg-red-200 text-red-700 dark:bg-red-700 dark:text-red-100';
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+      case 'SUSPENDED':
+        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+      case 'PENDING':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
       default:
         return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
     }
-  };
-
-  const formatRole = (role: string) => {
-    return t(`roles.${role.toLowerCase()}`);
   };
 
   return (
@@ -73,17 +74,17 @@ export const UserTableRow = ({
         </div>
       </TableCell>
       <TableCell>{user.email}</TableCell>
-      <TableCell>{user.phoneNumber || t('common.notAvailable')}</TableCell>
+      <TableCell>{user.phoneNumber || 'N/A'}</TableCell>
       <TableCell>
         <Badge className={getRoleBadgeColor(user.role)} variant="outline">
           {formatRole(user.role)}
         </Badge>
       </TableCell>
-      <TableCell>{user.shopName || t('common.notAvailable')}</TableCell>
-      <TableCell>{user.address || t('common.notAvailable')}</TableCell>
+      <TableCell>{user.shopName || 'N/A'}</TableCell>
+      <TableCell>{user.address || 'N/A'}</TableCell>
       <TableCell>
         <Badge className={getStatusBadgeColor(user.status)} variant="outline">
-          {t(`common.${user.status?.toLowerCase()}`) || t('common.unknown')}
+          {user.status || 'Unknown'}
         </Badge>
       </TableCell>
       <TableCell className="text-right">
@@ -91,10 +92,9 @@ export const UserTableRow = ({
           <Button
             variant="outline"
             size="sm"
-            className="text-green-500 border-green-600 hover:bg-green-600 hover:text-white"
             onClick={() => onEdit(user)}
           >
-            <Edit className="h-4 w-4" />
+            <Pencil className="h-4 w-4" />
           </Button>
           {user.status?.toLowerCase() === 'active' ? (
             <Button
@@ -104,7 +104,7 @@ export const UserTableRow = ({
                 setSelectedActionUser(user);
                 setIsDeactivateModalOpen(true);
               }}
-              className="text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-white"
+              className="text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -118,7 +118,7 @@ export const UserTableRow = ({
                 setSelectedActionUser(user);
                 setIsReactivateModalOpen(true);
               }}
-              className="text-green-500 border-green-600 hover:bg-green-600 hover:text-white"
+              className="text-green-500 border-green-200 hover:bg-green-50 hover:text-green-600"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -129,7 +129,7 @@ export const UserTableRow = ({
             variant="outline"
             size="sm"
             onClick={() => onDelete(user)}
-            className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
+            className="text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
           >
             <Trash className="h-4 w-4" />
           </Button>

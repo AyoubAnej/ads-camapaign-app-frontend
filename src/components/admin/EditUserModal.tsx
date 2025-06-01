@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Dialog, 
@@ -12,8 +13,6 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Advertiser } from '@/lib/advertiserApi';
-import { useTranslation } from 'react-i18next';
-
 
 interface EditUserModalProps {
   open: boolean;
@@ -24,8 +23,6 @@ interface EditUserModalProps {
 
 export const EditUserModal = ({ open, onOpenChange, user, onEditUser }: EditUserModalProps) => {
   const [formData, setFormData] = useState<Advertiser>({...user});
-  const { t } = useTranslation();
-  
 
   React.useEffect(() => {
     if (open) {
@@ -51,16 +48,16 @@ export const EditUserModal = ({ open, onOpenChange, user, onEditUser }: EditUser
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t('admin.userManagement.editUser')}</DialogTitle>
+          <DialogTitle>Edit User</DialogTitle>
           <DialogDescription>
-            {t('admin.userManagement.editDescription')}
+            Make changes to the user's information.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="firstName" className="text-right">
-                {t('admin.userManagement.fields.firstName')}
+                First Name
               </Label>
               <Input
                 id="firstName"
@@ -72,7 +69,7 @@ export const EditUserModal = ({ open, onOpenChange, user, onEditUser }: EditUser
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="lastName" className="text-right">
-                {t('admin.userManagement.fields.lastName')}
+                Last Name
               </Label>
               <Input
                 id="lastName"
@@ -84,7 +81,7 @@ export const EditUserModal = ({ open, onOpenChange, user, onEditUser }: EditUser
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="email" className="text-right">
-                {t('admin.userManagement.fields.email')}
+                Email
               </Label>
               <Input
                 id="email"
@@ -96,7 +93,7 @@ export const EditUserModal = ({ open, onOpenChange, user, onEditUser }: EditUser
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="phoneNumber" className="text-right">
-                {t('admin.userManagement.fields.phoneNumber')}
+                Phone
               </Label>
               <Input
                 id="phoneNumber"
@@ -108,22 +105,22 @@ export const EditUserModal = ({ open, onOpenChange, user, onEditUser }: EditUser
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="role" className="text-right">
-                {t('admin.userManagement.fields.role')}
+                Role
               </Label>
               <Select value={formData.role} onValueChange={handleRoleChange}>
                 <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder={t('admin.userManagement.selectRole')} />
+                  <SelectValue placeholder="Select role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ADMIN">{t('roles.admin')}</SelectItem>
-                  <SelectItem value="ADVERTISER">{t('roles.advertiser')}</SelectItem>
-                  <SelectItem value="AGENCY_MANAGER">{t('roles.agencyManager')}</SelectItem>
+                  <SelectItem value="ADMIN">Admin</SelectItem>
+                  <SelectItem value="ADVERTISER">Advertiser</SelectItem>
+                  <SelectItem value="AGENCY_MANAGER">Agency Manager</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="address" className="text-right">
-                {t('admin.userManagement.fields.address')}
+                Address
               </Label>
               <Input
                 id="address"
@@ -135,7 +132,7 @@ export const EditUserModal = ({ open, onOpenChange, user, onEditUser }: EditUser
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="shopName" className="text-right">
-                {t('admin.userManagement.fields.shopName')}
+                Shop Name
               </Label>
               <Input
                 id="shopName"
@@ -148,9 +145,9 @@ export const EditUserModal = ({ open, onOpenChange, user, onEditUser }: EditUser
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              {t('common.cancel')}
+              Cancel
             </Button>
-            <Button type="submit">{t('common.save')}</Button>
+            <Button type="submit">Save changes</Button>
           </DialogFooter>
         </form>
       </DialogContent>

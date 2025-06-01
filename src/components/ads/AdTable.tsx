@@ -21,7 +21,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { adApi } from '@/lib/adApi';
 import { GetAdResponseDto, AdPaginationParams } from '@/types/ad';
-import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight, Filter, User, Trash } from 'lucide-react';
+import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight, Filter, User } from 'lucide-react';
 // import { CreateAdModal } from './CreateAdModal';
 import { EditAdModal } from './EditAdModal';
 import { DeleteAdModal } from './DeleteAdModal';
@@ -29,14 +29,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 interface AdTableProps {
   campaignId: number;
 }
 
 export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -182,7 +180,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           <div className="relative w-full sm:w-[200px]">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder={t('ads.searchPlaceholder')}
+              placeholder="Search ads..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
@@ -284,9 +282,8 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button
-                          variant="outline"
-                          size="sm"
-                          className= "border-blue-600 text-blue-600 hover:bg-blue-500 hover:text-white"
+                          variant="ghost"
+                          size="icon"
                           onClick={() => {
                             // Navigate to ad details page
                             navigate(`/campaigns/${campaignId}/ads/${ad.adId}`);
@@ -295,9 +292,8 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                           <Eye className="h-4 w-4" />
                         </Button>
                         <Button
-                          variant="outline"
-                          size="sm"
-                          className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+                          variant="ghost"
+                          size="icon"
                           onClick={() => {
                             setSelectedAd(ad);
                             setIsEditModalOpen(true);
@@ -306,15 +302,15 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive hover:text-destructive/90"
                           onClick={() => {
                             setSelectedAd(ad);
                             setIsDeleteModalOpen(true);
                           }}
                         >
-                          <Trash className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>
@@ -327,11 +323,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           {/* Pagination with page size selection */}
           <div className="flex items-center justify-between py-4">
             <div className="text-sm text-muted-foreground">
-              {t('ui.table.showing', {
-                start: totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1,
-                end: Math.min(currentPage * pageSize, totalCount),
-                total: totalCount
-              })}
+              Showing {totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount} ads
             </div>
             <div className="flex items-center space-x-2">
               <Button
@@ -343,7 +335,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                 <ChevronLeft className="h-4 w-4" />
               </Button>
               <span className="text-sm">
-                {t('ui.table.pagination', { currentPage, totalPages })}
+                Page {currentPage} of {totalPages}
               </span>
               <Button
                 variant="outline"

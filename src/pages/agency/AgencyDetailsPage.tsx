@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Phone, Globe, Calendar, CheckCircle, UserPlus, Users, Search, Trash2, AlertTriangle } from 'lucide-react';
+import { Building2, Phone, Globe, Calendar, CheckCircle, UserPlus, Users, Search, Trash2, AlertTriangle, Trash } from 'lucide-react';
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { agencyApi } from "@/lib/agenciesApi";
 import { agencyStatusToString, Agency } from "@/types/agency";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
@@ -15,11 +15,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { useTranslation } from "react-i18next";
-import { DialogDescription } from "@radix-ui/react-dialog";
 
 const AgencyDetailsPage = () => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const [agency, setAgency] = useState<Agency | null>(null);
   const [isAddAdvertiserModalOpen, setIsAddAdvertiserModalOpen] = useState(false);
@@ -159,15 +156,15 @@ const AgencyDetailsPage = () => {
   };
 
   if (agencyLoading) {
-    return <div className="flex justify-center items-center h-64">{t('common.loading')}</div>;
+    return <div className="flex justify-center items-center h-64">Loading agency details...</div>;
   }
 
   if (agencyError) {
-    return <div className="text-red-500">{t('common.error')}</div>;
+    return <div className="text-red-500">Error loading agency data. Please try again.</div>;
   }
 
   if (!agency) {
-    return <div className="text-amber-500">{t('agencies.details.noAgency')}</div>;
+    return <div className="text-amber-500">No agency data available.</div>;
   }
 
   // Format date for better display
@@ -183,9 +180,9 @@ const AgencyDetailsPage = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">{t('agencies.details.title')}</h1>
+          <h1 className="text-3xl font-bold">Agency Details</h1>
           <p className="text-gray-500">
-            {t('agencies.details.subtitle')}
+            View information about your agency
           </p>
         </div>
       </div>
@@ -194,16 +191,16 @@ const AgencyDetailsPage = () => {
         <TabsList className="mb-4">
           <TabsTrigger value="details" className="flex items-center gap-2">
             <Building2 className="h-4 w-4" />
-            {t('agencies.details.information')}
+            Agency Details
           </TabsTrigger>
           <TabsTrigger value="advertisers" className="flex items-center gap-2">
             <Users className="h-4 w-4" />
-            {t('agencies.advertisers.title')}
+            Advertisers
           </TabsTrigger>
         </TabsList>
         
         <TabsContent value="details" className="space-y-4">
-          {/* Agency Details Card */}
+          {/* Agency Overview Card */}
           <Card className="overflow-hidden">
             <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
               <CardTitle className="text-2xl">{agency.name}</CardTitle>
@@ -214,15 +211,15 @@ const AgencyDetailsPage = () => {
             </CardHeader>
             <CardContent className="p-6 space-y-6">
               <div className="grid gap-6 md:grid-cols-2">
-                {/* Agency Contact Information */}
+                {/* Agency Details */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">{t('agencies.details.contact')}</h3>
+                  <h3 className="text-lg font-semibold">Contact Information</h3>
                   
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <Building2 className="h-5 w-5 text-gray-500" />
                       <div>
-                        <p className="text-sm text-gray-500">{t('agencies.details.fields.name')}</p>
+                        <p className="text-sm text-gray-500">Agency Name</p>
                         <p className="font-medium">{agency.name}</p>
                       </div>
                     </div>
@@ -230,7 +227,7 @@ const AgencyDetailsPage = () => {
                     <div className="flex items-center space-x-3">
                       <Phone className="h-5 w-5 text-gray-500" />
                       <div>
-                        <p className="text-sm text-gray-500">{t('agencies.details.fields.phone')}</p>
+                        <p className="text-sm text-gray-500">Phone Number</p>
                         <p className="font-medium">{agency.phoneNumber}</p>
                       </div>
                     </div>
@@ -239,7 +236,7 @@ const AgencyDetailsPage = () => {
                       <div className="flex items-center space-x-3">
                         <Globe className="h-5 w-5 text-gray-500" />
                         <div>
-                          <p className="text-sm text-gray-500">{t('agencies.details.fields.website')}</p>
+                          <p className="text-sm text-gray-500">Website</p>
                           <a 
                             href={agency.website.startsWith('http') ? agency.website : `https://${agency.website}`} 
                             target="_blank" 
@@ -256,13 +253,13 @@ const AgencyDetailsPage = () => {
                 
                 {/* Agency Dates */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">{t('agencies.details.dates.title')}</h3>
+                  <h3 className="text-lg font-semibold">Agency Information</h3>
                   
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <Calendar className="h-5 w-5 text-gray-500" />
                       <div>
-                        <p className="text-sm text-gray-500">{t('agencies.details.dates.created')}</p>
+                        <p className="text-sm text-gray-500">Created On</p>
                         <p className="font-medium">{formatDate(agency.createdAt)}</p>
                       </div>
                     </div>
@@ -270,7 +267,7 @@ const AgencyDetailsPage = () => {
                     <div className="flex items-center space-x-3">
                       <Calendar className="h-5 w-5 text-gray-500" />
                       <div>
-                        <p className="text-sm text-gray-500">{t('agencies.details.dates.updated')}</p>
+                        <p className="text-sm text-gray-500">Last Updated</p>
                         <p className="font-medium">{formatDate(agency.updatedAt)}</p>
                       </div>
                     </div>
@@ -281,7 +278,7 @@ const AgencyDetailsPage = () => {
               {/* Agency Description */}
               {agency.description && (
                 <div className="pt-4 border-t">
-                  <h3 className="text-lg font-semibold mb-2">{t('agencies.details.fields.description')}</h3>
+                  <h3 className="text-lg font-semibold mb-2">Description</h3>
                   <p className="text-gray-700">{agency.description}</p>
                 </div>
               )}
@@ -292,134 +289,168 @@ const AgencyDetailsPage = () => {
         <TabsContent value="advertisers" className="space-y-4">
           <div className="flex justify-between items-center mb-4">
             <div>
-              <h2 className="text-xl font-semibold">{t('agencies.advertisers.title')}</h2>
-              <p className="text-sm text-muted-foreground">{t('agencies.advertisers.subtitle')}</p>
+              <h2 className="text-xl font-semibold">Advertisers in Your Agency</h2>
+              <p className="text-sm text-muted-foreground">Showing only users with the Advertiser role</p>
             </div>
             <Button 
               onClick={() => setIsAddAdvertiserModalOpen(true)}
               className="flex items-center gap-2"
             >
               <UserPlus className="h-4 w-4" />
-              {t('agencies.advertisers.add')}
+              Add Advertiser
             </Button>
           </div>
           
           {advertisersLoading ? (
-            <div className="flex justify-center items-center h-32">{t('agencies.advertisers.loading')}</div>
+            <div className="flex justify-center items-center h-32">Loading advertisers...</div>
           ) : advertisersError ? (
-            <div className="text-red-500">{t('agencies.advertisers.error')}</div>
-          ) : advertisersData && advertisersData.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t('agencies.advertisers.table.name')}</TableHead>
-                  <TableHead>{t('agencies.advertisers.table.email')}</TableHead>
-                  <TableHead>{t('agencies.advertisers.table.actions')}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {advertisersData.map((advertiser) => (
-                  <TableRow key={advertiser.id}>
-                    <TableCell>
-                      {advertiser.firstName} {advertiser.lastName}
-                    </TableCell>
-                    <TableCell>{advertiser.email}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => openRemoveAdvertiserModal(advertiser)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <div className="text-red-500">Error loading advertisers. Please try again.</div>
+          ) : !advertisersData || advertisersData.length === 0 ? (
+            <Card>
+              <CardContent className="p-6 text-center">
+                <div className="flex flex-col items-center justify-center py-8 space-y-4">
+                  <Users className="h-12 w-12 text-gray-300" />
+                  <h3 className="text-lg font-medium">No Advertisers Yet</h3>
+                  <p className="text-gray-500 max-w-md">
+                    Your agency doesn't have any advertisers yet. Add advertisers to manage their campaigns and ads.
+                  </p>
+                  <Button 
+                    onClick={() => setIsAddAdvertiserModalOpen(true)}
+                    className="mt-2"
+                  >
+                    Add Your First Advertiser
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           ) : (
-            <div className="text-center py-8 text-gray-500">{t('agencies.advertisers.empty')}</div>
-          )}
-        </TabsContent>
-      </Tabs>
-
-      {/* Add Advertiser Modal */}
-      <Dialog open={isAddAdvertiserModalOpen} onOpenChange={setIsAddAdvertiserModalOpen}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>{t('agencies.advertisers.add')}</DialogTitle>
-            <DialogDescription>
-              {t('agencies.advertisers.search.description')}
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-4">
-            <div className="flex items-end gap-4">
-              <div className="flex-1">
-                <Label htmlFor="search-advertisers">{t('agencies.advertisers.search.title')}</Label>
-                <Input
-                  id="search-advertisers"
-                  placeholder={t('agencies.advertisers.search.placeholder')}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="mt-1"
-                />
-              </div>
-              <Button 
-                onClick={handleSearch} 
-                disabled={isLoading || !searchTerm.trim()}
-                className="flex items-center gap-2"
-              >
-                {isLoading ? t('common.searching') : (
-                  <>
-                    <Search className="h-4 w-4" />
-                    {t('common.search')}
-                  </>
-                )}
-              </Button>
-            </div>
-            
-            {searchResults.length > 0 ? (
-              <div className="max-h-60 overflow-y-auto border rounded-md">
+            <Card>
+              <CardContent className="p-4">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[40px]"></TableHead>
-                      <TableHead>{t('agencies.advertisers.table.name')}</TableHead>
-                      <TableHead>{t('agencies.advertisers.table.email')}</TableHead>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Shop Name</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {searchResults.map((advertiser) => (
-                      <TableRow 
-                        key={advertiser.id} 
-                        className={`cursor-pointer hover:bg-muted ${selectedAdvertiser?.id === advertiser.id ? 'bg-muted' : ''}`}
-                        onClick={() => setSelectedAdvertiser(advertiser)}
-                      >
-                        <TableCell>
-                          <input
-                            type="radio"
-                            checked={selectedAdvertiser?.id === advertiser.id}
-                            onChange={() => setSelectedAdvertiser(advertiser)}
-                            title={t('agencies.advertisers.table.name') + ': ' + advertiser.firstName + ' ' + advertiser.lastName}
-                          />
+                    {advertisersData
+                      .filter(advertiser => advertiser.role === 'ADVERTISER')
+                      .map((advertiser) => (
+                      <TableRow key={advertiser.id}>
+                        <TableCell className="font-medium">
+                          {advertiser.firstName} {advertiser.lastName}
                         </TableCell>
-                        <TableCell>{advertiser.firstName} {advertiser.lastName}</TableCell>
                         <TableCell>{advertiser.email}</TableCell>
+                        <TableCell>{advertiser.shopName}</TableCell>
+                        <TableCell>
+                          <Badge variant={advertiser.status === 'ACTIVE' ? 'default' : 'secondary'} className={advertiser.status === 'ACTIVE' ? 'bg-green-500' : ''}>
+                            {advertiser.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openRemoveAdvertiserModal(advertiser);
+                            }}
+                          >
+                            <Trash className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
-              </div>
-            ) : searchTerm && !isLoading ? (
-              <p className="text-center text-gray-500">{t('agencies.advertisers.empty')}</p>
-            ) : null}
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+      </Tabs>
+      
+      {/* Add Advertiser Modal */}
+      <Dialog open={isAddAdvertiserModalOpen} onOpenChange={setIsAddAdvertiserModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Advertiser to Agency</DialogTitle>
+            <DialogDescription>
+              Search for an advertiser by email, name, or shop name to add them to your agency.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="flex items-end gap-2 my-4">
+            <div className="flex-1">
+              <Label htmlFor="search-advertiser">Search Advertiser</Label>
+              <Input
+                id="search-advertiser"
+                placeholder="Email, name, or shop name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="mt-1"
+              />
+            </div>
+            <Button 
+              onClick={handleSearch} 
+              disabled={isLoading || !searchTerm.trim()}
+              className="flex items-center gap-2"
+            >
+              {isLoading ? 'Searching...' : (
+                <>
+                  <Search className="h-4 w-4" />
+                  Search
+                </>
+              )}
+            </Button>
           </div>
           
+          {searchResults.length > 0 ? (
+            <div className="max-h-60 overflow-y-auto border rounded-md">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[40px]"></TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {searchResults.map((advertiser) => (
+                    <TableRow 
+                      key={advertiser.id} 
+                      className={`cursor-pointer ${selectedAdvertiser?.id === advertiser.id ? 'bg-blue-50' : ''}`}
+                      onClick={() => setSelectedAdvertiser(advertiser)}
+                    >
+                      <TableCell>
+                        <div className="flex items-center justify-center h-5 w-5">
+                          {selectedAdvertiser?.id === advertiser.id && (
+                            <CheckCircle className="h-4 w-4 text-blue-600" />
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-medium ">
+                        {advertiser.firstName} {advertiser.lastName}
+                      </TableCell>
+                      <TableCell>{advertiser.email}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ) : searchTerm && !isLoading ? (
+            <div className="text-center py-4 text-gray-500">
+              No advertisers found matching your search.
+            </div>
+          ) : null}
+          
           <DialogFooter>
-            <Button
-              variant="outline"
+            <Button 
+              variant="outline" 
               onClick={() => {
                 setIsAddAdvertiserModalOpen(false);
                 setSearchTerm('');
@@ -427,13 +458,13 @@ const AgencyDetailsPage = () => {
                 setSelectedAdvertiser(null);
               }}
             >
-              {t('common.cancel')}
+              Cancel
             </Button>
             <Button
               onClick={handleAddAdvertiserToAgency}
               disabled={isLoading || !selectedAdvertiser}
             >
-              {isLoading ? t('common.adding') : t('common.add')}
+              {isLoading ? 'Adding...' : 'Add to Agency'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -445,15 +476,13 @@ const AgencyDetailsPage = () => {
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-red-500" />
-              {t('agencies.advertisers.remove.title')}
+              Confirm Removal
             </AlertDialogTitle>
             <AlertDialogDescription>
               {advertiserToRemove && (
                 <>
-                  {t('agencies.advertisers.remove.description', {
-                    name: `${advertiserToRemove.firstName} ${advertiserToRemove.lastName}`
-                  })}
-                  <p className="mt-2">{t('agencies.advertisers.remove.warning')}</p>
+                  Are you sure you want to remove <span className="font-semibold">{advertiserToRemove.firstName} {advertiserToRemove.lastName}</span> from your agency?
+                  <p className="mt-2">This action cannot be undone.</p>
                 </>
               )}
             </AlertDialogDescription>
@@ -464,14 +493,14 @@ const AgencyDetailsPage = () => {
                 setAdvertiserToRemove(null);
               }}
             >
-              {t('agencies.advertisers.remove.cancel')}
+              Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-500 hover:bg-red-600"
               onClick={handleRemoveAdvertiserFromAgency}
               disabled={isLoading}
             >
-              {isLoading ? t('common.removing') : t('agencies.advertisers.remove.confirm')}
+              {isLoading ? 'Removing...' : 'Remove'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

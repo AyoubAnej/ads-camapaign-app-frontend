@@ -1,9 +1,5 @@
-{  "common": {
-    "notAvailable": "Non disponible",
-    "tryAgain": "Réessayer",
-    "actions": "Actions",
-    "created": "Créé le",
-    "updated": "Mis à jour le",
+{
+  "common": {
     "dashboard": "Tableau de bord",
     "users": "Utilisateurs",
     "agencies": "Agences",
@@ -11,312 +7,19 @@
     "analytics": "Analyses",
     "settings": "Paramètres",
     "agencyDetails": "Détails de l'agence",
-    "globalStates": {
-      "active": "Actif",
-      "inactive": "Inactif",
-      "paused": "En pause",
-      "pending": "En attente",
-      "suspended": "Suspendu",
-      "rejected": "Rejeté"
-    },
-    "buttons": {
-      "cancel": "Annuler",
-      "save": "Enregistrer",
-      "delete": "Supprimer",
-      "edit": "Modifier",
-      "confirm": "Confirmer",
-      "actions": "Actions",
-      "previous": "Précédent",
-      "next": "Suivant",
-      "submit": "Soumettre"
-    },
-    "feedback": {
-      "loading": "Chargement...",
-      "success": "Succès",
-      "error": "Erreur",
-      "creating": "Création en cours...",
-      "updating": "Mise à jour en cours...",
-      "deleting": "Suppression en cours..."
-    },
-    "navigation": {
-      "back": "Retour"
-    },
-    "fields": {
-      "name": "Nom",
-      "description": "Description",
-      "email": "Email",
-      "phone": "Téléphone",
-      "status": "Statut",
-      "startDate": "Date de début",
-      "endDate": "Date de fin",
-      "createdAt": "Créé le",
-      "updatedAt": "Mis à jour le"
-    },
-    "loading": "Chargement...",
-    "error": "Erreur lors du chargement des données.",
-    "success": "Succès",
-    "cancel": "Annuler",
-    "add": "Ajouter",
-    "adding": "Ajout en cours...",
-    "remove": "Retirer",
-    "removing": "Suppression en cours...",
-    "search": "Rechercher",
-    "searching": "Recherche en cours..."
+    "active": "Actif",
+    "paused": "En pause",
+    "from": "par rapport au mois dernier"
   },
-  "admin": {
-    "agencyManagement": {
-      "title": "Gestion des Agences",
-      "description": "Gérez les agences et leurs paramètres",
-      "addAgency": "Ajouter une agence",
-      "editAgency": "Modifier l'agence",
-      "deleteAgency": "Supprimer l'agence",
-      "reactivateAgency": "Réactiver l'agence",
-      "deactivateAgency": "Désactiver l'agence",
-      "fields": {
-        "name": "Nom d'agence",
-        "address": "Addresse",
-        "phone": "Numéro de téléphone",
-        "email": "Email",
-        "website": "Site web",
-        "description": "Description",
-        "agencyStatus": "Statut"
-      },
-      "placeholders": {
-        "name": "Nom de l'agence",
-        "phone": "Numéro de téléphone",
-        "website": "https://www.exemple.com",
-        "description": "Description de l'agence",
-        "search": "Rechercher une agence..."
-      },
-      "feedback": {
-        "createSuccess": "Agence créée avec succès",
-        "updateSuccess": "Agence mise à jour avec succès",
-        "deleteSuccess": "Agence supprimée avec succès",
-        "deactivateSuccess": "Agence désactivée avec succès",
-        "reactivateSuccess": "Agence réactivée avec succès",
-        "createError": "Erreur lors de la création de l'agence. Veuillez réessayer.",
-        "updateError": "Erreur lors de la mise à jour de l'agence",
-        "deleteError": "Erreur lors de la suppression de l'agence",
-        "deactivateError": "Erreur lors de la désactivation de l'agence",
-        "reactivateError": "Erreur lors de la réactivation de l'agence",
-        "noPermission": "Vous n'avez pas les permissions nécessaires pour créer une agence.",
-        "networkError": "Erreur de connexion. Veuillez vérifier votre connexion internet.",
-        "invalidData": "Les données saisies sont invalides. Veuillez vérifier les champs."
-      },
-      "confirmations": {
-        "deleteTitle": "Confirmer la suppression",
-        "deleteMessage": "Êtes-vous sûr de vouloir supprimer cette agence ? Cette action est irréversible.",
-        "deactivateTitle": "Confirmer la désactivation",
-        "deactivateMessage": "Êtes-vous sûr de vouloir désactiver cette agence ?",
-        "reactivateTitle": "Confirmer la réactivation",
-        "reactivateMessage": "Êtes-vous sûr de vouloir réactiver cette agence ?"
-      },
-      "management": {
-        "edit": {
-          "title": "Modifier l'agence",
-          "description": "Modifier les informations de l'agence",
-          "success": "Agence modifiée avec succès",
-          "error": "Erreur lors de la modification de l'agence",
-          "loading": "Modification en cours..."
-        },
-        "create": {
-          "title": "Créer une nouvelle agence",
-          "description": "Ajouter une nouvelle agence au système",
-          "success": "Agence créée avec succès",
-          "error": "Erreur lors de la création de l'agence",
-          "loading": "Création en cours..."
-        },
-        "delete": {
-          "title": "Supprimer l'agence",
-          "description": "Cette action est irréversible",
-          "confirm": "Êtes-vous sûr de vouloir supprimer cette agence ?",
-          "success": "Agence supprimée avec succès",
-          "error": "Erreur lors de la suppression de l'agence",
-          "loading": "Suppression en cours..."
-        },
-        "status": {
-          "activate": {
-            "title": "Activer l'agence",
-            "description": "Activer cette agence",
-            "confirm": "Êtes-vous sûr de vouloir activer cette agence ?",
-            "success": "Agence activée avec succès",
-            "error": "Erreur lors de l'activation de l'agence"
-          },
-          "deactivate": {
-            "title": "Désactiver l'agence",
-            "description": "Désactiver cette agence",
-            "confirm": "Êtes-vous sûr de vouloir désactiver cette agence ?",
-            "success": "Agence désactivée avec succès",
-            "error": "Erreur lors de la désactivation de l'agence"
-          }
-        }
-      },
-      "sellerRegistration": {
-      "title": "Register a Seller as an Advertiser",
-      "description": "Select a seller from the list to register them as an advertiser in the system",
-      "searchPlaceholder": "Search by shop name or ID...",
-      "loading": "Loading sellers...",
-      "noSellers": "No sellers found",
-      "registerSuccess": "Seller successfully registered",
-      "registerError": "Failed to register the seller",
-      "shortTitle":"Add Advertiser",
-      "fields": {
-        "seller": "Seller",
-        "role": "Role",
-        "agencyId": "Agency ID"
-      }
-    },
-      "form": {
-        "fields": {
-          "name": {
-            "label": "Nom de l'agence",
-            "placeholder": "Entrez le nom de l'agence",
-            "help": "Nom commercial de l'agence"
-          },
-          "description": {
-            "label": "Description",
-            "placeholder": "Décrivez l'activité de l'agence",
-            "help": "Brève description des services de l'agence"
-          },
-          "contact": {
-            "label": "Contact principal",
-            "placeholder": "Nom du contact principal",
-            "help": "Personne responsable de l'agence"
-          },
-          "email": {
-            "label": "Email",
-            "placeholder": "email@agence.com",
-            "help": "Email professionnel de l'agence"
-          },
-          "phone": {
-            "label": "Téléphone",
-            "placeholder": "+33 1 23 45 67 89",
-            "help": "Numéro de téléphone principal"
-          },
-          "website": {
-            "label": "Site web",
-            "placeholder": "https://www.agence.com",
-            "help": "Site web officiel de l'agence"
-          },
-          "address": {
-            "label": "Adresse",
-            "placeholder": "Adresse complète",
-            "help": "Adresse physique de l'agence"
-          }
-        },
-        "validation": {
-          "name": {
-            "required": "Le nom de l'agence est requis",
-            "minLength": "Le nom doit contenir au moins 2 caractères",
-            "maxLength": "Le nom ne doit pas dépasser 100 caractères"
-          },
-          "email": {
-            "required": "L'email est requis",
-            "invalid": "Format d'email invalide"
-          },
-          "phone": {
-            "required": "Le numéro de téléphone est requis",
-            "invalid": "Format de téléphone invalide"
-          },
-          "website": {
-            "invalid": "Format d'URL invalide"
-          }
-        },
-        "buttons": {
-          "save": "Enregistrer",
-          "cancel": "Annuler",
-          "delete": "Supprimer",
-          "activate": "Activer",
-          "deactivate": "Désactiver"
-        }
-      },
-      "details": {
-        "title": "Détails de l'agence",
-        "sections": {
-          "general": "Informations générales",
-          "contact": "Coordonnées",
-          "settings": "Paramètres",
-          "advertisers": "Annonceurs",
-          "campaigns": "Campagnes",
-          "billing": "Facturation"
-        },
-        "stats": {
-          "totalAdvertisers": "Total annonceurs",
-          "activeCampaigns": "Campagnes actives",
-          "totalSpend": "Dépenses totales",
-          "activeAds": "Publicités actives"
-        }
-      },
-      "list": {
-        "title": "Liste des agences",
-        "filters": {
-          "search": "Rechercher une agence",
-          "status": "Filtrer par statut",
-          "date": "Filtrer par date"
-        },
-        "table": {
-          "name": "Nom",
-          "contact": "Contact",
-          "advertisers": "Annonceurs",
-          "campaigns": "Campagnes",
-          "status": "Statut",
-          "actions": "Actions"
-        },
-        "empty": {
-          "title": "Aucune agence trouvée",
-          "description": "Commencez par créer une nouvelle agence"
-        }
-      }
-    },
-    "userManagement": {
-      "title": "Gestion des Utilisateurs",
-      "description": "Gérez les utilisateurs et leurs rôles",
-      "addAdmin": "Enregistrer un administrateur",
-      "sellerToadvertiser": "Enregistrer à partir d’un vendeur",
-      "newUser": "Créer un nouvel utilisateur dans le système, soit à partir d’un vendeur existant, soit en tant qu’administrateur.",
-      "registerUser": "Enregistrer un nouvel utilisateur",
-      "addUser": "Ajouter un utilisateur",
-      "editUser": "Modifier l'utilisateur",
-      "deleteUser": "Supprimer l'utilisateur",
-      "reactivateUser": "Réactiver l'utilisateur",
-      "reactivateWarning": "Êtes-vous sûr de vouloir réactiver cet utilisateur ? Il retrouvera l'accès à la plateforme.",
-      "deactivateUser": "Désactiver l'utilisateur",
-      "deactivateWarning": "Êtes-vous sûr de vouloir désactiver cet utilisateur ? Il n’aura plus accès à la plateforme.",
-      "fields": {
-        "name": "Nom d'utilisateur",
-        "firstName": "Prénom",
-        "lastName": "Nom",
-        "password": "Mot de passe",
-        "role": "Rôle",
-        "phoneNumber": "Numéro de téléphone",
-        "address": "Adresse",
-        "agencyId": "ID de l'agence",
-        "shopName": "Nom de la boutique",
-        "status": "Statut",
-        "actions": "Actions"
-      },
-      "roles": {
-        "admin": "Administrateur",
-        "advertiser": "Annonceur",
-        "agencyManager": "ManagerAgence",
-        "seller": "Vendeur"
-      },
-      "placeholders": {
-        "firstName": "John",
-        "lastName": "Doe",
-        "email": "john.doe@exemple.com",
-        "password": "••••••••",
-        "phoneNumber": "+33 1 23 45 67 89",
-        "address": "123 rue Exemple, 75000 Paris",
-        "agencyId": "ID de l'agence",
-        "shopName": "Nom de la boutique"
-      },
-      "selectRole": "Sélectionner un rôle"
-    }
+  "sidebar": {
+    "expandSidebar": "Développer la barre latérale",
+    "collapseSidebar": "Réduire la barre latérale"
   },
   "login": {
     "title": "Connexion",
     "description": "Entrez vos identifiants pour accéder à votre compte",
+    "email": "Email",
+    "password": "Mot de passe",
     "emailPlaceholder": "nom@exemple.com",
     "passwordPlaceholder": "Entrez votre mot de passe",
     "signingIn": "Connexion en cours...",
@@ -328,94 +31,11 @@
     "validationError": "Erreur de validation",
     "enterEmailAndPassword": "Veuillez saisir l'email et le mot de passe",
     "loginFailed": "Échec de connexion",
-    "invalidCredentials": "Identifiants invalides. Veuillez réessayer.",
-    "required": "Ce champ est obligatoire",
-    "email": "Veuillez entrer une adresse email valide",
-    "minLength": "Doit contenir au moins {{count}} caractères",
-    "maxLength": "Ne doit pas dépasser {{count}} caractères",
-    "phone": "Veuillez entrer un numéro de téléphone valide",
-    "url": "Veuillez entrer une URL valide",
-    "password": {
-      "match": "Les mots de passe ne correspondent pas",
-      "minLength": "Le mot de passe doit contenir au moins {{count}} caractères",
-      "requirements": "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
-    },
-    "confirmAction": "Êtes-vous sûr de vouloir effectuer cette action ?"
-  },
-  "navbar": {
-    "myAccount": "Mon compte",
-    "profile": "Profil",
-    "signOut": "Déconnexion"
-  },
-  "settings": {
-    "title": "Paramètres",
-    "description": "Gérez vos préférences et paramètres du compte",
-    "account": {
-      "title": "Compte",
-      "description": "Gérez les informations de votre compte",
-      "personalInfo": "Informations personnelles",
-      "security": "Sécurité",
-      "preferences": "Préférences",
-      "fields": {
-        "company": "Entreprise",
-        "language": "Langue",
-        "timezone": "Fuseau horaire",
-        "dateFormat": "Format de date",
-        "theme": "Thème"
-      }
-    },
-    "notifications": {
-      "title": "Notifications"
-    }
-  },
-  "agencies": {
-    "details": {
-      "title": "Détails de l'agence",
-      "subtitle": "Voir les informations sur votre agence",
-      "information": "Informations de l'agence",
-      "contact": "Coordonnées",
-      "dates": {
-        "title": "Dates",
-        "created": "Créé le",
-        "updated": "Mis à jour le"
-      },
-      "fields": {
-        "name": "Nom de l'agence",
-        "phone": "Numéro de téléphone",
-        "website": "Site web",
-        "description": "Description"
-      },
-      "noAgency": "Aucune agence disponible."
-    },
-    "advertisers": {
-      "title": "Annonceurs de votre agence",
-      "subtitle": "Affiche uniquement les utilisateurs avec le rôle Annonceur",
-      "add": "Ajouter un annonceur",
-      "search": {
-        "placeholder": "Rechercher un annonceur...",
-        "title": "Rechercher des annonceurs",
-        "description": "Recherchez des annonceurs à ajouter à votre agence"
-      },
-      "table": {
-        "name": "Nom",
-        "email": "Email",
-        "actions": "Actions"
-      },
-      "loading": "Chargement des annonceurs...",
-      "error": "Erreur lors du chargement des annonceurs. Veuillez réessayer.",
-      "empty": "Aucun annonceur trouvé",
-      "remove": {
-        "title": "Confirmer la suppression",
-        "description": "Êtes-vous sûr de vouloir retirer {name} de votre agence ?",
-        "warning": "Cette action ne peut pas être annulée.",
-        "confirm": "Retirer",
-        "cancel": "Annuler"
-      }
-    }
+    "invalidCredentials": "Identifiants invalides. Veuillez réessayer."
   },
   "adminDashboard": {
     "welcome": "Bienvenue sur votre tableau de bord administrateur",
-    "totalUsers": "Nombre total d'utilisateurs",
+    "totalUsers": "Total des utilisateurs",
     "activeCampaigns": "Campagnes actives",
     "totalRevenue": "Revenu total",
     "totalImpressions": "Impressions totales",
@@ -431,54 +51,6 @@
     "spend": "Dépenses",
     "startDate": "Date de début",
     "endDate": "Date de fin"
-  },
-  "analytics": {
-    "title": "Analyses",
-    "description": "Analysez la performance de vos campagnes",
-    "summary": {
-      "title": "Résumé",
-      "period": "Période",
-      "comparison": "Comparaison",
-      "total": "Total",
-      "change": "Évolution",
-      "trend": "Tendance"
-    },
-    "performance": {
-      "title": "Performance",
-      "overview": "Vue d'ensemble",
-      "byChannel": "Par canal",
-      "byDevice": "Par appareil",
-      "byLocation": "Par localisation",
-      "byTime": "Par période"
-    },
-    "reports": {
-      "title": "Rapports",
-      "generate": "Générer un rapport",
-      "download": "Télécharger",
-      "schedule": "Planifier",
-      "types": {
-        "performance": "Performance",
-        "conversion": "Conversion",
-        "audience": "Audience",
-        "revenue": "Revenu"
-      }
-    },
-    "filters": {
-      "date": {
-        "today": "Aujourd'hui",
-        "yesterday": "Hier",
-        "last7Days": "7 derniers jours",
-        "last30Days": "30 derniers jours",
-        "thisMonth": "Ce mois-ci",
-        "lastMonth": "Mois dernier",
-        "custom": "Personnalisé"
-      },
-      "comparison": {
-        "previousPeriod": "Période précédente",
-        "previousYear": "Année précédente",
-        "custom": "Personnalisé"
-      }
-    }
   },
   "metrics": {
     "totalClicks": "Total des clics",
@@ -641,189 +213,78 @@
   },
   "ads": {
     "title": "Publicités",
-    "description": "Gérez vos publicités",
-    "createAd": "Créer une publicité",
-    "editAd": "Modifier la publicité",
-    "deleteAd": "Supprimer la publicité",
-    "adDetails": "Détails de la publicité",
-    "adInformations": "Informations sur la publicité",
-    "table": {
-      "title": "Publicités",
-      "columns": {
-        "title": "Titre",
-        "description": "Description",
-        "status": "Statut",
-        "campaign": "Campagne",
-        "product": "Produit",
-        "created": "Créé le",
-        "updated": "Mis à jour le",
-        "actions": "Actions"
-      },
-      "status": {
-        "active": "Active",
-        "inactive": "Inactive"
-      },
-      "noAds": "Aucune publicité trouvée",
-      "loading": "Chargement des publicités...",
-      "error": "Erreur lors du chargement des publicités",
-      "tooltips": {
-        "edit": "Modifier la publicité",
-        "delete": "Supprimer la publicité",
-        "view": "Voir les détails"
-      },
-      "search": "Rechercher des publicités...",
-      "perPage": "Publicités par page"
+    "create": "Créer une publicité",
+    "edit": "Modifier la publicité",
+    "delete": "Supprimer la publicité",
+    "details": "Détails de la publicité",
+    "status": {
+      "active": "Active",
+      "paused": "En pause",
+      "deleted": "Supprimée",
+      "draft": "Brouillon",
+      "pending": "En attente",
+      "rejected": "Rejetée"
     },
     "form": {
-      "title": {
-        "label": "Titre",
-        "placeholder": "Entrez le titre de la publicité",
-        "description": "Titre accrocheur pour votre publicité"
-      },
-      "description": {
-        "label": "Description",
-        "placeholder": "Décrivez votre publicité (optionnel)",
-        "description": "Détails supplémentaires sur votre publicité"
-      },
-      "product": {
-        "title": "Sélection du produit",
-        "label": "Sélectionner un produit",
-        "placeholder": "Sélectionnez un produit de votre inventaire",
-        "loading": "Chargement des produits...",
-        "noProducts": "Aucun produit disponible",
-        "search": "Rechercher des produits..."
-      },
-      "keywords": {
-        "title": "Mots-clés",
-        "label": "Mots-clés",
-        "placeholder": "Ajoutez des mots-clés séparés par des virgules",
-        "description": "Les mots-clés aident à cibler votre publicité",
-        "autoGenerate": "Les mots-clés seront générés automatiquement si aucun n'est fourni"
-      },
-      "bid": {
-        "amount": {
-          "label": "Montant de l'enchère",
-          "placeholder": "Entrez le montant de l'enchère",
-          "description": "Enchère maximale par clic",
-          "prefix": "€"
-        },
-        "currency": {
-          "label": "Devise",
-          "options": {
-            "usd": "USD ($)",
-            "eur": "EUR (€)",
-            "gbp": "GBP (£)"
-          }
-        },
-        "strategy": {
-          "label": "Stratégie d'enchère",
-          "placeholder": "Sélectionnez une stratégie",
-          "options": {
-            "manual": "Enchère manuelle",
-            "auto": "Enchère automatique",
-            "targetCpa": "CPA cible"
-          }
-        }
-      },
-      "state": {
-        "active": {
-          "label": "Active",
-          "description": "Activez ou désactivez cette publicité"
-        },
-        "reason": {
-          "label": "Raison (si inactive)",
-          "placeholder": "Raison de la désactivation (optionnel)"
-        },
-        "dates": {
-          "activated": {
-            "label": "Activée le",
-            "placeholder": "Sélectionnez la date d'activation"
-          },
-          "deactivated": {
-            "label": "Désactivée le",
-            "placeholder": "Sélectionnez la date de désactivation"
-          }
-        }
-      }
-    },
-    "modal": {
-      "create": {
-        "title": "Créer une nouvelle publicité",
-        "description": "Remplissez les détails ci-dessous pour créer une nouvelle publicité",
-        "sections": {
-          "adDetails": "Détails de la publicité",
-          "bidSettings": "Paramètres d'enchère",
-          "adState": "État de la publicité"
-        },
-        "buttons": {
-          "cancel": "Annuler",
-          "create": "Créer la publicité",
-          "creating": "Création en cours..."
-        }
-      },
-      "edit": {
-        "title": "Modifier la publicité",
-        "description": "Mettez à jour les détails de votre publicité",
-        "success": {
-          "title": "Publicité mise à jour",
-          "description": "La publicité a été mise à jour avec succès"
-        },
-        "error": {
-          "title": "Erreur de mise à jour",
-          "description": "Une erreur est survenue lors de la mise à jour de la publicité"
-        },
-        "buttons": {
-          "cancel": "Annuler",
-          "update": "Mettre à jour",
-          "updating": "Mise à jour en cours..."
-        }
-      },
-      "delete": {
-        "title": "Supprimer la publicité",
-        "description": "Êtes-vous sûr de vouloir supprimer cette publicité ?",
-        "warning": "Cette action ne peut pas être annulée.",
-        "buttons": {
-          "cancel": "Annuler",
-          "confirm": "Supprimer",
-          "deleting": "Suppression en cours..."
-        }
-      },
-      "selectProducts": {
-        "title": "Sélectionner des produits",
-        "description": "Choisissez les produits à promouvoir",
-        "defaultBid": {
-          "label": "Montant d'enchère par défaut",
-          "description": "Enchère de départ pour les produits sélectionnés"
-        },
-        "selection": {
-          "title": "Sélectionner des produits",
-          "selectAll": "Tout sélectionner",
-          "loading": "Chargement des produits...",
-          "noProducts": "Aucun produit trouvé",
-          "search": "Rechercher des produits..."
-        },
-        "buttons": {
-          "cancel": "Annuler",
-          "add": "Ajouter les produits sélectionnés",
-          "processing": "Traitement en cours..."
-        }
+      "title": "Titre",
+      "description": "Description",
+      "image": "Image",
+      "url": "URL",
+      "campaignId": "ID de campagne",
+      "budget": "Budget",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "targetAudience": "Public cible",
+      "placement": "Emplacement",
+      "format": "Format",
+      "validation": {
+        "titleRequired": "Le titre est requis",
+        "descriptionRequired": "La description est requise",
+        "imageRequired": "L'image est requise",
+        "urlRequired": "L'URL est requise",
+        "campaignRequired": "La campagne est requise",
+        "budgetRequired": "Le budget est requis",
+        "datesRequired": "Les dates sont requises",
+        "invalidUrl": "URL invalide"
       }
     },
     "messages": {
-      "success": {
-        "create": "Publicité créée avec succès",
-        "update": "Publicité mise à jour avec succès",
-        "delete": "Publicité supprimée avec succès"
-      },
-      "error": {
-        "create": "Erreur lors de la création de la publicité",
-        "update": "Erreur lors de la mise à jour de la publicité",
-        "delete": "Erreur lors de la suppression de la publicité",
-        "products": "Erreur lors du chargement des produits"
-      },
-      "confirm": {
-        "delete": "Êtes-vous sûr de vouloir supprimer cette publicité ?"
-      }
+      "createSuccess": "Publicité créée avec succès",
+      "updateSuccess": "Publicité mise à jour avec succès",
+      "deleteSuccess": "Publicité supprimée avec succès",
+      "createError": "Erreur lors de la création de la publicité",
+      "updateError": "Erreur lors de la mise à jour de la publicité",
+      "deleteError": "Erreur lors de la suppression de la publicité"
+    },
+    "filters": {
+      "status": "Statut",
+      "campaign": "Campagne",
+      "dateRange": "Période",
+      "search": "Rechercher une publicité"
+    },
+    "table": {
+      "name": "Nom",
+      "status": "Statut",
+      "campaign": "Campagne",
+      "budget": "Budget",
+      "impressions": "Impressions",
+      "clicks": "Clics",
+      "ctr": "CTR",
+      "spend": "Dépenses",
+      "actions": "Actions"
+    }
+  },
+  "products": {
+    "title": "Produits",
+    "select": "Sélectionner des produits",
+    "search": "Rechercher des produits",
+    "noResults": "Aucun produit trouvé",
+    "table": {
+      "name": "Nom",
+      "price": "Prix",
+      "stock": "Stock",
+      "category": "Catégorie",
+      "status": "Statut"
     }
   },
   "pageNotFound": {

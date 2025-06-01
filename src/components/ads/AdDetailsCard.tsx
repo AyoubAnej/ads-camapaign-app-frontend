@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { GetAdResponseDto } from '@/types/ad';
 import { Product } from '@/types/product';
 import { DollarSign, Calendar, Tag, Box, ShoppingCart, Hash } from 'lucide-react';
+import { t } from 'i18next';
 
 interface AdDetailsCardProps {
   ad: GetAdResponseDto;
@@ -53,7 +54,7 @@ export const AdDetailsCard: React.FC<AdDetailsCardProps> = ({ ad, product, isLoa
         <div className="flex justify-between items-start">
           <div>
             <CardTitle className="text-xl font-bold">{ad.title}</CardTitle>
-            <CardDescription>{t('ads.details.adId')}: {ad.adId}</CardDescription>
+            <CardDescription>Ad ID: {ad.adId}</CardDescription>
           </div>
           {getAdStatusBadge()}
         </div>
@@ -64,12 +65,12 @@ export const AdDetailsCard: React.FC<AdDetailsCardProps> = ({ ad, product, isLoa
           <div>
             <h3 className="font-medium mb-3 flex items-center gap-2">
               <Tag className="h-4 w-4 text-blue-500" />
-              {t('ads.details.information')}
+              Ad Information
             </h3>
             <div className="space-y-2">
               <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                <span className="text-muted-foreground">{t('ads.details.description')}:</span>
-                <span className="font-medium">{ad.description || t('common.notAvailable')}</span>
+                <span className="text-muted-foreground">Description:</span>
+                <span className="font-medium">{ad.description || 'N/A'}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
                 <span className="text-muted-foreground">{t('ads.details.created')}:</span>

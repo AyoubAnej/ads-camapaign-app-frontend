@@ -73,8 +73,7 @@
     "editAd": "Edit Ad",
     "deleteAd": "Delete Ad",
     "adDetails": "Ad Details",
-    "adInformations": "Ad Information",
-    "createForm": {
+    "createNew": {
       "title": "Create New Ad",
       "steps": {
         "adDetails": "Ad Details",
@@ -82,7 +81,7 @@
         "keywords": "Keywords",
         "bidsBudget": "Bids & Budget",
         "review": "Review"
-      },
+      },  
       "advertiser": {
         "label": "Advertiser",
         "loadingCampaign": "Loading campaign information...",
@@ -98,50 +97,42 @@
         "description": {
           "label": "Description",
           "placeholder": "Enter ad description"
-        },
-        "product": {
+        },        "product": {
           "label": "Select Product",
           "placeholder": "Select a product",
-          "loading": "Loading products...",
-          "noProducts": "No products found for this advertiser.",
-          "noProductsInfo": "Please ensure the advertiser has products associated with their account.",
           "details": "Selected Product Details"
         },
         "keywords": {
-          "label": "Keywords",
-          "description": "Add keywords to help target your ad. These will be used for ad matching and relevance.",
-          "placeholder": "Enter keyword",
-          "noKeywords": "No keywords added yet.",
-          "autoGenerateInfo": "If you leave this empty, the system will automatically generate keywords based on your product and ad content."
+          "title": "Keywords",
+          "placeholder": "Enter a keyword...",
+          "add": "Add",
+          "empty": "No keywords added yet.",
+          "hint": "Add keywords to help target your ad"
         },
         "bid": {
           "amount": {
             "label": "Bid Amount",
-            "placeholder": "0.00"
-          },
-          "strategy": {
-            "label": "Bid Strategy",
-            "placeholder": "Select bid strategy",
-            "options": {
-              "cpc": "Cost Per Click (CPC)",
-              "cpm": "Cost Per Mille (CPM)",
-              "cpa": "Cost Per Action (CPA)"
-            }
+            "placeholder": "Enter bid amount"
           },
           "currency": {
             "label": "Currency",
-            "placeholder": "Select currency",
-            "options": {
-              "usd": "USD ($)",
-              "eur": "EUR (€)",
-              "gbp": "GBP (£)"
-            }
+            "placeholder": "Select currency"
+          },
+          "strategy": {
+            "label": "Bid Strategy",
+            "placeholder": "Select strategy",
+            "CPC": "Cost per Click (CPC)",
+            "CPM": "Cost per Thousand Impressions (CPM)"
           }
-        },
-        "state": {
-          "label": "Activate Ad Immediately",
-          "description": "If enabled, the ad will start running as soon as it's created."
         }
+      },
+      "success": {
+        "title": "Success!",
+        "description": "Ad created successfully."
+      },
+      "error": {
+        "title": "Error",
+        "description": "Failed to create ad: {{message}}"
       },
       "buttons": {
         "add": "Add",
@@ -154,34 +145,61 @@
         "adDetails": "Ad Details",
         "product": "Product",
         "bidSettings": "Bid Settings",
-        "noKeywords": "No keywords (will be auto-generated)",
-        "fields": {
-          "name": "Name:",
-          "price": "Price:",
-          "category": "Category:",
-          "title": "Title:",
-          "description": "Description:",
-          "keywords": "Keywords:",
-          "amount": "Amount:",
-          "strategy": "Strategy:",
-          "status": "Status:"
-        }
-      },
-      "validation": {
-        "titleRequired": "Title is required",
-        "descriptionRequired": "Description is required",
-        "productRequired": "Product selection is required",
-        "bidAmountRequired": "Bid amount must be greater than 0"
-      },
-      "messages": {
-        "success": "Ad created successfully.",
-        "error": "Failed to create ad: {{error}}"
+        "noKeywords": "No keywords specified"
       }
     },
-    "table": {
-      "title": "Ads",
-      "columns": {
-        "title": "Title",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "mediaUrl": "Media URL",
+      "redirectUrl": "Redirect URL",
+      "productId": "Product ID",
+      "status": "Status",
+      "bidStrategy": "Bid Strategy",
+      "budget": "Budget",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "activatedAt": "Activated At",
+      "deactivatedAt": "Deactivated At"
+    },
+    "placeholders": {
+      "title": "Ad title",
+      "description": "Describe your ad (optional)",
+      "mediaUrl": "https://your-store.com/image.png",
+      "redirectUrl": "https://your-store.com/product",
+      "productId": "Enter product ID"
+    },
+    "descriptions": {
+      "title": "Short, catchy headline for your ad",
+      "description": "Optional: additional details about your ad",
+      "mediaUrl": "Image or video to display in your ad",
+      "redirectUrl": "Where users will go when clicking the ad",
+      "productId": "Unique product identifier",
+      "bidStrategy": "How your bid will be managed"
+    },
+    "bidTypes": {
+      "manual": "Manual Bidding",
+      "automatic": "Automatic Bidding",
+      "targetCpa": "Target CPA"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "paused": "Paused"
+    },
+    "form": {
+      "steps": {
+        "adDetails": "Ad Details",
+        "product": "Product",
+        "keywords": "Keywords",
+        "bidsAndBudget": "Bids & Budget",
+        "review": "Review"
+      },
+      "fields": {
         "description": "Description",
         "status": "Status",
         "campaign": "Campaign",
@@ -202,160 +220,832 @@
         "delete": "Delete ad",
         "view": "View details"
       },
-      "search": "Search ads...",
-      "perPage": "Ads per page"
-    },
-    "form": {
-      "title": {
-        "label": "Title",
-        "placeholder": "Enter ad title",
-        "description": "Short, catchy headline for your ad"  
-      },
-      "description": {
-        "label": "Description", 
-        "placeholder": "Describe your ad (optional)",
-        "description": "Additional details about your ad"
-      },
-      "product": {
-        "title": "Product Selection",
-        "label": "Select Product",
-        "placeholder": "Select a product from your inventory",
-        "loading": "Loading products...", 
-        "noProducts": "No products available",
-        "search": "Search products..."
-      },
-      "keywords": {
-        "title": "Keywords", 
-        "label": "Keywords",
-        "placeholder": "Add keywords separated by commas",
-        "description": "Keywords help target your ad",
-        "autoGenerate": "Keywords will be auto-generated if none provided"
-      },
-      "bid": {
-        "amount": {
-          "label": "Bid Amount",
-          "placeholder": "Enter bid amount",
-          "description": "Maximum bid per click",
-          "prefix": "$"
-        },
-        "currency": {
-          "label": "Currency",
-          "options": {
-            "usd": "USD ($)",
-            "eur": "EUR (€)", 
-            "gbp": "GBP (£)"
-          }
-        },
-        "strategy": {
-          "label": "Bid Strategy",
-          "placeholder": "Select strategy",
-          "options": {
-            "manual": "Manual Bidding",
-            "auto": "Automatic Bidding",
-            "targetCpa": "Target CPA"
-          }
-        }
-      },
-      "state": {
-        "active": {
-          "label": "Active",
-          "description": "Toggle to activate or deactivate this ad"
-        },
-        "reason": {
-          "label": "Reason (if inactive)",
-          "placeholder": "Reason for deactivation (optional)"
-        },
-        "dates": {
-          "activated": {
-            "label": "Activated At",
-            "placeholder": "Select activation date"
-          },
-          "deactivated": {
-            "label": "Deactivated At", 
-            "placeholder": "Select deactivation date"
-          }
-        }
-      }
-    },
-    "modal": {
-      "create": {
-        "title": "Create New Ad",
-        "description": "Fill out the details below to create a new advertisement",
-        "sections": {
-          "adDetails": "Ad Details",
-          "bidSettings": "Bid Settings", 
-          "adState": "Ad State"
-        },
-        "buttons": {
-          "cancel": "Cancel",
-          "create": "Create Ad",
-          "creating": "Creating..."
-        }
-      },
-      "edit": {
-        "title": "Edit Ad",
-        "description": "Update the details of your advertisement",
-        "success": {
-          "title": "Ad Updated",
-          "description": "The ad was successfully updated"
-        },
-        "error": {
-          "title": "Error Updating Ad",
-          "description": "An error occurred while updating the ad"
-        },
-        "buttons": {
-          "cancel": "Cancel",
-          "update": "Update Ad",
-          "updating": "Updating..."
-        }
-      },
-      "delete": {
-        "title": "Delete Ad",
-        "description": "Are you sure you want to delete this ad?",
-        "warning": "This action cannot be undone.",
-        "buttons": {
-          "cancel": "Cancel",
-          "confirm": "Delete",
-          "deleting": "Deleting..."
-        }
-      },
-      "selectProducts": {
-        "title": "Select Products",
-        "description": "Choose products to advertise",
-        "defaultBid": {
-          "label": "Default Bid Amount",
-          "description": "Starting bid for selected products"
-        },
-        "selection": {
-          "title": "Select Products",
-          "selectAll": "Select All",
-          "loading": "Loading products...",
-          "noProducts": "No products found",
-          "search": "Search products..."
-        },
-        "buttons": {
-          "cancel": "Cancel",
-          "add": "Add Selected Products",
-          "processing": "Processing..."
-        }
-      }
-    },
-    "messages": {
-      "success": {
-        "create": "Ad created successfully",
-        "update": "Ad updated successfully",
-        "delete": "Ad deleted successfully"
-      },
-      "error": {
-        "create": "Error creating ad",
-        "update": "Error updating ad",
-        "delete": "Error deleting ad",
-        "products": "Error loading products"
-      },
-      "confirm": {
-        "delete": "Are you sure you want to delete this ad?"
+      "bidStrategies": {
+        "cpc": "Cost Per Click (CPC)",
+        "cpm": "Cost Per Mille (CPM)",
+        "cpa": "Cost Per Action (CPA)"
       }
     }
+  },
+  "campaigns": {
+    "title": "Campaigns",
+    "description": "Manage your advertising campaigns",
+    "createCampaign": "Create Campaign",
+    "editCampaign": "Edit Campaign",
+    "deleteCampaign": "Delete Campaign",
+    "campaignDetails": "Campaign Details",
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "budget": "Budget",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "status": "Status",
+      "platform": "Platform",
+      "placement": "Placement",
+      "size": "Size",
+      "baseCost": "Base Cost"
+    },
+    "placeholders": {
+      "name": "Campaign name",
+      "description": "Describe your campaign",
+      "budget": "Daily budget",
+      "selectPlatform": "Select platform",
+      "selectPlacement": "Select placement",
+      "selectSize": "Select size",
+      "baseCost": "0.00"
+    },
+    "placements": {
+      "topBanner": "Top Banner",
+      "sidebar": "Sidebar",
+      "inContent": "In Content",
+      "footer": "Footer"
+    },
+    "metrics": {
+      "impressions": "Impressions",
+      "clicks": "Clicks",
+      "ctr": "Click-through Rate",
+      "spend": "Spend",
+      "conversions": "Conversions",
+      "conversionRate": "Conversion Rate",
+      "cpc": "Cost per Click",
+      "cpa": "Cost per Acquisition"
+    }
+  },
+  "metrics": {
+    "totalClicks": "Total Clicks",
+    "totalSpend": "Total Spend",
+    "ctr": "CTR (Click-through Rate)",
+    "cpc": "CPC (Cost per Click)",
+    "conversions": "Conversions",
+    "conversionRate": "Conversion Rate",
+    "cpa": "CPA (Cost per Acquisition)",
+    "roas": "ROAS (Return on Ad Spend)",
+    "impressions": "Impressions",
+    "reach": "Reach",
+    "frequency": "Frequency",
+    "engagementRate": "Engagement Rate"
+  },
+  "brandInfo": {
+    "appName": "Spark Ads",
+    "appDescription": "Campaign manager",
+    "marketplaceVisibility": "Manage your advertising campaigns efficiently and increase your visibility in the marketplace.",
+    "adminDashboardTitle": "Admin dashboard",
+    "adminDashboardDesc": "Manage users, track metrics, and oversee all campaigns.",
+    "advertiserPortalTitle": "Advertiser portal",
+    "advertiserPortalDesc": "Create and optimize your sponsored product campaigns.",
+    "agencyManagerTitle": "Agency manager",
+    "agencyManagerDesc": "Manage multiple advertisers and campaigns from one place."
+  },
+  "language": {
+    "english": "English",
+    "french": "French",
+    "selectLanguage": "Select language"
+  },
+  "navbar": {
+    "myAccount": "My account",
+    "profile": "Profile",
+    "signOut": "Sign out"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account preferences and settings",
+    "account": {
+      "title": "Account",
+      "description": "Manage your account information",
+      "personalInfo": "Personal Information",
+      "security": "Security",
+      "preferences": "Preferences",
+      "fields": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "phone": "Phone",
+        "company": "Company",
+        "role": "Role",
+        "language": "Language",
+        "timezone": "Timezone",
+        "dateFormat": "Date Format",
+        "theme": "Theme"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Manage your notification preferences",
+      "email": {
+        "title": "Email Notifications",
+        "updates": "Account Updates",
+        "alerts": "Alerts",
+        "newsletter": "Newsletter",
+        "marketing": "Marketing Communications"
+      },
+      "push": {
+        "title": "Push Notifications",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "browser": "Browser Notifications"
+      },
+      "frequency": {
+        "title": "Frequency",
+        "immediate": "Immediate",
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "never": "Never"
+      }
+    },
+    "security": {
+      "title": "Security",
+      "description": "Manage your security settings",
+      "password": {
+        "title": "Password",
+        "change": "Change Password",
+        "current": "Current Password",
+        "new": "New Password",
+        "confirm": "Confirm Password"
+      },
+      "twoFactor": {
+        "title": "Two-Factor Authentication",
+        "description": "Add an extra layer of security",
+        "enable": "Enable",
+        "disable": "Disable",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "setup": "Setup",
+        "backup": "Backup Codes"
+      },
+      "sessions": {
+        "title": "Sessions",
+        "current": "Current Session",
+        "otherSessions": "Other Sessions",
+        "lastActive": "Last Active",
+        "logoutAll": "Log out all sessions",
+        "device": "Device",
+        "location": "Location",
+        "ip": "IP Address"
+      }
+    },
+    "billing": {
+      "title": "Billing",
+      "description": "Manage your payment information and billing history",
+      "paymentMethods": "Payment Methods",
+      "billingHistory": "Billing History",
+      "invoices": "Invoices",
+      "subscription": "Subscription",
+      "plan": "Plan",
+      "status": "Status",
+      "nextBilling": "Next Billing"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize the appearance of the application",
+      "theme": {
+        "title": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      },
+      "darkMode": "Dark Mode",
+      "darkModeDescription": "Toggle between light and dark theme",
+      "customizeAppearance": "Customize the look and feel of your interface",
+      "fontSize": "Font Size",
+      "fontSizeDescription": "Adjust the size of text throughout the application",
+      "density": "Density",
+      "densityDescription": "Adjust the spacing between elements",
+      "animations": "Animations",
+      "animationsDescription": "Enable or disable interface animations"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose your preferred language",
+      "chooseLanguage": "Select your display language",
+      "autoDetect": "Auto-detect",
+      "preferences": {
+        "title": "Language Preferences",
+        "dateFormat": "Date Format",
+        "timeFormat": "Time Format",
+        "numberFormat": "Number Format",
+        "currency": "Currency"
+      }
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "needLogin": "You must be logged in to view your profile",
+    "accountInfo": "Account information",
+    "advertiserDetails": "Advertiser details",
+    "agencyDetails": "Agency details",
+    "adminDetails": "Admin details",
+    "email": "Email",
+    "role": "Role",
+    "advertiserId": "Advertiser ID",
+    "shopName": "Shop name",
+    "phoneNumber": "Phone number",
+    "address": "Address",
+    "agencyId": "Agency ID",
+    "managerName": "Manager name",
+    "contactPhone": "Contact phone",
+    "contactEmail": "Contact email",
+    "name": "Name",
+    "adminRole": "Admin role",
+    "systemAdmin": "System administrator"
+  },
+  "error": {
+    "notFound": {
+      "title": "Page not found",
+      "message": "The page you are looking for does not exist or has been moved.",
+      "goHome": "Go home"
+    },
+    "unauthorized": {
+      "title": "Access denied",
+      "message": "You do not have permission to access this page. Please contact your administrator if you believe this is an error.",
+      "goBack": "Go back",
+      "goHome": "Dashboard",
+      "signOut": "Sign out"
+    }
+  },
+  "admin": {
+    "userManagement": {
+      "title": "User management",
+      "description": "Manage users and their permissions",
+      "addAdmin": "Register Admin",
+      "newUser": "Create a new user in the system either from an existing seller or as an admin.",
+      "sellerToadvertiser":"Register from Seller",
+      "registerUser": "Register New User",
+      "addUser": "Add user",
+      "editUser": "Edit user",
+      "editDescription": "Edit user informations",
+      "selectRole": "Select a role",
+      "deleteUser": "Delete user",
+      "confirmDelete": "Are you sure?",
+      "deleteWarning": "This action will permanently delete user {{userName}} and all associated data. This action cannot be undone.",
+      "userDeleted": "User successfully deleted",
+      "userAdded": "User successfully added",
+      "userUpdated": "User successfully updated",
+      "reactivateUser": "Reactivate User",
+      "reactivateWarning": "Are you sure you want to reactivate this user? They will regain access to the platform.",
+     "deactivateUser": "Deactivate User",
+     "deactivateWarning": "Are you sure you want to deactivate this user? They will no longer have access to the platform.",
+     "showing": "Showing {{start}} to {{end}} of {{total}} users",
+      "fields": {
+        "name": "Username",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "password": "Password",
+        "role": "Role",
+        "phoneNumber": "Phone number",
+        "address": "Address",
+        "agencyId": "Agency ID",
+        "shopName": "Shop name",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "mdpconditions": {
+        "minLength": "Password must be at least 6 characters long",
+        "uppercase": "Password must contain at least one uppercase letter",
+        "lowercase": "Password must contain at least one lowercase letter",
+        "number": "Password must contain at least one number",
+        "specialChar": "Password must contain at least one special character"
+      },
+      "filters": {
+        "searchPlaceholder": "Search users...",
+        "allRoles": "All roles",
+        "allStatuses": "All statuses",
+        "role": "Filter by role",
+        "status": "Filter by status"
+      }
+    },
+    "agencyManagement": {
+      "title": "Agency Management",
+      "description": "Manage agencies and their settings",
+      "addAgency": "Add Agency",
+      "editAgency": "Edit Agency",
+      "deleteAgency": "Delete Agency",
+      "confirmDelete": "Are you sure you want to delete this agency?",
+      "agencyDeleted": "Agency deleted successfully",
+      "agencyAdded": "Agency added successfully",
+      "agencyUpdated": "Agency updated successfully",
+      "loading": "Loading agencies...",
+      "errorLoadingTitle": "Error loading data",
+      "errorLoadingMessage": "Failed to load agency data",
+      "searchPlaceholder": "Search agencies...",
+      "deactivateAgency": "Deactivate Agency",
+      "reactivateAgency": "Reactivate Agency",
+      "deactivate": "Deactivate",
+      "reactivate": "Reactivate",
+      "deactivateWarning": "Are you sure you want to deactivate {{agencyName}}?",
+      "reactivateWarning": "Are you sure you want to reactivate {{agencyName}}?",
+      "deactivated": "Agency deactivated",
+      "deactivatedSuccess": "The agency was successfully deactivated.",
+      "deactivateError": "Failed to deactivate the agency. Please try again.",
+      "reactivated": "Agency reactivated",
+      "reactivatedSuccess": "The agency was successfully reactivated.",
+      "reactivateError": "Failed to reactivate the agency. Please try again.",
+      "showing": "Showing {{start}} to {{end}} of {{total}} agencies",
+      "perPage": "Agencies per page",
+      "pagination": "Page {{currentPage}} of {{totalPages}}",
+      "fields": {
+        "name": "Agency name",
+        "address": "Address",
+        "phone": "Phone number",
+        "email": "Email",
+        "status": "Status",
+        "website": "Website",
+        "description": "Description"
+      }
+    },
+    "sellerRegistration": {
+      "title": "Register a Seller as an Advertiser",
+      "description": "Select a seller from the list to register them as an advertiser in the system",
+      "searchPlaceholder": "Search by shop name or ID...",
+      "loading": "Loading sellers...",
+      "noSellers": "No sellers found",
+      "registerSuccess": "Seller successfully registered",
+      "registerError": "Failed to register the seller",
+      "shortTitle":"Add Advertiser",
+      "fields": {
+        "seller": "Seller",
+        "role": "Role",
+        "agencyId": "Agency ID"
+      }
+    }
+  },
+  "roles": {
+    "admin": "Administrator",
+    "advertiser": "Advertiser",
+    "agency_manager": "AgencyManager",
+    "agencyManager": "AgencyManager",
+    "seller": "Seller"
+  },
+  "ui": {
+    "loading": "Loading...",
+    "close": "Close",
+    "filters": {
+      "title": "Filters",
+      "apply": "Apply",
+      "clear": "Clear",
+      "search": "Search",
+      "from": "From",
+      "to": "To",
+      "all": "All"
+    },
+    "table": {
+      "noData": "No data found",
+      "loading": "Loading data...",
+      "error": "Error loading data",
+      "retry": "Retry",
+      "rowsPerPage": "Rows per page",
+      "of": "of",
+      "search": "Search...",
+      "firstPage": "First page",
+      "lastPage": "Last page",
+      "nextPage": "Next page",
+      "previousPage": "Previous page",
+      "showing": "Showing {{start}} to {{end}} of {{total}} entries"
+    },
+    "form": {
+      "required": "This field is required",
+      "invalid": "This field is invalid",
+      "save": "Save",
+      "cancel": "Cancel",
+      "upload": "Upload",
+      "delete": "Delete",
+      "edit": "Edit",
+      "saving": "Saving...",
+      "saved": "Saved",
+      "error": "An error occurred"
+    },
+    "confirmation": {
+      "title": "Are you sure?",
+      "delete": "Are you sure you want to delete this item?",
+      "cancel": "This action cannot be undone",
+      "confirm": "Confirm",
+      "goBack": "Go back"
+    },
+    "notifications": {
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Information"
+    },
+    "accessibility": {
+      "skipToContent": "Skip to content",
+      "menuButton": "Menu",
+      "closeButton": "Close",
+      "moreActions": "More actions",
+      "search": "Search",
+      "notifications": "Notifications",
+      "userMenu": "User menu",
+      "themeToggle": "Toggle theme",
+      "languageSelector": "Language selector"
+    }
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "network": "Network error",
+    "serverError": "Server error",
+    "notFound": "Not found",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Forbidden",
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address",
+      "minLength": "Must be at least {{count}} characters",
+      "maxLength": "Must not exceed {{count}} characters",
+      "passwordMatch": "Passwords do not match",
+      "invalidFormat": "Invalid format",
+      "numeric": "Must be a number",
+      "url": "Must be a valid URL",
+      "date": "Must be a valid date",
+      "min": "Must be greater than or equal to {{min}}",
+      "max": "Must be less than or equal to {{max}}"
+    },
+    "api": {
+      "default": "An error occurred while making the request",
+      "timeout": "Request timed out",
+      "offline": "You are offline",
+      "badRequest": "Invalid request",
+      "unauthorized": "Unauthorized",
+      "forbidden": "Access denied",
+      "notFound": "Resource not found",
+      "serverError": "Server error",
+      "maintenance": "Service temporarily unavailable"
+    }
+  },
+  "analytics": {
+    "title": "Analytics",
+    "description": "Analyze your campaign performance",
+    "summary": {
+      "title": "Summary",
+      "period": "Period",
+      "comparison": "Comparison",
+      "total": "Total",
+      "change": "Change",
+      "trend": "Trend"
+    },
+    "performance": {
+      "title": "Performance",
+      "overview": "Overview",
+      "byChannel": "By Channel",
+      "byDevice": "By Device",
+      "byLocation": "By Location",
+      "byTime": "By Time"
+    },
+    "reports": {
+      "title": "Reports",
+      "generate": "Generate Report",
+      "download": "Download",
+      "schedule": "Schedule",
+      "types": {
+        "performance": "Performance",
+        "conversion": "Conversion",
+        "audience": "Audience",
+        "revenue": "Revenue"
+      }
+    },
+    "metrics": {
+      "impressions": "Impressions",
+      "clicks": "Clicks",
+      "ctr": "Click-through Rate (CTR)",
+      "cpc": "Cost per Click",
+      "conversions": "Conversions",
+      "conversionRate": "Conversion Rate",
+      "cpa": "Cost per Acquisition",
+      "spend": "Spend",
+      "revenue": "Revenue",
+      "roas": "Return on Ad Spend",
+      "averagePosition": "Average Position",
+      "qualityScore": "Quality Score",
+      "engagement": {
+        "title": "Engagement",
+        "rate": "Engagement Rate",
+        "time": "Engagement Time",
+        "pageviews": "Page Views",
+        "bounceRate": "Bounce Rate",
+        "exitRate": "Exit Rate"
+      },
+      "audience": {
+        "title": "Audience",
+        "newUsers": "New Users",
+        "returningUsers": "Returning Users",
+        "sessions": "Sessions",
+        "sessionDuration": "Average Session Duration",
+        "demographics": "Demographics",
+        "interests": "Interests"
+      }
+    },
+    "filters": {
+      "date": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days",
+        "thisMonth": "This Month",
+        "lastMonth": "Last Month",
+        "custom": "Custom"
+      },
+      "comparison": {
+        "previousPeriod": "Previous Period",
+        "previousYear": "Previous Year",
+        "custom": "Custom"
+      }
+    }
+  },
+  "export": {
+    "title": "Export",
+    "pdf": "PDF",
+    "excel": "Excel",
+    "csv": "CSV",
+    "preparing": "Preparing export...",
+    "ready": "Export ready",
+    "download": "Download",
+    "formats": {
+      "simple": "Simple format",
+      "detailed": "Detailed format",
+      "custom": "Custom format"
+    }
+  },
+  "components": {
+    "navigation": {
+      "menu": "Menu",
+      "home": "Home",
+      "dashboard": "Dashboard",
+      "profile": "Profile",
+      "settings": "Settings",
+      "help": "Help",
+      "logout": "Logout",
+      "back": "Back",
+      "next": "Next",
+      "previous": "Previous",
+      "more": "More",
+      "breadcrumbs": {
+        "home": "Home",
+        "separator": "/"
+      }
+    },
+    "buttons": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "add": "Add",
+      "create": "Create",
+      "upload": "Upload",
+      "download": "Download",
+      "close": "Close",
+      "confirm": "Confirm",
+      "apply": "Apply",
+      "reset": "Reset",
+      "search": "Search",
+      "filter": "Filter",
+      "clear": "Clear",
+      "more": "More"
+    },
+    "forms": {
+      "required": "Required",
+      "optional": "Optional",
+      "loading": "Loading...",
+      "submitting": "Submitting...",
+      "success": "Success!",
+      "error": "Error",
+      "validation": {
+        "required": "This field is required",
+        "email": "Invalid email",
+        "password": {
+          "min": "Password must be at least {{min}} characters",
+          "match": "Passwords do not match"
+        }
+      },
+      "placeholders": {
+        "search": "Search...",
+        "email": "Enter your email",
+        "password": "Enter your password",
+        "firstName": "First name",
+        "lastName": "Last name"
+      }
+    },
+    "modals": {
+      "close": "Close",
+      "confirm": {
+        "title": "Confirm",
+        "message": "Are you sure?",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+      },
+      "delete": {
+        "title": "Delete",
+        "message": "This action cannot be undone. Would you like to proceed?",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
+    },
+    "tables": {
+      "empty": "No data",
+      "loading": "Loading...",
+      "search": "Search...",
+      "rowsPerPage": "Rows per page",
+      "filter": "Filter",
+      "columns": "Columns",
+      "actions": "Actions",
+      "showing": "Showing {{start}} to {{end}} of {{total}} entries",
+      "noResults": "No results found"
+    },
+    "notifications": {
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Information"
+    },
+    "charts": {
+      "noData": "No data available",
+      "loading": "Loading chart...",
+      "error": "Error loading data",
+      "filters": {
+        "timeRange": "Time Range",
+        "metric": "Metric",
+        "comparison": "Comparison"
+      }
+    }
+  },
+  "dashboards": {
+    "advertiser": {
+      "title": "Advertiser Dashboard",
+      "welcome": "Welcome to your advertiser dashboard",
+      "metrics": {
+        "activeAds": "Active Ads",
+        "totalBudget": "Total Budget",
+        "remainingBudget": "Remaining Budget",
+        "adPerformance": "Ad Performance",
+        "topPerforming": "Top Performing Ads",
+        "recentActivity": "Recent Activity"
+      },
+      "alerts": {
+        "budgetLow": "Budget running low",
+        "performanceAlert": "Performance alert",
+        "newOpportunities": "New opportunities"
+      }
+    },
+    "agency": {
+      "title": "Agency Dashboard",
+      "welcome": "Welcome to your agency dashboard",
+      "metrics": {
+        "totalAdvertisers": "Total Advertisers",
+        "totalCampaigns": "Total Campaigns",
+        "totalRevenue": "Total Revenue",
+        "clientOverview": "Client Overview",
+        "campaignPerformance": "Campaign Performance",
+        "recentActivity": "Recent Activity"
+      },
+      "alerts": {
+        "newClients": "New client requests",
+        "pendingApprovals": "Pending approvals",
+        "performanceIssues": "Performance issues"
+      }
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "types": {
+      "performance": "Performance Report",
+      "financial": "Financial Report",
+      "campaign": "Campaign Report",
+      "audience": "Audience Report",
+      "custom": "Custom Report"
+    },
+    "timeframes": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "yearly": "Yearly",
+      "custom": "Custom Range"
+    },
+    "status": {
+      "generating": "Generating report...",
+      "ready": "Report ready",
+      "failed": "Generation failed",
+      "scheduled": "Report scheduled"
+    },
+    "scheduling": {
+      "title": "Schedule Report",
+      "frequency": "Frequency",
+      "recipients": "Recipients",
+      "format": "Format",
+      "saveSettings": "Save settings"
+    },
+    "filters": {
+      "dateRange": "Date Range",
+      "campaigns": "Campaigns",
+      "metrics": "Metrics",
+      "dimensions": "Dimensions",
+      "advanced": "Advanced Filters"
+    }
+  },
+  "productManagement": {
+    "title": "Product Management",
+    "description": "Manage your products for advertising",
+    "actions": {
+      "addProduct": "Add Product",
+      "editProduct": "Edit Product",
+      "deleteProduct": "Delete Product",
+      "importProducts": "Import Products",
+      "exportProducts": "Export Products"
+    },
+    "fields": {
+      "name": "Product Name",
+      "sku": "SKU",
+      "price": "Price",
+      "inventory": "Inventory",
+      "category": "Category",
+      "description": "Description",
+      "images": "Images"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "outOfStock": "Out of Stock",
+      "discontinued": "Discontinued"
+    },
+    "validation": {
+      "required": "Required field",
+      "invalidPrice": "Invalid price",
+      "invalidSku": "Invalid SKU",
+      "duplicateSku": "Duplicate SKU"
+    }
+  },
+  "interactions": {
+    "upload": {
+      "title": "Upload",
+      "dropzone": "Drop files here or click to upload",
+      "maxSize": "Maximum file size: {{size}}",
+      "allowedTypes": "Allowed file types: {{types}}",
+      "uploading": "Uploading...",
+      "success": "Upload successful",
+      "error": "Upload failed",
+      "remove": "Remove file"
+    },
+    "search": {
+      "placeholder": "Search...",
+      "noResults": "No results found",
+      "searching": "Searching...",
+      "clear": "Clear search",
+      "advanced": "Advanced search",
+      "filters": "Search filters"
+    },
+    "pagination": {
+      "showing": "Showing {{start}} to {{end}} of {{total}}",
+      "previous": "Previous",
+      "next": "Next",
+      "first": "First",
+      "last": "Last",
+      "perPage": "Items per page"
+    },
+    "sorting": {
+      "sortBy": "Sort by",
+      "asc": "Ascending",
+      "desc": "Descending",
+      "clear": "Clear sorting"
+    },
+    "selection": {
+      "all": "Select all",
+      "none": "Select none",
+      "selected": "{{count}} selected",
+      "actions": "Bulk actions"
+    }
+  },
+  "status": {
+    "loading": {
+      "default": "Loading...",
+      "data": "Loading data...",
+      "page": "Loading page...",
+      "submission": "Submitting...",
+      "processing": "Processing..."
+    },
+    "success": {
+      "default": "Success",
+      "saved": "Successfully saved",
+      "updated": "Successfully updated",
+      "deleted": "Successfully deleted",
+      "created": "Successfully created"
+    },
+    "error": {
+      "default": "An error occurred",
+      "network": "Network error",
+      "validation": "Validation error",
+      "permission": "Permission denied",
+      "notFound": "Not found",
+      "retry": "Retry"
+    },
+    "empty": {
+      "default": "No items found",
+      "filtered": "No items match your filters",
+      "search": "No search results",
+      "custom": "{{message}}"
+    },
+    "appearanceP": "Manage your application preferences",
+    "appearance": "Appearance",
+    "darkMode": "Dark Mode",
+    "language": "Language"
   }
 }
 
