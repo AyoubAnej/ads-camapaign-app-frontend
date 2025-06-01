@@ -495,6 +495,20 @@
           }
         }
       },
+      "sellerRegistrationToasts":{
+          "sellerSuccessTitle": "Success",
+          "sellerSuccessDescription": "Seller has been registered as a user successfully.",
+          "sellerErrorTitle": "Error",
+          "sellerErrorDescription": "Failed to register seller as user. Please try again.",
+          "sellerValidationErrorTitle": "Validation Error",
+          "sellerValidationErrorDescription": "Please select a seller.",
+          "sellerNotFoundErrorTitle": "Error",
+          "sellerNotFoundErrorDescription": "Selected seller not found.",
+          "adminSuccessTitle": "Success",
+          "adminSuccessDescription": "Admin user has been registered successfully.",
+          "adminErrorTitle": "Error",
+          "adminErrorDescription": "Failed to register admin user. Please try again."    
+      },
       "userTableToasts":{
         "toast": {
           "loadError": {

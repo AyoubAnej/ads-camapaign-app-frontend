@@ -162,8 +162,8 @@ export const SellerRegistrationModal = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['advertisers'] });
       toast({
-        title: 'Success',
-        description: 'Seller has been registered as a user successfully.',
+        title: t('admin.sellerRegistrationToasts.sellerSuccessTitle'),
+        description: t('admin.sellerRegistrationToasts.sellerSuccessDescription'),
       });
       onOpenChange(false);
       setSelectedSellerId(null);
@@ -172,8 +172,8 @@ export const SellerRegistrationModal = ({
     },
     onError: (error) => {
       toast({
-        title: 'Error',
-        description: 'Failed to register seller as user. Please try again.',
+        title: t('admin.sellerRegistrationToasts.sellerErrorTitle'),
+        description: t('admin.sellerRegistrationToasts.sellerErrorDescription'),
         variant: 'destructive',
       });
     }
@@ -204,16 +204,16 @@ export const SellerRegistrationModal = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['advertisers'] });
       toast({
-        title: 'Success',
-        description: 'Admin user has been registered successfully.',
+        title: t('admin.sellerRegistrationToasts.adminSuccessTitle'),
+        description: t('admin.sellerRegistrationToasts.adminSuccessDescription'),
       });
       handleModalClose(false);
       adminForm.reset();
     },
     onError: (error) => {
       toast({
-        title: 'Error',
-        description: 'Failed to register admin user. Please try again.',
+        title: t('admin.sellerRegistrationToasts.adminErrorTitle'),
+        description: t('admin.sellerRegistrationToasts.adminErrorDescription'),
         variant: 'destructive',
       });
     }
@@ -225,8 +225,8 @@ export const SellerRegistrationModal = ({
     
     if (selectedSellerId === null) {
       toast({
-        title: 'Validation Error',
-        description: 'Please select a seller.',
+        title: t('admin.sellerRegistrationToasts.sellerValidationErrorTitle'),
+        description: t('admin.sellerRegistrationToasts.sellerValidationErrorDescription'),
         variant: 'destructive',
       });
       return;
@@ -236,8 +236,8 @@ export const SellerRegistrationModal = ({
     
     if (!seller) {
       toast({
-        title: 'Error',
-        description: 'Selected seller not found.',
+        title: t('admin.sellerRegistrationToasts.sellerNotFoundErrorTitle'),
+        description: t('admin.sellerRegistrationToasts.sellerNotFoundErrorDescription'),
         variant: 'destructive',
       });
       return;

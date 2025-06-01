@@ -535,6 +535,20 @@
           }
         }
       },
+      "sellerRegistrationToasts":{
+          "sellerSuccessTitle": "Succès",
+          "sellerSuccessDescription": "Le vendeur a été enregistré comme utilisateur avec succès.",
+          "sellerErrorTitle": "Erreur",
+          "sellerErrorDescription": "Échec de l'enregistrement du vendeur en tant qu'utilisateur. Veuillez réessayer.",
+          "sellerValidationErrorTitle": "Erreur de validation",
+          "sellerValidationErrorDescription": "Veuillez sélectionner un vendeur.",
+          "sellerNotFoundErrorTitle": "Erreur",
+          "sellerNotFoundErrorDescription": "Le vendeur sélectionné est introuvable.",
+          "adminSuccessTitle": "Succès",
+          "adminSuccessDescription": "L'utilisateur administrateur a été enregistré avec succès.",
+          "adminErrorTitle": "Erreur",
+          "adminErrorDescription": "Échec de l'enregistrement de l'utilisateur administrateur. Veuillez réessayer."      
+      },
       "userTableToasts":{
       "toast": {
         "loadError": {
