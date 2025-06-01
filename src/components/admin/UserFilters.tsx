@@ -39,7 +39,6 @@ export const UserFilters = ({
     { value: "all_statuses", label: t("admin.userManagement.filters.allStatuses") },
     { value: "ACTIVE", label: t("common.active") },
     { value: "INACTIVE", label: t("common.inactive") },
-    { value: "PENDING", label: t("common.pending") },
   ];
 
   const safeRoleFilter = roleFilter || "all_roles";

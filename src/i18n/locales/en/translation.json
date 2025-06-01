@@ -434,24 +434,72 @@
       }
     },
     "sellerRegistration": {
-      "title": "Register a Seller as an Advertiser",
-      "description": "Select a seller from the list to register them as an advertiser in the system",
-      "searchPlaceholder": "Search by shop name or ID...",
-      "loading": "Loading sellers...",
-      "noSellers": "No sellers found",
-      "registerSuccess": "Seller successfully registered",
-      "registerError": "Failed to register the seller",
-      "fields": {
-        "seller": "Seller",
-        "role": "Role",
-        "agencyId": "Agency ID"
+      "title": "New Advertiser",
+      "modal": {
+          "title": "Register New User",
+          "description": "Create a new user in the system either from an existing seller or as an admin.",
+          "tabs": {
+            "seller": "Register from Seller",
+            "admin": "Register Admin"
+          },
+          "labels": {
+            "seller": "Seller",
+            "role": "Role",
+            "agencyId": "Agency ID",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email",
+            "password": "Password",
+            "phoneNumber": "Phone Number",
+            "address": "Address"
+          },
+          "placeholders": {
+            "searchSeller": "Search by shop name or ID...",
+            "loadingSellers": "Loading sellers...",
+            "noSellers": "No sellers found",
+            "allRegistered": "All sellers are already registered",
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john.doe@example.com",
+            "password": "******",
+            "phoneNumber": "+1 (555) 123-4567",
+            "address": "123 Main St, City, Country",
+            "agencyId": "Enter agency ID"
+          },
+          "buttons": {
+            "cancel": "Cancel",
+            "registerUser": "Register User",
+            "registerAdmin": "Register Admin",
+            "loading": "Loading...",
+            "registering": "Registering...",
+            "noSellers": "No Unregistered Sellers"
+          },
+          "messages": {
+            "success": "Success",
+            "error": "Error",
+            "sellerRegistered": "Seller has been registered as a user successfully.",
+            "sellerRegisterFailed": "Failed to register seller as user. Please try again.",
+            "adminRegistered": "Admin user has been registered successfully.",
+            "adminRegisterFailed": "Failed to register admin user. Please try again.",
+            "validationError": "Validation Error",
+            "selectSeller": "Please select a seller.",
+            "sellerNotFound": "Selected seller not found."
+          },
+          "validation": {
+            "firstNameRequired": "First name is required",
+            "lastNameRequired": "Last name is required",
+            "invalidEmail": "Invalid email address",
+            "passwordTooShort": "Password must be at least 6 characters",
+            "phoneRequired": "Phone number is required",
+            "addressRequired": "Address is required"
+          }
+        }
       }
-    }
   },
   "roles": {
     "admin": "Administrator",
     "advertiser": "Advertiser",
-    "agencyManager": "Agency Manager"
+    "agency_manager": "Agency Manager"
   },
   "ui": {
     "loading": "Loading...",

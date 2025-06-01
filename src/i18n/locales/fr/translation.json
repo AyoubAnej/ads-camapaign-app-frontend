@@ -405,7 +405,8 @@
       "signOut": "Déconnexion"
     }
   },
-  "admin": {    "userManagement": {
+  "admin": {    
+    "userManagement": {
       "title": "Gestion des utilisateurs",
       "description": "Gérer les utilisateurs et leurs permissions",
       "showing": "Affichage de {{start}} à {{end}} sur {{total}} utilisateurs",
@@ -473,19 +474,67 @@
       "pagination": "Page {{currentPage}} sur {{totalPages}}"
     },
     "sellerRegistration": {
-      "title": "Enregistrer un vendeur comme annonceur",
-      "description": "Sélectionnez un vendeur dans la liste pour l'enregistrer comme utilisateur dans le système",
-      "searchPlaceholder": "Rechercher par nom de boutique ou ID...",
-      "loading": "Chargement des vendeurs...",
-      "noSellers": "Aucun vendeur trouvé",
-      "registerSuccess": "Vendeur enregistré avec succès",
-      "registerError": "Échec de l'enregistrement du vendeur",
-      "fields": {
-        "seller": "Vendeur",
-        "role": "Rôle",
-        "agencyId": "ID de l'agence"
+      "title": "Nouvel Annonceur",
+      "modal": {
+          "title": "Enregistrer un Nouvel Utilisateur",
+          "description": "Créer un nouvel utilisateur dans le système soit à partir d'un vendeur existant, soit en tant qu'administrateur.",
+          "tabs": {
+            "seller": "Enregistrer à partir d'un Vendeur",
+            "admin": "Enregistrer un Administrateur"
+          },
+          "labels": {
+            "seller": "Vendeur",
+            "role": "Rôle",
+            "agencyId": "ID de l'Agence",
+            "firstName": "Prénom",
+            "lastName": "Nom",
+            "email": "Email",
+            "password": "Mot de passe",
+            "phoneNumber": "Numéro de téléphone",
+            "address": "Adresse"
+          },
+          "placeholders": {
+            "searchSeller": "Rechercher par nom de boutique ou ID...",
+            "loadingSellers": "Chargement des vendeurs...",
+            "noSellers": "Aucun vendeur trouvé",
+            "allRegistered": "Tous les vendeurs sont déjà enregistrés",
+            "firstName": "Jean",
+            "lastName": "Dupont",
+            "email": "jean.dupont@exemple.com",
+            "password": "******",
+            "phoneNumber": "+33 (0)6 12 34 56 78",
+            "address": "123 Rue Principale, Ville, Pays",
+            "agencyId": "Entrez l'ID de l'agence"
+          },
+          "buttons": {
+            "cancel": "Annuler",
+            "registerUser": "Enregistrer l'Utilisateur",
+            "registerAdmin": "Enregistrer l'Administrateur",
+            "loading": "Chargement...",
+            "registering": "Enregistrement...",
+            "noSellers": "Aucun Vendeur Non Enregistré"
+          },
+          "messages": {
+            "success": "Succès",
+            "error": "Erreur",
+            "sellerRegistered": "Le vendeur a été enregistré avec succès en tant qu'utilisateur.",
+            "sellerRegisterFailed": "Échec de l'enregistrement du vendeur en tant qu'utilisateur. Veuillez réessayer.",
+            "adminRegistered": "L'utilisateur administrateur a été enregistré avec succès.",
+            "adminRegisterFailed": "Échec de l'enregistrement de l'utilisateur administrateur. Veuillez réessayer.",
+            "validationError": "Erreur de Validation",
+            "selectSeller": "Veuillez sélectionner un vendeur.",
+            "sellerNotFound": "Vendeur sélectionné introuvable."
+          },
+          "validation": {
+            "firstNameRequired": "Le prénom est requis",
+            "lastNameRequired": "Le nom est requis",
+            "invalidEmail": "Adresse email invalide",
+            "passwordTooShort": "Le mot de passe doit comporter au moins 6 caractères",
+            "phoneRequired": "Le numéro de téléphone est requis",
+            "addressRequired": "L'adresse est requise"
+          }
+        }
       }
-    }
   },
   "roles": {
     "admin": "Administrateur",
@@ -1035,18 +1084,6 @@
       "notFound": "Ressource non trouvée",
       "validation": "Erreur de validation",
       "server": "Erreur serveur"
-    },
-    "loading": {
-      "default": "Chargement...",
-      "saving": "Enregistrement...",
-      "updating": "Mise à jour...",
-      "deleting": "Suppression...",
-      "processing": "Traitement en cours..."
-    },
-    "empty": {
-      "default": "Aucun élément trouvé",
-      "filtered": "Aucun résultat ne correspond à vos critères",
-      "search": "Aucun résultat trouvé pour votre recherche"
     }
   },
   "notifications": {
