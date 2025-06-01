@@ -6,13 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import { User, Building2, Store, Phone, Mail, MapPin, Shield } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useTranslation } from 'react-i18next';
 
 const ProfilePage = () => {
   const { user } = useAuth();
   const [profileData, setProfileData] = useState<Advertiser | null>(null);
   const [loading, setLoading] = useState(true);
-  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -90,8 +88,8 @@ const ProfilePage = () => {
       <div className="container mx-auto p-6">
         <Card>
           <CardHeader>
-            <CardTitle>{t('profile.title')}</CardTitle>
-            <CardDescription>{t('profile.needLogin')}</CardDescription>
+            <CardTitle>Profile</CardTitle>
+            <CardDescription>You need to be logged in to view your profile.</CardDescription>
           </CardHeader>
         </Card>
       </div>
@@ -123,17 +121,16 @@ const ProfilePage = () => {
             </div>
           </div>
         </CardHeader>
-
         <CardContent>
           <div className="space-y-6">
             {/* Shared Information */}
             <div>
-              <h3 className="text-lg font-medium">{t('profile.accountInfo')}</h3>
+              <h3 className="text-lg font-medium">Account Information</h3>
               <Separator className="my-2" />
               <div className="grid gap-4 mt-4">
                 <div className="flex items-center gap-2">
                   <Mail className="h-5 w-5 text-gray-500" />
-                  <span className="font-medium">{t('profile.email')}:</span>
+                  <span className="font-medium">Email:</span>
                   {loading ? (
                     <Skeleton className="h-4 w-48" />
                   ) : (
@@ -142,7 +139,7 @@ const ProfilePage = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <User className="h-5 w-5 text-gray-500" />
-                  <span className="font-medium">{t('profile.role')}:</span>
+                  <span className="font-medium">Role:</span>
                   <span>{user.role}</span>
                 </div>
               </div>
@@ -151,12 +148,12 @@ const ProfilePage = () => {
             {/* Role-specific Information */}
             {user.role === 'ADVERTISER' && (
               <div>
-                <h3 className="text-lg font-medium">{t('profile.advertiserDetails')}</h3>
+                <h3 className="text-lg font-medium">Advertiser Details</h3>
                 <Separator className="my-2" />
                 <div className="grid gap-4 mt-4">
                   <div className="flex items-center gap-2">
                     <User className="h-5 w-5 text-gray-500" />
-                    <span className="font-medium">{t('profile.advertiserId')}:</span>
+                    <span className="font-medium">Advertiser ID:</span>
                     {loading ? (
                       <Skeleton className="h-4 w-24" />
                     ) : (
@@ -166,7 +163,7 @@ const ProfilePage = () => {
                   {profileData?.shopName && (
                     <div className="flex items-center gap-2">
                       <Store className="h-5 w-5 text-gray-500" />
-                      <span className="font-medium">{t('profile.shopName')}:</span>
+                      <span className="font-medium">Shop Name:</span>
                       {loading ? (
                         <Skeleton className="h-4 w-48" />
                       ) : (
@@ -177,7 +174,7 @@ const ProfilePage = () => {
                   {profileData?.phoneNumber && (
                     <div className="flex items-center gap-2">
                       <Phone className="h-5 w-5 text-gray-500" />
-                      <span className="font-medium">{t('profile.phoneNumber')}:</span>
+                      <span className="font-medium">Phone Number:</span>
                       {loading ? (
                         <Skeleton className="h-4 w-32" />
                       ) : (
@@ -188,7 +185,7 @@ const ProfilePage = () => {
                   {profileData?.address && (
                     <div className="flex items-center gap-2">
                       <MapPin className="h-5 w-5 text-gray-500" />
-                      <span className="font-medium">{t('profile.address')}:</span>
+                      <span className="font-medium">Address:</span>
                       {loading ? (
                         <Skeleton className="h-4 w-64" />
                       ) : (
@@ -202,12 +199,12 @@ const ProfilePage = () => {
 
             {user.role === 'AGENCY_MANAGER' && (
               <div>
-                <h3 className="text-lg font-medium">{t('profile.agencyDetails')}</h3>
+                <h3 className="text-lg font-medium">Agency Details</h3>
                 <Separator className="my-2" />
                 <div className="grid gap-4 mt-4">
                   <div className="flex items-center gap-2">
                     <Building2 className="h-5 w-5 text-gray-500" />
-                    <span className="font-medium">{t('profile.agencyId')}:</span>
+                    <span className="font-medium">Agency ID:</span>
                     {loading ? (
                       <Skeleton className="h-4 w-24" />
                     ) : (
@@ -216,7 +213,7 @@ const ProfilePage = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <User className="h-5 w-5 text-gray-500" />
-                    <span className="font-medium">{t('profile.managerName')}:</span>
+                    <span className="font-medium">Manager Name:</span>
                     {loading ? (
                       <Skeleton className="h-4 w-48" />
                     ) : (
@@ -226,7 +223,7 @@ const ProfilePage = () => {
                   {profileData?.phoneNumber && (
                     <div className="flex items-center gap-2">
                       <Phone className="h-5 w-5 text-gray-500" />
-                      <span className="font-medium">{t('profile.contactPhone')}:</span>
+                      <span className="font-medium">Contact Phone:</span>
                       {loading ? (
                         <Skeleton className="h-4 w-32" />
                       ) : (
@@ -237,7 +234,7 @@ const ProfilePage = () => {
                   {profileData?.email && (
                     <div className="flex items-center gap-2">
                       <Mail className="h-5 w-5 text-gray-500" />
-                      <span className="font-medium">{t('profile.contactEmail')}:</span>
+                      <span className="font-medium">Contact Email:</span>
                       {loading ? (
                         <Skeleton className="h-4 w-48" />
                       ) : (
@@ -251,12 +248,12 @@ const ProfilePage = () => {
 
             {user.role === 'ADMIN' && (
               <div>
-                <h3 className="text-lg font-medium">{t('profile.adminDetails')}</h3>
+                <h3 className="text-lg font-medium">Admin Details</h3>
                 <Separator className="my-2" />
                 <div className="grid gap-4 mt-4">
                   <div className="flex items-center gap-2">
                     <User className="h-5 w-5 text-gray-500" />
-                    <span className="font-medium">{t('profile.name')}:</span>
+                    <span className="font-medium">Name:</span>
                     {loading ? (
                       <Skeleton className="h-4 w-48" />
                     ) : (
@@ -265,7 +262,7 @@ const ProfilePage = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <Mail className="h-5 w-5 text-gray-500" />
-                    <span className="font-medium">{t('profile.email')}:</span>
+                    <span className="font-medium">Email:</span>
                     {loading ? (
                       <Skeleton className="h-4 w-48" />
                     ) : (
@@ -274,8 +271,8 @@ const ProfilePage = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <Shield className="h-5 w-5 text-gray-500" />
-                    <span className="font-medium">{t('profile.adminRole')}:</span>
-                    <span>{t('profile.systemAdmin')}</span>
+                    <span className="font-medium">Admin Role:</span>
+                    <span>System Administrator</span>
                   </div>
                 </div>
               </div>

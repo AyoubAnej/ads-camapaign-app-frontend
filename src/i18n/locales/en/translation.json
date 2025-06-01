@@ -104,7 +104,7 @@
         "keywords": "Keywords",
         "bids": "Bids & Budget",
         "review": "Review"
-      },
+      },  
       "advertiser": {
         "title": "Advertiser",
         "shopName": "Advertiser ID: {{id}}"
@@ -310,6 +310,135 @@
       "sellerId": "Seller ID",
       "productDescription": "Description",
       "noProductInfo": "Product information not available"
+    },
+    "modal": {
+      "create": {
+        "title": "Create New Ad",
+        "description": "Fill out the details below to create a new advertisement for your campaign",
+        "success": {
+          "title": "Ad Created",
+          "description": "Your ad was successfully created"
+        },
+        "error": {
+          "title": "Error Creating Ad",
+          "description": "An error occurred while creating the ad"
+        },
+        "sections": {
+          "adDetails": "Ad Details",
+          "bidSettings": "Bid Settings",
+          "adState": "Ad State"
+        },
+        "fields": {
+          "productId": {
+            "label": "Product ID",
+            "placeholder": "Enter product ID",
+            "description": "Unique product identifier"
+          },
+          "title": {
+            "label": "Title",
+            "placeholder": "Ad title",
+            "description": "Short, catchy headline for your ad"
+          },
+          "description": {
+            "label": "Description",
+            "placeholder": "Describe your ad (optional)",
+            "description": "Optional: additional details about your ad"
+          },
+          "mediaUrl": {
+            "label": "Media URL",
+            "placeholder": "https://your-store.com/image.png",
+            "description": "Image or video to display in your ad"
+          },
+          "redirectUrl": {
+            "label": "Redirect URL",
+            "placeholder": "https://your-store.com/product",
+            "description": "Where users will go when clicking the ad"
+          }
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "create": "Create Ad",
+          "creating": "Creating..."
+        }
+      },
+      "edit": {
+        "title": "Edit Ad",
+        "description": "Update the details of your advertisement.",
+        "success": {
+          "title": "Ad Updated",
+          "description": "The ad was successfully updated"
+        },
+        "error": {
+          "title": "Error Updating Ad",
+          "description": "An error occurred while updating the ad",
+          "generic": "An error occurred while updating the ad"
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "update": "Update Ad",
+          "updating": "Updating..."
+        },
+        "fields": {
+          "title": {
+            "label": "Title",
+            "placeholder": "Ad title",
+            "description": "Short, catchy headline for your ad"
+          },
+          "description": {
+            "label": "Description",
+            "placeholder": "Describe your ad (optional)",
+            "description": "Optional: additional details about your ad"
+          },
+          "keywords": {
+            "label": "Keywords",
+            "placeholder": "shoes, sports, running",
+            "description": "Keywords related to this ad (comma separated)"
+          },
+          "bidAmount": {
+            "label": "Bid Amount",
+            "description": "Maximum bid per click"
+          },
+          "bidCurrency": {
+            "label": "Bid Currency",
+            "placeholder": "Select a currency",
+            "description": "Currency for bidding"
+          },
+          "bidStrategy": {
+            "label": "Bid Strategy",
+            "placeholder": "Select a strategy",
+            "description": "How your bid will be managed",
+            "options": {
+              "manual": "Manual Bidding",
+              "auto": "Automatic Bidding",
+              "targetCpa": "Target CPA"
+            }
+          },
+          "isActive": {
+            "label": "Active",
+            "description": "Toggle to activate or deactivate this ad"
+          },
+          "reason": {
+            "label": "Reason (if inactive)",
+            "placeholder": "Reason for deactivation (optional)",
+            "description": "Explain why this ad is inactive"
+          },
+          "activatedAt": {
+            "label": "Activated At",
+            "placeholder": "Activation date/time (optional)",
+            "description": "When this ad became active"
+          },
+          "deactivatedAt": {
+            "label": "Deactivated At",
+            "placeholder": "Deactivation date/time (optional)",
+            "description": "When this ad became inactive"
+          }
+        },
+        "sections": {
+          "adDetails": "Ad Details",
+          "bidSettings": "Bid Settings",
+          "adState": "Ad State"
+        }
+      }
     }
   },
   "campaigns": {
@@ -355,6 +484,51 @@
       "conversionRate": "Conversion Rate",
       "cpc": "Cost per Click",
       "cpa": "Cost per Acquisition"
+    },
+    "details": {
+      "title": "Campaign Details",
+      "campaignId": "Campaign ID",
+      "information": "Campaign Information",
+      "type": "Type",
+      "status": "Status",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "noEndDate": "No end date",
+      "created": "Created",
+      "updated": "Updated",
+      "tenantId": "Tenant ID",
+      "bidding": {
+        "title": "Bidding Information",
+        "amount": "Bid Amount",
+        "currency": "Currency",
+        "strategy": "Strategy",
+        "manual": "Manual"
+      }
+    },
+    "create": {
+      "title": "Create New Campaign",
+      "description": "Fill in the details below to create a new campaign.",
+      "advertiser": "Advertiser",
+      "selectAdvertiser": "Select an advertiser",
+      "loadingAdvertisers": "Loading advertisers...",
+      "noAdvertisers": "No advertisers found",
+      "name": "Name",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "status": "Status",
+      "type": "Type",
+      "error": {
+        "nameRequired": "Campaign name is required",
+        "startDateRequired": "Start date is required",
+        "advertiserRequired": "Advertiser selection is required",
+        "invalidAdvertiserId": "Invalid advertiser ID",
+        "generic": "Failed to create campaign. Please try again."
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "creating": "Creating...",
+        "create": "New Campaign"
+      }
     }
   },
   "metrics": {
@@ -1132,6 +1306,19 @@
     "appearance": "Appearance",
     "darkMode": "Dark Mode",
     "language": "Language"
+  },
+  "productSelection": {
+    "title": "Select Products for Campaign",
+    "defaultBidAmount": "Default Bid Amount",
+    "selectProducts": "Select Products",
+    "selectAll": "Select All",
+    "loading": "Loading products...",
+    "noProducts": "No products found",
+    "error": "An error occurred while selecting products",
+    "addButton": {
+      "processing": "Processing...",
+      "add": "Add Selected Products"
+    }
   }
 }
 

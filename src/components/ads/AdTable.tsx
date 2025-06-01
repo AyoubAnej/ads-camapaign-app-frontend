@@ -21,7 +21,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { adApi } from '@/lib/adApi';
 import { GetAdResponseDto, AdPaginationParams } from '@/types/ad';
-import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight, Filter, User, Trash } from 'lucide-react';
+import { Eye, Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight, Filter, User } from 'lucide-react';
 // import { CreateAdModal } from './CreateAdModal';
 import { EditAdModal } from './EditAdModal';
 import { DeleteAdModal } from './DeleteAdModal';
@@ -29,14 +29,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 interface AdTableProps {
   campaignId: number;
 }
 
 export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -154,17 +152,18 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
       </div>
     );
   }
+
   // Render error state
   if (isError) {
     return (
       <div className="flex flex-col items-center justify-center h-64 text-red-500">
-        <p>{t('ads.table.error')}: {error instanceof Error ? error.message : t('common.unknown')}</p>
+        <p>Error loading ads: {error instanceof Error ? error.message : 'Unknown error'}</p>
         <Button 
           variant="outline" 
           className="mt-4"
           onClick={() => queryClient.invalidateQueries({ queryKey: ['ads', campaignId, paginationParams] })}
         >
-          {t('common.tryAgain')}
+          Retry
         </Button>
       </div>
     );
@@ -182,7 +181,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           <div className="relative w-full sm:w-[200px]">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder={t('ads.searchPlaceholder')}
+              placeholder="Search ads..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
@@ -196,13 +195,14 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
             >
               <SelectTrigger className="w-full sm:w-[150px]">
                 <div className="flex items-center gap-2">
-                  <Filter className="h-4 w-4" />              <SelectValue placeholder={t('ads.table.filterStatus')} />
+                  <Filter className="h-4 w-4" />
+                  <SelectValue placeholder="Filter Status" />
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{t('ads.table.allStatus')}</SelectItem>
-                <SelectItem value="active">{t('ads.table.active')}</SelectItem>
-                <SelectItem value="inactive">{t('ads.table.inactive')}</SelectItem>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="inactive">Inactive</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -212,7 +212,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
           className="flex items-center gap-1"
         >
-          <Plus className="h-4 w-4" /> {t('ads.createAd')}
+          <Plus className="h-4 w-4" /> Create Ad
         </Button>
       </div>
 
@@ -224,7 +224,8 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
       )}
 
       {ads.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">          <p>{t('ads.table.noAdsFound')}</p>
+        <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
+          <p>No ads found</p>
           {searchTerm || statusFilter !== 'all' ? (
             <Button 
               variant="outline" 
@@ -234,14 +235,14 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                 setStatusFilter('all');
               }}
             >
-              {t('ads.table.clearFilters')}
+              Clear Filters
             </Button>
           ) : (
             <Button 
               className="mt-4"
               onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
             >
-              {t('ads.table.createFirstAd')}
+              Create Your First Ad
             </Button>
           )}
         </div>
@@ -250,11 +251,12 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           <div className="rounded-md border overflow-hidden">
             <Table>
               <TableHeader className="bg-muted/50 border-b-2 border-gray-300 dark:border-gray-600">
-                <TableRow className="hover:bg-transparent">          <TableHead className="font-semibold">{t('ads.table.title')}</TableHead>
-                  <TableHead className="font-semibold">{t('ads.table.productId')}</TableHead>
-                  <TableHead className="font-semibold">{t('ads.table.status')}</TableHead>
-                  <TableHead className="font-semibold">{t('ads.table.bidAmount')}</TableHead>
-                  <TableHead className="font-semibold">{t('ads.table.created')}</TableHead>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="font-semibold">Title</TableHead>
+                  <TableHead className="font-semibold">Product ID</TableHead>
+                  <TableHead className="font-semibold">Status</TableHead>
+                  <TableHead className="font-semibold">Bid Amount</TableHead>
+                  <TableHead className="font-semibold">Created</TableHead>
                   <TableHead className="text-right font-semibold">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -269,23 +271,20 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                   >
                     <TableCell className="font-medium">{ad.title}</TableCell>
                     <TableCell>{ad.productId}</TableCell>
-                    <TableCell>                      <Badge variant={ad.adState?.isActive ? "default" : "secondary"}>
-                        {t(ad.adState?.isActive ? 'ads.table.active' : 'ads.table.inactive')}
+                    <TableCell>
+                      <Badge variant={ad.adState?.isActive ? "default" : "secondary"}>
+                        {ad.adState?.isActive ? "Active" : "Inactive"}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {t('ads.table.currencyFormat', {
-                        amount: ad.bid?.amount?.toFixed(2) ?? "0.00",
-                        currency: ad.bid?.currency ?? 'USD'
-                      })}
+                      ${ad.bid?.amount?.toFixed(2) ?? "0.00"} {ad.bid?.currency ?? 'USD'}
                     </TableCell>
                     <TableCell>{formatDate(ad.creationDate)}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button
-                          variant="outline"
-                          size="sm"
-                          className= "border-blue-600 text-blue-600 hover:bg-blue-500 hover:text-white"
+                          variant="ghost"
+                          size="icon"
                           onClick={() => {
                             // Navigate to ad details page
                             navigate(`/campaigns/${campaignId}/ads/${ad.adId}`);
@@ -294,9 +293,8 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                           <Eye className="h-4 w-4" />
                         </Button>
                         <Button
-                          variant="outline"
-                          size="sm"
-                          className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+                          variant="ghost"
+                          size="icon"
                           onClick={() => {
                             setSelectedAd(ad);
                             setEditModalOpen(true);
@@ -305,15 +303,15 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive hover:text-destructive/90"
                           onClick={() => {
                             setSelectedAd(ad);
                             setDeleteModalOpen(true);
                           }}
                         >
-                          <Trash className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>
@@ -326,11 +324,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           {/* Pagination with page size selection */}
           <div className="flex items-center justify-between py-4">
             <div className="text-sm text-muted-foreground">
-              {t('ui.table.showing', {
-                start: totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1,
-                end: Math.min(currentPage * pageSize, totalCount),
-                total: totalCount
-              })}
+              Showing {totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalCount)} of {totalCount} ads
             </div>
             <div className="flex items-center space-x-2">
               <Button
@@ -342,7 +336,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                 <ChevronLeft className="h-4 w-4" />
               </Button>
               <span className="text-sm">
-                {t('ui.table.pagination', { currentPage, totalPages })}
+                Page {currentPage} of {totalPages}
               </span>
               <Button
                 variant="outline"

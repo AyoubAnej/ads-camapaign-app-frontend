@@ -31,6 +31,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DollarSign, Image, Link2, Info, Tag, BarChart3, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from 'react-i18next';
 
 interface CreateAdModalProps {
   campaignId: number;
@@ -61,6 +62,8 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
   onOpenChange,
   onCreateAd,
 }) => {
+  const { t } = useTranslation();
+  
   // Toast notifications
   const { toast } = useToast();
   
@@ -90,8 +93,8 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
     },
     onSuccess: () => {
       toast({
-        title: "Ad Created",
-        description: "Your ad was successfully created.",
+        title: t('ads.modal.create.success.title'),
+        description: t('ads.modal.create.success.description'),
         variant: "default",
       });
       onCreateAd();
@@ -100,8 +103,8 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
     },
     onError: (error) => {
       toast({
-        title: "Error Creating Ad",
-        description: error instanceof Error ? error.message : "An error occurred while creating the ad",
+        title: t('ads.modal.create.error.title'),
+        description: error instanceof Error ? error.message : t('ads.modal.create.error.description'),
         variant: "destructive",
       });
     },
@@ -133,10 +136,9 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
       productId: values.productId,
       title: values.title,
       description: values.description || "",
-      mediaUrl: values.mediaUrl || "",
-      redirectUrl: values.redirectUrl || "",
       adState: adState,
       bid: bid,
+      keywords: []
     };
 
     console.log('Creating ad with data:', JSON.stringify(createRequest, null, 2));
@@ -147,9 +149,9 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] max-h-[85vh] p-0 flex flex-col">
         <DialogHeader className="px-6 pt-6 pb-2">
-          <DialogTitle>Create New Ad</DialogTitle>
+          <DialogTitle>{t('ads.modal.create.title')}</DialogTitle>
           <DialogDescription>
-            Fill out the details below to create a new advertisement for your campaign.
+            {t('ads.modal.create.description')}
           </DialogDescription>
         </DialogHeader>
         
@@ -160,7 +162,7 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <Tag className="h-5 w-5 text-primary" />
-                  <h3 className="font-semibold text-lg">Ad Details</h3>
+                  <h3 className="font-semibold text-lg">{t('ads.modal.create.sections.adDetails')}</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
@@ -168,11 +170,11 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                     name="productId"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Product ID</FormLabel>
+                        <FormLabel>{t('ads.modal.create.fields.productId.label')}</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Enter product ID" />
+                          <Input {...field} placeholder={t('ads.modal.create.fields.productId.placeholder')} />
                         </FormControl>
-                        <FormDescription>Unique product identifier</FormDescription>
+                        <FormDescription>{t('ads.modal.create.fields.productId.description')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -182,11 +184,11 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                     name="title"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Title</FormLabel>
+                        <FormLabel>{t('ads.modal.create.fields.title.label')}</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Ad title" />
+                          <Input {...field} placeholder={t('ads.modal.create.fields.title.placeholder')} />
                         </FormControl>
-                        <FormDescription>Short, catchy headline for your ad</FormDescription>
+                        <FormDescription>{t('ads.modal.create.fields.title.description')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -196,11 +198,11 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                     name="description"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Description</FormLabel>
+                        <FormLabel>{t('ads.modal.create.fields.description.label')}</FormLabel>
                         <FormControl>
-                          <Textarea {...field} placeholder="Describe your ad (optional)" />
+                          <Textarea {...field} placeholder={t('ads.modal.create.fields.description.placeholder')} />
                         </FormControl>
-                        <FormDescription>Optional: additional details about your ad</FormDescription>
+                        <FormDescription>{t('ads.modal.create.fields.description.description')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -210,11 +212,11 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                     name="mediaUrl"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Media URL</FormLabel>
+                        <FormLabel>{t('ads.modal.create.fields.mediaUrl.label')}</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="https://your-store.com/image.png" />
+                          <Input {...field} placeholder={t('ads.modal.create.fields.mediaUrl.placeholder')} />
                         </FormControl>
-                        <FormDescription>Image or video to display in your ad</FormDescription>
+                        <FormDescription>{t('ads.modal.create.fields.mediaUrl.description')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -224,11 +226,11 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                     name="redirectUrl"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Redirect URL</FormLabel>
+                        <FormLabel>{t('ads.modal.create.fields.redirectUrl.label')}</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="https://your-store.com/product" />
+                          <Input {...field} placeholder={t('ads.modal.create.fields.redirectUrl.placeholder')} />
                         </FormControl>
-                        <FormDescription>Where users will go when clicking the ad</FormDescription>
+                        <FormDescription>{t('ads.modal.create.fields.redirectUrl.description')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -240,7 +242,7 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
               <div className="pt-6 border-t border-muted space-y-2">
                 <div className="flex items-center gap-2 mb-2">
                   <DollarSign className="h-5 w-5 text-primary" />
-                  <h3 className="font-semibold text-lg">Bid Settings</h3>
+                  <h3 className="font-semibold text-lg">{t('ads.modal.create.sections.bidSettings')}</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
@@ -248,7 +250,7 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                     name="bidAmount"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Bid Amount</FormLabel>
+                        <FormLabel>{t('ads.modal.create.fields.bidAmount.label')}</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <span className="absolute left-3 top-2.5 text-muted-foreground">$</span>
@@ -261,7 +263,7 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                             />
                           </div>
                         </FormControl>
-                        <FormDescription>Maximum bid per click</FormDescription>
+                        <FormDescription>{t('ads.modal.create.fields.bidAmount.description')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -271,14 +273,14 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                     name="bidCurrency"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Bid Currency</FormLabel>
+                        <FormLabel>{t('ads.modal.create.fields.bidCurrency.label')}</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select a currency" />
+                              <SelectValue placeholder={t('ads.modal.create.fields.bidCurrency.placeholder')} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -287,7 +289,7 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                             <SelectItem value="GBP">GBP</SelectItem>
                           </SelectContent>
                         </Select>
-                        <FormDescription>Currency for bidding</FormDescription>
+                        <FormDescription>{t('ads.modal.create.fields.bidCurrency.description')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -297,23 +299,23 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                     name="bidStrategy"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Bid Strategy</FormLabel>
+                        <FormLabel>{t('ads.modal.create.fields.bidStrategy.label')}</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select a strategy" />
+                              <SelectValue placeholder={t('ads.modal.create.fields.bidStrategy.placeholder')} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="MANUAL">Manual Bidding</SelectItem>
-                            <SelectItem value="AUTO">Automatic Bidding</SelectItem>
-                            <SelectItem value="TARGET_CPA">Target CPA</SelectItem>
+                            <SelectItem value="MANUAL">{t('ads.modal.create.fields.bidStrategy.options.manual')}</SelectItem>
+                            <SelectItem value="AUTO">{t('ads.modal.create.fields.bidStrategy.options.auto')}</SelectItem>
+                            <SelectItem value="TARGET_CPA">{t('ads.modal.create.fields.bidStrategy.options.targetCpa')}</SelectItem>
                           </SelectContent>
                         </Select>
-                        <FormDescription>How your bid will be managed</FormDescription>
+                        <FormDescription>{t('ads.modal.create.fields.bidStrategy.description')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -325,7 +327,7 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
               <div className="pt-6 border-t border-muted space-y-2">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle2 className="h-5 w-5 text-primary" />
-                  <h3 className="font-semibold text-lg">Ad State</h3>
+                  <h3 className="font-semibold text-lg">{t('ads.modal.create.sections.adState')}</h3>
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center gap-6">
                   <FormField
@@ -339,8 +341,8 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <FormLabel className="m-0">Active</FormLabel>
-                        <FormDescription className="m-0">Toggle to activate or deactivate this ad</FormDescription>
+                        <FormLabel className="m-0">{t('ads.modal.create.fields.isActive.label')}</FormLabel>
+                        <FormDescription className="m-0">{t('ads.modal.create.fields.isActive.description')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -352,9 +354,9 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                       name="reason"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Reason (if inactive)</FormLabel>
-                          <Input {...field} placeholder="Reason for deactivation (optional)" />
-                          <FormDescription>Explain why this ad is inactive</FormDescription>
+                          <FormLabel>{t('ads.modal.create.fields.reason.label')}</FormLabel>
+                          <Input {...field} placeholder={t('ads.modal.create.fields.reason.placeholder')} />
+                          <FormDescription>{t('ads.modal.create.fields.reason.description')}</FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -369,9 +371,9 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                       name="activatedAt"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Activated At</FormLabel>
-                          <Input {...field} type="datetime-local" placeholder="Activation date/time (optional)" />
-                          <FormDescription>When this ad became active</FormDescription>
+                          <FormLabel>{t('ads.modal.create.fields.activatedAt.label')}</FormLabel>
+                          <Input {...field} type="datetime-local" placeholder={t('ads.modal.create.fields.activatedAt.placeholder')} />
+                          <FormDescription>{t('ads.modal.create.fields.activatedAt.description')}</FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -383,9 +385,9 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                       name="deactivatedAt"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Deactivated At</FormLabel>
-                          <Input {...field} type="datetime-local" placeholder="Deactivation date/time (optional)" />
-                          <FormDescription>When this ad became inactive</FormDescription>
+                          <FormLabel>{t('ads.modal.create.fields.deactivatedAt.label')}</FormLabel>
+                          <Input {...field} type="datetime-local" placeholder={t('ads.modal.create.fields.deactivatedAt.placeholder')} />
+                          <FormDescription>{t('ads.modal.create.fields.deactivatedAt.description')}</FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -397,7 +399,7 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
             
             {error && (
               <div className="text-destructive text-sm bg-destructive/10 p-3 rounded-md border border-destructive/20 mt-4">
-                {error instanceof Error ? error.message : "An error occurred while creating the ad"}
+                {error instanceof Error ? error.message : t('ads.modal.create.error.generic')}
               </div>
             )}
             
@@ -407,13 +409,13 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
                 variant="outline" 
                 onClick={() => onOpenChange(false)}
               >
-                Cancel
+                {t('ads.modal.create.buttons.cancel')}
               </Button>
               <Button 
                 type="submit" 
                 disabled={isPending}
               >
-                {isPending ? "Creating..." : "Create Ad"}
+                {isPending ? t('ads.modal.create.buttons.creating') : t('ads.modal.create.buttons.create')}
               </Button>
             </DialogFooter>
           </form>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { UserPlus } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import {
   Table,
   TableBody,
@@ -31,7 +30,6 @@ import { ExportButtons } from "@/components/ui/export-buttons";
 import { TableColumn } from "@/lib/exportUtils";
 
 export const UserTable = () => {
-  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("all_roles");
   const [statusFilter, setStatusFilter] = useState("all_statuses");
@@ -207,9 +205,24 @@ export const UserTable = () => {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4 space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-        <div>
-          <h2 className="text-2xl font-bold">{t('admin.userManagement.title')}</h2>
-          <p className="text-muted-foreground">{t('admin.userManagement.description')}</p>
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+          <UserFilters
+            searchQuery={searchQuery}
+            roleFilter={roleFilter}
+            statusFilter={statusFilter}
+            onSearchChange={(value) => {
+              setSearchQuery(value);
+              setCurrentPage(1);
+            }}
+            onRoleFilterChange={(value) => {
+              setRoleFilter(value);
+              setCurrentPage(1);
+            }}
+            onStatusFilterChange={(value) => {
+              setStatusFilter(value);
+              setCurrentPage(1);
+            }}
+          />
         </div>
         
         <div className="flex items-center gap-2">
@@ -217,7 +230,7 @@ export const UserTable = () => {
             data={filteredUsers}
             columns={exportColumns}
             fileName="users"
-            title={t('admin.userManagement.title')}
+            title="User Management"
           />
           
           <Button
@@ -225,43 +238,23 @@ export const UserTable = () => {
             className="flex items-center gap-2"
           >
             <UserPlus className="h-4 w-4" />
-            {t('admin.sellerRegistration.title')}
+            New Advertiser
           </Button>
         </div>
-      </div>
-
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <UserFilters
-          searchQuery={searchQuery}
-          roleFilter={roleFilter}
-          statusFilter={statusFilter}
-          onSearchChange={(value) => {
-            setSearchQuery(value);
-            setCurrentPage(1);
-          }}
-          onRoleFilterChange={(value) => {
-            setRoleFilter(value);
-            setCurrentPage(1);
-          }}
-          onStatusFilterChange={(value) => {
-            setStatusFilter(value);
-            setCurrentPage(1);
-          }}
-        />
       </div>
 
       <div className="rounded-md border bg-white dark:bg-gray-900">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t('admin.userManagement.fields.name')}</TableHead>
-              <TableHead>{t('admin.userManagement.fields.email')}</TableHead>
-              <TableHead>{t('admin.userManagement.fields.phoneNumber')}</TableHead>
-              <TableHead>{t('admin.userManagement.fields.role')}</TableHead>
-              <TableHead>{t('admin.userManagement.fields.shopName')}</TableHead>
-              <TableHead>{t('admin.userManagement.fields.address')}</TableHead>
-              <TableHead>{t('admin.userManagement.fields.status')}</TableHead>
-              <TableHead className="text-right">{t('common.actions')}</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Phone</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Shop Name</TableHead>
+              <TableHead>Address</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -279,7 +272,7 @@ export const UserTable = () => {
                   colSpan={8}
                   className="text-center text-gray-400 py-8"
                 >
-                  {t('admin.userManagement.noUsers')}
+                  No users found.
                 </TableCell>
               </TableRow>
             ) : (
@@ -307,13 +300,15 @@ export const UserTable = () => {
         </Table>
         <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-3 gap-2">
           <div className="w-full sm:w-auto flex justify-start">
-            <span className="text-sm text-muted-foreground">              {totalItems === 0
-                ? t('admin.userManagement.noUsers')
-                : t('admin.userManagement.showing', {
-                    start: indexOfFirstItem + (totalItems ? 1 : 0),
-                    end: Math.min(indexOfLastItem, totalItems),
-                    total: totalItems
-                  })}
+            <span className="text-sm text-muted-foreground">
+              {totalItems === 0
+                ? "No users to display"
+                : `Showing ${
+                    indexOfFirstItem + (totalItems ? 1 : 0)
+                  } to ${Math.min(
+                    indexOfLastItem,
+                    totalItems
+                  )} of ${totalItems} users`}
             </span>
           </div>
           <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-2 justify-end">
@@ -344,7 +339,6 @@ export const UserTable = () => {
         </div>
       </div>
 
-      {/* Modals */}
       <SellerRegistrationModal
         open={isSellerModalOpen}
         onOpenChange={setIsSellerModalOpen}
@@ -365,31 +359,26 @@ export const UserTable = () => {
             user={selectedUser}
             onDeleteUser={handleDeleteUser}
           />
-        </>
-      )}
-
-      {selectedActionUser && (
-        <>
-          <ConfirmationModal
-            open={isDeactivateModalOpen}
-            onOpenChange={setIsDeactivateModalOpen}
-            onConfirm={() => deactivateUserMutation.mutate(selectedActionUser.id)}
-            title={t('admin.userManagement.deactivateUser')}
-            description={t('admin.userManagement.deactivateWarning', { 
-              userName: `${selectedActionUser.firstName} ${selectedActionUser.lastName}` 
-            })}
-            confirmText={t('admin.userManagement.deactivateUser')}
-          />
-          <ConfirmationModal
-            open={isReactivateModalOpen}
-            onOpenChange={setIsReactivateModalOpen}
-            onConfirm={() => reactivateUserMutation.mutate(selectedActionUser.id)}
-            title={t('admin.userManagement.reactivateUser')}
-            description={t('admin.userManagement.reactivateWarning', { 
-              userName: `${selectedActionUser.firstName} ${selectedActionUser.lastName}` 
-            })}
-            confirmText={t('admin.userManagement.reactivateUser')}
-          />
+          {selectedActionUser && (
+            <>
+              <ConfirmationModal
+                open={isDeactivateModalOpen}
+                onOpenChange={setIsDeactivateModalOpen}
+                onConfirm={() => deactivateUserMutation.mutate(selectedActionUser.id)}
+                title="Deactivate User"
+                description={`Are you sure you want to deactivate ${selectedActionUser.firstName} ${selectedActionUser.lastName}?`}
+                confirmText="Deactivate"
+              />
+              <ConfirmationModal
+                open={isReactivateModalOpen}
+                onOpenChange={setIsReactivateModalOpen}
+                onConfirm={() => reactivateUserMutation.mutate(selectedActionUser.id)}
+                title="Reactivate User"
+                description={`Are you sure you want to reactivate ${selectedActionUser.firstName} ${selectedActionUser.lastName}?`}
+                confirmText="Reactivate"
+              />
+            </>
+          )}
         </>
       )}
     </div>

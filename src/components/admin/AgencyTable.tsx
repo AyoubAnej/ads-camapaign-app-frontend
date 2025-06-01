@@ -1,13 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { agencyApi } from "@/lib/agenciesApi";
 import { Agency, AgencyStatus, agencyStatusToString } from "@/types/agency";
 import { format } from "date-fns";
-import { fr, enUS } from 'date-fns/locale';
 import { Edit, Trash2, Plus, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTranslation } from 'react-i18next';
 
 import {
   Table,
@@ -33,46 +31,14 @@ import EditAgencyModal from "./EditAgencyModal";
 import DeleteAgencyModal from "./DeleteAgencyModal";
 
 export const AgencyTable = () => {
-  const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user } = useAuth();
   
   // States for pagination and search
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
-  
-  // Ref for search input to maintain focus
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  
-  // Debounce search term to prevent excessive API calls
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500);
-    
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
-  
-  // Maintain focus on search input when data is refreshed
-  useEffect(() => {
-    // If the search input has focus before the query runs, restore focus after
-    const inputHasFocus = document.activeElement === searchInputRef.current;
-    
-    return () => {
-      if (inputHasFocus && searchInputRef.current) {
-        // Use setTimeout to ensure focus happens after render
-        setTimeout(() => {
-          searchInputRef.current?.focus();
-          // Preserve cursor position
-          const length = searchInputRef.current?.value.length || 0;
-          searchInputRef.current?.setSelectionRange(length, length);
-        }, 0);
-      }
-    };
-  }, [debouncedSearchTerm, currentPage, pageSize]);
   
   // States for modal visibility
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -86,66 +52,46 @@ export const AgencyTable = () => {
   const isAdmin = user?.role === "ADMIN";
   
   // Fetch agencies data with pagination
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["agencies", currentPage, pageSize, debouncedSearchTerm],
-    queryFn: async () => {
-      try {
-        return await agencyApi.getAllAgencies({ page: currentPage, pageSize, searchTerm: debouncedSearchTerm });
-      } catch (error: any) {
-        // Check if error is due to authentication
-        if (error?.response?.status === 401) {
-          toast({
-            title: "Session Expired",
-            description: "Your session has expired. Please refresh the page or log in again.",
-            variant: "destructive",
-          });
-        }
-        throw error;
-      }
-    },
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["agencies", currentPage, pageSize, searchTerm],
+    queryFn: () => agencyApi.getAllAgencies({ page: currentPage, pageSize, searchTerm }),
     enabled: !!user, // Only fetch if user is authenticated
-    refetchOnWindowFocus: true, // Refetch when window regains focus
-    refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes (adjust as needed)
-    refetchIntervalInBackground: false, // Don't refetch when tab is not active
-    retry: (failureCount, error: any) => {
-      // Don't retry on authentication errors
-      if (error?.response?.status === 401) return false;
-      return failureCount < 3; // Retry other errors up to 3 times
-    },
   });
 
   // Mutations
   const deactivateAgencyMutation = useMutation({
-    mutationFn: (agencyId: number) => agencyApi.deactivateAgency(agencyId),    onSuccess: () => {
+    mutationFn: (agencyId: number) => agencyApi.deactivateAgency(agencyId),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["agencies"] });
       toast({
-        title: t('admin.agencyManagement.deactivated'),
-        description: t('admin.agencyManagement.deactivatedSuccess'),
+        title: "Agency Deactivated",
+        description: "The agency has been deactivated successfully.",
       });
       setIsDeactivateModalOpen(false);
     },
     onError: (error) => {
       toast({
-        title: t('common.error'),
-        description: t('admin.agencyManagement.deactivateError'),
+        title: "Error",
+        description: "Failed to deactivate agency. Please try again.",
         variant: "destructive",
       });
     },
   });
 
   const reactivateAgencyMutation = useMutation({
-    mutationFn: (agencyId: number) => agencyApi.reactivateAgency(agencyId),    onSuccess: () => {
+    mutationFn: (agencyId: number) => agencyApi.reactivateAgency(agencyId),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["agencies"] });
       toast({
-        title: t('admin.agencyManagement.reactivated'),
-        description: t('admin.agencyManagement.reactivatedSuccess'),
+        title: "Agency Reactivated",
+        description: "The agency has been reactivated successfully.",
       });
       setIsReactivateModalOpen(false);
     },
     onError: (error) => {
       toast({
-        title: t('common.error'),
-        description: t('admin.agencyManagement.reactivateError'),
+        title: "Error",
+        description: "Failed to reactivate agency. Please try again.",
         variant: "destructive",
       });
     },
@@ -180,9 +126,10 @@ export const AgencyTable = () => {
       setIsReactivateModalOpen(true);
     }
   };
+
   // Handle successful operations
   const handleSuccess = (message: string) => {
-    toast({ title: t('common.success'), description: message });
+    toast({ title: "Success", description: message });
     queryClient.invalidateQueries({ queryKey: ["agencies"] });
   };
 
@@ -190,19 +137,20 @@ export const AgencyTable = () => {
   const getStatusBadgeColor = (status: AgencyStatus) => {
     switch (status) {
       case AgencyStatus.ACTIVE:
-        return "bg-green-200 text-green-600 dark:bg-green-600 dark:text-green-100";
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
       case AgencyStatus.INACTIVE:
-        return "bg-red-200 text-red-700 dark:bg-red-700 dark:text-red-100";
+        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
       default:
         return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
     }
   };
 
   if (isLoading) {
-    return (          <div className="flex justify-center items-center h-64 bg-background rounded-lg p-6">
+    return (
+      <div className="flex justify-center items-center h-64 bg-background rounded-lg p-6">
         <div className="flex flex-col items-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-          <p className="text-lg font-medium">{t('admin.agencyManagement.loading')}</p>
+          <p className="text-lg font-medium">Loading agencies...</p>
         </div>
       </div>
     );
@@ -214,14 +162,15 @@ export const AgencyTable = () => {
         <div className="flex items-center mb-3">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-destructive mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>          <h3 className="text-lg font-medium text-destructive">{t('admin.agencyManagement.errorLoadingTitle')}</h3>
+          </svg>
+          <h3 className="text-lg font-medium text-destructive">Error Loading Agency Data</h3>
         </div>
-        <p className="text-destructive/80 mb-3">{t('admin.agencyManagement.errorLoadingMessage')}</p>
+        <p className="text-destructive/80 mb-3">Failed to load agency data</p>
         <Button 
           onClick={() => queryClient.invalidateQueries({ queryKey: ["agencies"] })} 
           variant="destructive"
         >
-          {t('common.tryAgain')}
+          Try Again
         </Button>
       </div>
     );
@@ -231,15 +180,18 @@ export const AgencyTable = () => {
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">{t('admin.agencyManagement.title')}</h2>
-          <p className="text-muted-foreground">{t('admin.agencyManagement.description')}</p>
+          <h2 className="text-2xl font-bold">Agency Management</h2>
+          <p className="text-muted-foreground">Manage your agencies and their details</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="relative">
             <Input
               placeholder="Search agencies..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
               className="pl-8 w-64"
             />
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
@@ -250,7 +202,7 @@ export const AgencyTable = () => {
               className="flex items-center gap-2"
             >
               <Plus className="h-4 w-4" />
-              {t('admin.agencyManagement.addAgency')}
+              New Agency
             </Button>
           )}
         </div>
@@ -260,14 +212,14 @@ export const AgencyTable = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t('admin.agencyManagement.fields.name')}</TableHead>
-              <TableHead>{t('admin.agencyManagement.fields.phone')}</TableHead>              
-              <TableHead>{t('admin.agencyManagement.fields.website')}</TableHead>
-              <TableHead>{t('admin.agencyManagement.fields.description')}</TableHead>
-              <TableHead>{t('admin.agencyManagement.fields.status')}</TableHead>
-              <TableHead>{t('common.created')}</TableHead>
-              <TableHead>{t('common.updated')}</TableHead>
-              {isAdmin && <TableHead className="text-right">{t('common.actions')}</TableHead>}
+              <TableHead>Name</TableHead>
+              <TableHead>Phone Number</TableHead>
+              <TableHead>Website</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Created</TableHead>
+              <TableHead>Last Updated</TableHead>
+              {isAdmin && <TableHead className="text-right">Actions</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -286,11 +238,12 @@ export const AgencyTable = () => {
                       >
                         {agency.website}
                       </a>
-                    ) : (                      <span className="text-gray-400">{t('common.notAvailable')}</span>
+                    ) : (
+                      <span className="text-gray-400">N/A</span>
                     )}
                   </TableCell>
                   <TableCell className="max-w-xs truncate" title={agency.description}>
-                    {agency.description || <span className="text-gray-400">{t('common.notAvailable')}</span>}
+                    {agency.description || <span className="text-gray-400">N/A</span>}
                   </TableCell>
                   <TableCell>
                     <Badge className={getStatusBadgeColor(agency.status)} variant="outline">
@@ -310,7 +263,6 @@ export const AgencyTable = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => handleEditClick(agency)}
-                          className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -319,8 +271,8 @@ export const AgencyTable = () => {
                           size="sm"
                           onClick={() => handleToggleActivation(agency)}
                           className={agency.status === AgencyStatus.ACTIVE 
-                            ? "text-yellow-500 border-yellow-500 hover:bg-yellow-500 hover:text-white" 
-                            : "border-green-600 text-green-600 hover:bg-green-600 hover:text-white"}
+                            ? "text-yellow-500 border-yellow-200 hover:bg-yellow-50 hover:text-yellow-600" 
+                            : "text-green-500 border-green-200 hover:bg-green-50 hover:text-green-600"}
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -330,7 +282,7 @@ export const AgencyTable = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => handleDeleteClick(agency)}
-                          className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
+                          className="text-red-500 border-red-200 hover:bg-red-50 hover:text-red-600"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -340,24 +292,21 @@ export const AgencyTable = () => {
                 </TableRow>
               ))
             ) : (
-              <TableRow>                <TableCell colSpan={isAdmin ? 8 : 7} className="text-center py-4 text-gray-500">
-                  {t('admin.agencyManagement.noAgencies')}
+              <TableRow>
+                <TableCell colSpan={isAdmin ? 8 : 7} className="text-center py-4 text-gray-500">
+                  No agencies found
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-between px-4 py-4 border-t">          
+        <div className="flex items-center justify-between px-4 py-4 border-t">
           <div className="flex-1 text-sm text-muted-foreground">
-            {t('admin.agencyManagement.showing', { 
-              start: startIndex + 1,
-              end: Math.min(endIndex, totalItems),
-              total: totalItems
-            })}
+            Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} agencies
           </div>
           <div className="flex items-center space-x-6 lg:space-x-8">
             <div className="flex items-center space-x-2">
-              <p className="text-sm font-normal text-muted-foreground">{t('admin.agencyManagement.perPage')}</p>
+              <p className="text-sm font-normal text-muted-foreground">Agencies per page</p>
               <Select
                 value={pageSize.toString()}
                 onValueChange={(value) => {
@@ -376,8 +325,9 @@ export const AgencyTable = () => {
                   ))}
                 </SelectContent>
               </Select>
-            </div>            <div className="flex w-[100px] items-center text-muted-foreground justify-center text-sm font-normal">
-              {t('admin.agencyManagement.pagination', { currentPage, totalPages })}
+            </div>
+            <div className="flex w-[100px] items-center text-muted-foreground justify-center text-sm font-normal">
+              Page {currentPage} of {totalPages}
             </div>
             <div className="flex items-center space-x-2">
               <Button
@@ -401,48 +351,54 @@ export const AgencyTable = () => {
         </div>
       </div>
 
-      {/* Confirmation modals at the bottom of the component */}
-      {selectedAgency && (
-        <>
-          <ConfirmationModal
-            open={isDeactivateModalOpen}
-            onOpenChange={setIsDeactivateModalOpen}
-            onConfirm={() => deactivateAgencyMutation.mutate(selectedAgency.agencyId)}
-            title={t('admin.agencyManagement.deactivateAgency')}
-            description={t('admin.agencyManagement.deactivateWarning', { agencyName: selectedAgency.name })}
-            confirmText={t('admin.agencyManagement.deactivate')}
-          />
-          <ConfirmationModal
-            open={isReactivateModalOpen}
-            onOpenChange={setIsReactivateModalOpen}
-            onConfirm={() => reactivateAgencyMutation.mutate(selectedAgency.agencyId)}
-            title={t('admin.agencyManagement.reactivateAgency')}
-            description={t('admin.agencyManagement.reactivateWarning', { agencyName: selectedAgency.name })}
-            confirmText={t('admin.agencyManagement.reactivate')}
-          />
-          <DeleteAgencyModal
-            isOpen={isDeleteModalOpen}
-            onClose={() => setIsDeleteModalOpen(false)}
-            agency={selectedAgency}
-            onSuccess={(agency) => handleSuccess(t('admin.agencyManagement.agencyDeleted'))}
-          />
-        </>
-      )}
-
-      {/* Add/Edit Agency Modals */}
+      {/* Add Agency Modal */}
       <AddAgencyModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onSuccess={(agency) => handleSuccess(t('admin.agencyManagement.agencyAdded'))}
+        onSuccess={(agency) => handleSuccess(`Agency "${agency.name}" was successfully added`)}
       />
-      
+
+      {/* Edit Agency Modal */}
       {selectedAgency && (
         <EditAgencyModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
-          // 
           agency={selectedAgency}
-          onSuccess={(agency) => handleSuccess(t('admin.agencyManagement.agencyUpdated'))}
+          onSuccess={(agency) => handleSuccess(`Agency "${agency.name}" was successfully updated`)}
+        />
+      )}
+
+      {/* Delete Agency Modal */}
+      {selectedAgency && (
+        <DeleteAgencyModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          agency={selectedAgency}
+          onSuccess={(agency) => handleSuccess(`Agency "${agency.name}" was successfully deleted`)}
+        />
+      )}
+
+      {/* Deactivate Agency Modal */}
+      {selectedAgency && (
+        <ConfirmationModal
+          open={isDeactivateModalOpen}
+          onOpenChange={setIsDeactivateModalOpen}
+          onConfirm={() => deactivateAgencyMutation.mutate(selectedAgency.agencyId)}
+          title="Deactivate Agency"
+          description={`Are you sure you want to deactivate ${selectedAgency.name}?`}
+          confirmText="Deactivate"
+        />
+      )}
+
+      {/* Reactivate Agency Modal */}
+      {selectedAgency && (
+        <ConfirmationModal
+          open={isReactivateModalOpen}
+          onOpenChange={setIsReactivateModalOpen}
+          onConfirm={() => reactivateAgencyMutation.mutate(selectedAgency.agencyId)}
+          title="Reactivate Agency"
+          description={`Are you sure you want to reactivate ${selectedAgency.name}?`}
+          confirmText="Reactivate"
         />
       )}
     </div>
@@ -450,4 +406,3 @@ export const AgencyTable = () => {
 };
 
 export default AgencyTable;
-

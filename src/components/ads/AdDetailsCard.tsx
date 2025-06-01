@@ -71,15 +71,16 @@ export const AdDetailsCard: React.FC<AdDetailsCardProps> = ({ ad, product, isLoa
                 <span className="text-muted-foreground">{t('ads.createNew.form.fields.label')} :</span>
                 <span className="font-medium">{ad.description || 'N/A'}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">                <span className="text-muted-foreground">{t('ads.details.created')}:</span>
+              <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
+                <span className="text-muted-foreground">Created:</span>
                 <span className="font-medium">{formatDate(ad.creationDate)}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                <span className="text-muted-foreground">{t('ads.details.updated')}:</span>
+                <span className="text-muted-foreground">Updated:</span>
                 <span className="font-medium">{formatDate(ad.updateDate)}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                <span className="text-muted-foreground">{t('ads.details.keywords')}:</span>
+                <span className="text-muted-foreground">Keywords:</span>
                 <div className="flex flex-wrap justify-end gap-1">
                   {ad.keywords && ad.keywords.length > 0 ? (
                     ad.keywords.map((keyword, index) => (
@@ -88,7 +89,7 @@ export const AdDetailsCard: React.FC<AdDetailsCardProps> = ({ ad, product, isLoa
                       </Badge>
                     ))
                   ) : (
-                    <span className="font-medium">{t('ads.details.noKeywords')}</span>
+                    <span className="font-medium">No keywords</span>
                   )}
                 </div>
               </div>
@@ -96,20 +97,21 @@ export const AdDetailsCard: React.FC<AdDetailsCardProps> = ({ ad, product, isLoa
 
             <h3 className="font-medium mb-3 mt-6 flex items-center gap-2">
               <DollarSign className="h-4 w-4 text-green-500" />
-              {t('ads.details.biddingInformation')}
+              Bidding Information
             </h3>
-            <div className="space-y-2">              <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                <span className="text-muted-foreground">{t('ads.details.bidAmount')}:</span>
+            <div className="space-y-2">
+              <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
+                <span className="text-muted-foreground">Bid Amount:</span>
                 <span className="font-medium">
                   {ad.bid?.amount ? formatCurrency(ad.bid.amount) : 'N/A'}
                 </span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                <span className="text-muted-foreground">{t('ads.details.currency')}:</span>
+                <span className="text-muted-foreground">Currency:</span>
                 <span className="font-medium">{ad.bid?.currency || 'USD'}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                <span className="text-muted-foreground">{t('ads.details.strategy')}:</span>
+                <span className="text-muted-foreground">Strategy:</span>
                 <span className="font-medium">{ad.bid?.strategy || 'Manual'}</span>
               </div>
             </div>
@@ -118,7 +120,8 @@ export const AdDetailsCard: React.FC<AdDetailsCardProps> = ({ ad, product, isLoa
           {/* Product Information */}
           <div>
             <h3 className="font-medium mb-3 flex items-center gap-2">
-              <Box className="h-4 w-4 text-purple-500" />              {t('ads.details.productInformation')}
+              <Box className="h-4 w-4 text-purple-500" />
+              Product Information
             </h3>
             
             {isLoadingProduct ? (
@@ -141,39 +144,41 @@ export const AdDetailsCard: React.FC<AdDetailsCardProps> = ({ ad, product, isLoa
                 )}
                 
                 <div className="space-y-2">
-                  <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">                    <span className="text-muted-foreground">{t('ads.details.productId')}:</span>
+                  <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
+                    <span className="text-muted-foreground">Product ID:</span>
                     <span className="font-medium">{product.id}</span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                    <span className="text-muted-foreground">{t('ads.details.productName')}:</span>
+                    <span className="text-muted-foreground">Name:</span>
                     <span className="font-medium">{product.name}</span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                    <span className="text-muted-foreground">{t('ads.details.productPrice')}:</span>
+                    <span className="text-muted-foreground">Price:</span>
                     <span className="font-medium">{formatCurrency(product.price)}</span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                    <span className="text-muted-foreground">{t('ads.details.productQuantity')}:</span>
+                    <span className="text-muted-foreground">Quantity:</span>
                     <span className="font-medium">{product.quantity}</span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                    <span className="text-muted-foreground">{t('ads.details.productCategory')}:</span>
+                    <span className="text-muted-foreground">Category:</span>
                     <span className="font-medium">{product.category}</span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-800">
-                    <span className="text-muted-foreground">{t('ads.details.sellerId')}:</span>
+                    <span className="text-muted-foreground">Seller ID:</span>
                     <span className="font-medium">{product.sellerId}</span>
                   </div>
                   <div className="py-1 border-b border-gray-100 dark:border-gray-800">
-                    <span className="text-muted-foreground block mb-1">{t('ads.details.productDescription')}:</span>
+                    <span className="text-muted-foreground block mb-1">Description:</span>
                     <p className="text-sm">{product.description}</p>
                   </div>
                 </div>
               </div>
-            ) : (              <div className="flex flex-col items-center justify-center p-6 border border-dashed border-gray-300 dark:border-gray-700 rounded-md">
+            ) : (
+              <div className="flex flex-col items-center justify-center p-6 border border-dashed border-gray-300 dark:border-gray-700 rounded-md">
                 <ShoppingCart className="h-12 w-12 text-muted-foreground mb-2" />
                 <p className="text-muted-foreground text-center">
-                  {t('ads.details.noProductInfo')}
+                  Product information not available
                 </p>
               </div>
             )}

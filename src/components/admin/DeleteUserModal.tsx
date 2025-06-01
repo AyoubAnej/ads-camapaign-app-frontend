@@ -1,3 +1,4 @@
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,7 +10,6 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Advertiser } from '@/lib/advertiserApi';
-import { useTranslation } from 'react-i18next';
 
 interface DeleteUserModalProps {
   open: boolean;
@@ -19,8 +19,6 @@ interface DeleteUserModalProps {
 }
 
 export const DeleteUserModal = ({ open, onOpenChange, user, onDeleteUser }: DeleteUserModalProps) => {
-  const { t } = useTranslation();
-  
   // Safe guard against null/undefined user
   if (!user) {
     return null;
@@ -34,17 +32,16 @@ export const DeleteUserModal = ({ open, onOpenChange, user, onDeleteUser }: Dele
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('admin.userManagement.confirmDelete')}</AlertDialogTitle>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            {t('admin.userManagement.deleteWarning', { 
-              userName: `${user.firstName} ${user.lastName}` 
-            })}
+            This will permanently delete the user <strong>{user.firstName} {user.lastName}</strong> and all associated data.
+            This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-700">
-            {t('common.delete')}
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

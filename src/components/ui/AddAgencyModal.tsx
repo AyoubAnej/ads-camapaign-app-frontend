@@ -1,13 +1,12 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { agencyApi } from "@/lib/agenciesApi";
 import { Agency } from "@/types/agency";
-import { AgencyFormFields, agencyFormSchema, AgencyFormValues } from "../admin/AgencyFormFields";
+import { AgencyFormFields, agencyFormSchema, AgencyFormValues } from "./agencyFormFields";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 import {
   Dialog,
@@ -29,7 +28,8 @@ const AddAgencyModal = ({ isOpen, onClose, onSuccess }: AddAgencyModalProps) => 
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
   const { t } = useTranslation();
-  
+
+  // Check if user has admin role
   const isAdmin = user?.role === "ADMIN";
 
   // Initialize form
@@ -42,6 +42,7 @@ const AddAgencyModal = ({ isOpen, onClose, onSuccess }: AddAgencyModalProps) => 
       description: "",
     },
   });
+
   // Create agency mutation
   const createAgencyMutation = useMutation({
     mutationFn: agencyApi.createAgency,
@@ -49,55 +50,36 @@ const AddAgencyModal = ({ isOpen, onClose, onSuccess }: AddAgencyModalProps) => 
       onSuccess(data);
       onClose();
       form.reset();
-      setError(null);
     },
-    onError: (error: any) => {
-      if (!isAdmin) {
-        setError(t('admin.agencyManagement.feedback.noPermission'));
-      } else if (error.response?.status === 400) {
-        setError(t('admin.agencyManagement.feedback.invalidData'));
-      } else if (error.message === 'Network Error') {
-        setError(t('admin.agencyManagement.feedback.networkError'));
-      } else {
-        setError(t('admin.agencyManagement.feedback.createError'));
-      }
+    onError: (error) => {
+      setError(t('admin.agencyManagement.createError'));
       console.error("Error creating agency:", error);
     },
   });
+
   // Form submission handler
-  const onSubmit = async (values: AgencyFormValues) => {
-    try {
-      if (!isAdmin) {
-        setError(t('admin.agencyManagement.feedback.noPermission'));
-        return;
-      }
-
-      setError(null);
-
-      // Validate required fields
-      if (!values.name || !values.phoneNumber) {
-        setError(t('admin.agencyManagement.feedback.invalidData'));
-        return;
-      }
-
-      const agencyData = {
-        name: values.name.trim(),
-        phoneNumber: values.phoneNumber.trim(),
-        website: values.website ? values.website.trim() : undefined,
-        description: values.description ? values.description.trim() : undefined,
-      };
-
-      await createAgencyMutation.mutateAsync(agencyData);
-    } catch (err) {
-      console.error("Error in form submission:", err);
+  const onSubmit = (values: AgencyFormValues) => {
+    if (!isAdmin) {
+      setError(t('admin.agencyManagement.noPermission'));
+      return;
     }
+
+    setError(null);
+    // Ensure all required fields are passed and properly trimmed
+    const agencyData = {
+      name: values.name.trim(),
+      phoneNumber: values.phoneNumber.trim(),
+      website: values.website ? values.website.trim() : undefined,
+      description: values.description ? values.description.trim() : undefined,
+    };
+    createAgencyMutation.mutate(agencyData);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Add New Agency</DialogTitle>
+          <DialogTitle>{t('admin.agencyManagement.addAgency')}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -117,13 +99,13 @@ const AddAgencyModal = ({ isOpen, onClose, onSuccess }: AddAgencyModalProps) => 
                 onClick={onClose}
                 disabled={createAgencyMutation.isPending}
               >
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button 
                 type="submit" 
                 disabled={createAgencyMutation.isPending}
               >
-                {createAgencyMutation.isPending ? "Adding..." : "Add Agency"}
+                {createAgencyMutation.isPending ? t('common.loading') : t('admin.agencyManagement.addAgency')}
               </Button>
             </DialogFooter>
           </form>
