@@ -49,12 +49,11 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const pageSizeOptions = [5, 10, 25, 50];
-  
+
   // State for modals
-  // const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedAd, setSelectedAd] = useState<GetAdResponseDto | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   // Reset to page 1 when search or filter changes
   useEffect(() => {
@@ -94,18 +93,18 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
     mutationFn: (adId: number) => adApi.deleteAd(adId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ads', campaignId] });
-      setDeleteModalOpen(false);
+      setIsDeleteModalOpen(false);
       toast({
-        title: "Ad deleted",
-        description: "The ad has been successfully deleted.",
+        title: t('ads.notifications.deleted.title'),
+        description: t('ads.notifications.deleted.description'),
         variant: "default",
       });
     },
     onError: (error) => {
       console.error('Error deleting ad:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete the ad. Please try again.",
+        title: t('ads.notifications.error.title'),
+        description: t('ads.notifications.error.description'),
         variant: "destructive",
       });
     },
@@ -122,8 +121,8 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
   const handleAdChange = () => {
     queryClient.invalidateQueries({ queryKey: ['ads', campaignId] });
     toast({
-      title: "Success",
-      description: "Ad operation completed successfully.",
+      title: t('ads.notifications.success.title'),
+      description: t('ads.notifications.success.description'),
       variant: "default",
     });
   };
@@ -159,13 +158,13 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
   if (isError) {
     return (
       <div className="flex flex-col items-center justify-center h-64 text-red-500">
-        <p>Error loading ads: {error instanceof Error ? error.message : 'Unknown error'}</p>
+        <p>{t('ads.notifications.error.loading')}</p>
         <Button 
           variant="outline" 
           className="mt-4"
           onClick={() => queryClient.invalidateQueries({ queryKey: ['ads', campaignId, paginationParams] })}
         >
-          Retry
+          {t('ui.actions.retry')}
         </Button>
       </div>
     );
@@ -198,13 +197,13 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
               <SelectTrigger className="w-full sm:w-[150px]">
                 <div className="flex items-center gap-2">
                   <Filter className="h-4 w-4" />
-                  <SelectValue placeholder="Filter Status" />
+                  <SelectValue placeholder={t('ads.table.columns.status')} />
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="all">{t('ui.filters.all')}</SelectItem>
+                <SelectItem value="active">{t('ads.table.status.active')}</SelectItem>
+                <SelectItem value="inactive">{t('ads.table.status.inactive')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -214,7 +213,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
           className="flex items-center gap-1"
         >
-          <Plus className="h-4 w-4" /> Create Ad
+          <Plus className="h-4 w-4" /> {t('ads.createAd')}
         </Button>
       </div>
 
@@ -227,7 +226,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
 
       {ads.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
-          <p>No ads found</p>
+          <p>{t('ads.table.noAds')}</p>
           {searchTerm || statusFilter !== 'all' ? (
             <Button 
               variant="outline" 
@@ -237,14 +236,14 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                 setStatusFilter('all');
               }}
             >
-              Clear Filters
+              {t('ui.actions.clearFilters')}
             </Button>
           ) : (
             <Button 
               className="mt-4"
               onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
             >
-              Create Your First Ad
+              {t('ads.createFirstAd')}
             </Button>
           )}
         </div>
@@ -254,12 +253,12 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
             <Table>
               <TableHeader className="bg-muted/50 border-b-2 border-gray-300 dark:border-gray-600">
                 <TableRow className="hover:bg-transparent">
-                  <TableHead className="font-semibold">Title</TableHead>
-                  <TableHead className="font-semibold">Product ID</TableHead>
-                  <TableHead className="font-semibold">Status</TableHead>
-                  <TableHead className="font-semibold">Bid Amount</TableHead>
-                  <TableHead className="font-semibold">Created</TableHead>
-                  <TableHead className="text-right font-semibold">Actions</TableHead>
+                  <TableHead>{t('ads.table.columns.title')}</TableHead>
+                  <TableHead>{t('ads.table.columns.product')}</TableHead>
+                  <TableHead>{t('ads.table.columns.status')}</TableHead>
+                  <TableHead>{t('ads.table.columns.bidAmount')}</TableHead>
+                  <TableHead>{t('ads.table.columns.created')}</TableHead>
+                  <TableHead className="text-right">{t('ads.table.columns.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -275,7 +274,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                     <TableCell>{ad.productId}</TableCell>
                     <TableCell>
                       <Badge variant={ad.adState?.isActive ? "default" : "secondary"}>
-                        {ad.adState?.isActive ? "Active" : "Inactive"}
+                        {ad.adState?.isActive ? t('ads.table.status.active') : t('ads.table.status.inactive')}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -301,7 +300,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                           className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
                           onClick={() => {
                             setSelectedAd(ad);
-                            setEditModalOpen(true);
+                            setIsEditModalOpen(true);
                           }}
                         >
                           <Edit className="h-4 w-4" />
@@ -312,7 +311,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                           className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
                           onClick={() => {
                             setSelectedAd(ad);
-                            setDeleteModalOpen(true);
+                            setIsDeleteModalOpen(true);
                           }}
                         >
                           <Trash className="h-4 w-4" />
@@ -383,8 +382,8 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
       {selectedAd && (
         <EditAdModal
           ad={selectedAd}
-          open={editModalOpen}
-          onOpenChange={setEditModalOpen}
+          open={isEditModalOpen}
+          onOpenChange={setIsEditModalOpen}
           onEditAd={handleAdChange}
         />
       )}
@@ -393,8 +392,8 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
       {selectedAd && (
         <DeleteAdModal
           ad={selectedAd}
-          open={deleteModalOpen}
-          onOpenChange={setDeleteModalOpen}
+          open={isDeleteModalOpen}
+          onOpenChange={setIsDeleteModalOpen}
           onDeleteAd={handleDeleteAd}
         />
       )}

@@ -641,78 +641,189 @@
   },
   "ads": {
     "title": "Publicités",
-    "create": "Créer une publicité",
-    "edit": "Modifier la publicité",
-    "delete": "Supprimer la publicité",
-    "details": "Détails de la publicité",
-    "status": {
-      "active": "Active",
-      "paused": "En pause",
-      "deleted": "Supprimée",
-      "draft": "Brouillon",
-      "pending": "En attente",
-      "rejected": "Rejetée"
+    "description": "Gérez vos publicités",
+    "createAd": "Créer une publicité",
+    "editAd": "Modifier la publicité",
+    "deleteAd": "Supprimer la publicité",
+    "adDetails": "Détails de la publicité",
+    "adInformations": "Informations sur la publicité",
+    "table": {
+      "title": "Publicités",
+      "columns": {
+        "title": "Titre",
+        "description": "Description",
+        "status": "Statut",
+        "campaign": "Campagne",
+        "product": "Produit",
+        "created": "Créé le",
+        "updated": "Mis à jour le",
+        "actions": "Actions"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "noAds": "Aucune publicité trouvée",
+      "loading": "Chargement des publicités...",
+      "error": "Erreur lors du chargement des publicités",
+      "tooltips": {
+        "edit": "Modifier la publicité",
+        "delete": "Supprimer la publicité",
+        "view": "Voir les détails"
+      },
+      "search": "Rechercher des publicités...",
+      "perPage": "Publicités par page"
     },
     "form": {
-      "title": "Titre",
-      "description": "Description",
-      "image": "Image",
-      "url": "URL",
-      "campaignId": "ID de campagne",
-      "budget": "Budget",
-      "startDate": "Date de début",
-      "endDate": "Date de fin",
-      "targetAudience": "Public cible",
-      "placement": "Emplacement",
-      "format": "Format",
-      "validation": {
-        "titleRequired": "Le titre est requis",
-        "descriptionRequired": "La description est requise",
-        "imageRequired": "L'image est requise",
-        "urlRequired": "L'URL est requise",
-        "campaignRequired": "La campagne est requise",
-        "budgetRequired": "Le budget est requis",
-        "datesRequired": "Les dates sont requises",
-        "invalidUrl": "URL invalide"
+      "title": {
+        "label": "Titre",
+        "placeholder": "Entrez le titre de la publicité",
+        "description": "Titre accrocheur pour votre publicité"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Décrivez votre publicité (optionnel)",
+        "description": "Détails supplémentaires sur votre publicité"
+      },
+      "product": {
+        "title": "Sélection du produit",
+        "label": "Sélectionner un produit",
+        "placeholder": "Sélectionnez un produit de votre inventaire",
+        "loading": "Chargement des produits...",
+        "noProducts": "Aucun produit disponible",
+        "search": "Rechercher des produits..."
+      },
+      "keywords": {
+        "title": "Mots-clés",
+        "label": "Mots-clés",
+        "placeholder": "Ajoutez des mots-clés séparés par des virgules",
+        "description": "Les mots-clés aident à cibler votre publicité",
+        "autoGenerate": "Les mots-clés seront générés automatiquement si aucun n'est fourni"
+      },
+      "bid": {
+        "amount": {
+          "label": "Montant de l'enchère",
+          "placeholder": "Entrez le montant de l'enchère",
+          "description": "Enchère maximale par clic",
+          "prefix": "€"
+        },
+        "currency": {
+          "label": "Devise",
+          "options": {
+            "usd": "USD ($)",
+            "eur": "EUR (€)",
+            "gbp": "GBP (£)"
+          }
+        },
+        "strategy": {
+          "label": "Stratégie d'enchère",
+          "placeholder": "Sélectionnez une stratégie",
+          "options": {
+            "manual": "Enchère manuelle",
+            "auto": "Enchère automatique",
+            "targetCpa": "CPA cible"
+          }
+        }
+      },
+      "state": {
+        "active": {
+          "label": "Active",
+          "description": "Activez ou désactivez cette publicité"
+        },
+        "reason": {
+          "label": "Raison (si inactive)",
+          "placeholder": "Raison de la désactivation (optionnel)"
+        },
+        "dates": {
+          "activated": {
+            "label": "Activée le",
+            "placeholder": "Sélectionnez la date d'activation"
+          },
+          "deactivated": {
+            "label": "Désactivée le",
+            "placeholder": "Sélectionnez la date de désactivation"
+          }
+        }
+      }
+    },
+    "modal": {
+      "create": {
+        "title": "Créer une nouvelle publicité",
+        "description": "Remplissez les détails ci-dessous pour créer une nouvelle publicité",
+        "sections": {
+          "adDetails": "Détails de la publicité",
+          "bidSettings": "Paramètres d'enchère",
+          "adState": "État de la publicité"
+        },
+        "buttons": {
+          "cancel": "Annuler",
+          "create": "Créer la publicité",
+          "creating": "Création en cours..."
+        }
+      },
+      "edit": {
+        "title": "Modifier la publicité",
+        "description": "Mettez à jour les détails de votre publicité",
+        "success": {
+          "title": "Publicité mise à jour",
+          "description": "La publicité a été mise à jour avec succès"
+        },
+        "error": {
+          "title": "Erreur de mise à jour",
+          "description": "Une erreur est survenue lors de la mise à jour de la publicité"
+        },
+        "buttons": {
+          "cancel": "Annuler",
+          "update": "Mettre à jour",
+          "updating": "Mise à jour en cours..."
+        }
+      },
+      "delete": {
+        "title": "Supprimer la publicité",
+        "description": "Êtes-vous sûr de vouloir supprimer cette publicité ?",
+        "warning": "Cette action ne peut pas être annulée.",
+        "buttons": {
+          "cancel": "Annuler",
+          "confirm": "Supprimer",
+          "deleting": "Suppression en cours..."
+        }
+      },
+      "selectProducts": {
+        "title": "Sélectionner des produits",
+        "description": "Choisissez les produits à promouvoir",
+        "defaultBid": {
+          "label": "Montant d'enchère par défaut",
+          "description": "Enchère de départ pour les produits sélectionnés"
+        },
+        "selection": {
+          "title": "Sélectionner des produits",
+          "selectAll": "Tout sélectionner",
+          "loading": "Chargement des produits...",
+          "noProducts": "Aucun produit trouvé",
+          "search": "Rechercher des produits..."
+        },
+        "buttons": {
+          "cancel": "Annuler",
+          "add": "Ajouter les produits sélectionnés",
+          "processing": "Traitement en cours..."
+        }
       }
     },
     "messages": {
-      "createSuccess": "Publicité créée avec succès",
-      "updateSuccess": "Publicité mise à jour avec succès",
-      "deleteSuccess": "Publicité supprimée avec succès",
-      "createError": "Erreur lors de la création de la publicité",
-      "updateError": "Erreur lors de la mise à jour de la publicité",
-      "deleteError": "Erreur lors de la suppression de la publicité"
-    },
-    "filters": {
-      "status": "Statut",
-      "campaign": "Campagne",
-      "dateRange": "Période",
-      "search": "Rechercher une publicité"
-    },
-    "table": {
-      "name": "Nom",
-      "status": "Statut",
-      "campaign": "Campagne",
-      "budget": "Budget",
-      "impressions": "Impressions",
-      "clicks": "Clics",
-      "ctr": "CTR",
-      "spend": "Dépenses",
-      "actions": "Actions"
-    }
-  },
-  "products": {
-    "title": "Produits",
-    "select": "Sélectionner des produits",
-    "search": "Rechercher des produits",
-    "noResults": "Aucun produit trouvé",
-    "table": {
-      "name": "Nom",
-      "price": "Prix",
-      "stock": "Stock",
-      "category": "Catégorie",
-      "status": "Statut"
+      "success": {
+        "create": "Publicité créée avec succès",
+        "update": "Publicité mise à jour avec succès",
+        "delete": "Publicité supprimée avec succès"
+      },
+      "error": {
+        "create": "Erreur lors de la création de la publicité",
+        "update": "Erreur lors de la mise à jour de la publicité",
+        "delete": "Erreur lors de la suppression de la publicité",
+        "products": "Erreur lors du chargement des produits"
+      },
+      "confirm": {
+        "delete": "Êtes-vous sûr de vouloir supprimer cette publicité ?"
+      }
     }
   },
   "pageNotFound": {

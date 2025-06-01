@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,21 +25,23 @@ const DeleteAdModal: React.FC<DeleteAdModalProps> = ({
   onOpenChange,
   onDeleteAd,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete Ad</AlertDialogTitle>
+          <AlertDialogTitle>{t('ads.modal.delete.title')}</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete the ad "{ad.title}" (ID: {ad.adId})?
+            {t('ads.modal.delete.description')}
             <br />
-            This action cannot be undone.
+            {t('ads.modal.delete.warning')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('ads.modal.delete.buttons.cancel')}</AlertDialogCancel>
           <AlertDialogAction onClick={onDeleteAd} className="bg-red-600 hover:bg-red-700">
-            Delete
+            {t('ads.modal.delete.buttons.confirm')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

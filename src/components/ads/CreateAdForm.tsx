@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { CreateAdRequestDto } from '@/types/ad';
 import { BidObject, StateObject } from '@/types/campaign';
@@ -50,6 +51,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   
   // State for current step
   const [currentStep, setCurrentStep] = useState<FormStep>('ad-details');
@@ -307,32 +309,32 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
               {isCampaignLoading ? (
                 <div className="flex items-center mt-2">
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  <span className="text-sm text-muted-foreground">Loading campaign information...</span>
+                  <span className="text-sm text-muted-foreground">{t('loading_campaign_info')}</span>
                 </div>
               ) : isAdvertiserLoading ? (
                 <div className="flex items-center mt-2">
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  <span className="text-sm text-muted-foreground">Loading advertiser details...</span>
+                  <span className="text-sm text-muted-foreground">{t('loading_advertiser_details')}</span>
                 </div>
               ) : advertiserDetails ? (
                 <div className="p-2 border rounded-md mt-2">
                   <p className="font-medium">{advertiserDetails.shopName || `Advertiser ID: ${advertiserDetails.id}`}</p>
-                  <p className="text-sm text-muted-foreground">This ad will be created for the advertiser associated with the campaign.</p>
+                  <p className="text-sm text-muted-foreground">{t('ad_created_for_advertiser')}</p>
                 </div>
               ) : (
                 <div className="p-2 border border-red-200 bg-red-50 rounded-md mt-2">
-                  <p className="text-sm text-red-500">Could not load advertiser information for this campaign.</p>
+                  <p className="text-sm text-red-500">{t('could_not_load_advertiser_info')}</p>
                 </div>
               )}
             </div>
             
             <div className="mb-4">
-              <Label htmlFor="title">Title</Label>
+              <Label htmlFor="title">{t('title')}</Label>
               <Input
                 id="title"
                 value={formData.title}
                 onChange={(e) => handleChange('title', e.target.value)}
-                placeholder="Enter ad title"
+                placeholder={t('enter_ad_title')}
               />
               {errors.title && (
                 <p className="text-sm text-red-500 mt-1">{errors.title}</p>
@@ -340,12 +342,12 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
             </div>
             
             <div className="mb-4">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('description')}</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => handleChange('description', e.target.value)}
-                placeholder="Enter ad description"
+                placeholder={t('enter_ad_description')}
                 rows={4}
               />
               {errors.description && (
@@ -361,23 +363,23 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
             {isProductsLoading ? (
               <div className="flex items-center justify-center p-8">
                 <Loader2 className="h-8 w-8 animate-spin mr-2" />
-                <span>Loading products...</span>
+                <span>{t('loading_products')}</span>
               </div>
             ) : products.length === 0 ? (
               <div className="text-center p-8 border border-dashed rounded-md">
-                <p className="text-muted-foreground mb-2">No products found for this advertiser.</p>
-                <p className="text-sm">Please ensure the advertiser has products associated with their account.</p>
+                <p className="text-muted-foreground mb-2">{t('no_products_found')}</p>
+                <p className="text-sm">{t('ensure_advertiser_has_products')}</p>
               </div>
             ) : (
               <>
                 <div className="mb-4">
-                  <Label htmlFor="product">Select Product</Label>
+                  <Label htmlFor="product">{t('select_product')}</Label>
                   <Select
                     value={formData.productId}
                     onValueChange={(value) => handleChange('productId', value)}
                   >
                     <SelectTrigger id="product">
-                      <SelectValue placeholder="Select a product" />
+                      <SelectValue placeholder={t('select_a_product')} />
                     </SelectTrigger>
                     <SelectContent>
                       {products.map((product) => (
@@ -394,7 +396,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
                 
                 {formData.productId && (
                   <div className="mt-6">
-                    <h3 className="text-lg font-medium mb-3">Selected Product Details</h3>
+                    <h3 className="text-lg font-medium mb-3">{t('selected_product_details')}</h3>
                     {products
                       .filter((product) => product.id === formData.productId)
                       .map((product) => (
@@ -410,23 +412,23 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
                           )}
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <p className="font-medium">Name:</p>
+                              <p className="font-medium">{t('name')}:</p>
                               <p>{product.name}</p>
                             </div>
                             <div>
-                              <p className="font-medium">Price:</p>
+                              <p className="font-medium">{t('price')}:</p>
                               <p>${product.price.toFixed(2)}</p>
                             </div>
                             <div>
-                              <p className="font-medium">Category:</p>
+                              <p className="font-medium">{t('category')}:</p>
                               <p>{product.category}</p>
                             </div>
                             <div>
-                              <p className="font-medium">Quantity:</p>
+                              <p className="font-medium">{t('quantity')}:</p>
                               <p>{product.quantity}</p>
                             </div>
                             <div className="col-span-2">
-                              <p className="font-medium">Description:</p>
+                              <p className="font-medium">{t('description')}:</p>
                               <p className="text-sm">{product.description}</p>
                             </div>
                           </div>
@@ -443,9 +445,9 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
         return (
           <div className="space-y-4">
             <div className="mb-4">
-              <Label htmlFor="keywords">Keywords</Label>
+              <Label htmlFor="keywords">{t('keywords')}</Label>
               <p className="text-sm text-muted-foreground mb-2">
-                Add keywords to help target your ad. These will be used for ad matching and relevance.
+                {t('add_keywords_help')}
               </p>
               
               <div className="flex mb-2">
@@ -453,7 +455,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
                   id="keywords"
                   value={keywordInput}
                   onChange={(e) => setKeywordInput(e.target.value)}
-                  placeholder="Enter keyword"
+                  placeholder={t('enter_keyword')}
                   className="mr-2"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
@@ -462,7 +464,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
                     }
                   }}
                 />
-                <Button type="button" onClick={handleAddKeyword}>Add</Button>
+                <Button type="button" onClick={handleAddKeyword}>{t('add')}</Button>
               </div>
               
               <div className="flex flex-wrap gap-2 mt-4">
@@ -477,12 +479,12 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
                     </Badge>
                   ))
                 ) : (
-                  <p className="text-sm text-muted-foreground">No keywords added yet.</p>
+                  <p className="text-sm text-muted-foreground">{t('no_keywords_added')}</p>
                 )}
               </div>
               
               <p className="text-sm text-muted-foreground mt-4">
-                If you leave this empty, the system will automatically generate keywords based on your product and ad content.
+                {t('auto_generate_keywords_info')}
               </p>
             </div>
           </div>
@@ -492,7 +494,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
         return (
           <div className="space-y-4">
             <div className="mb-4">
-              <Label htmlFor="bidAmount">Bid Amount</Label>
+              <Label htmlFor="bidAmount">{t('bid_amount')}</Label>
               <div className="flex items-center">
                 <span className="mr-2">$</span>
                 <Input
@@ -511,30 +513,30 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
             </div>
             
             <div className="mb-4">
-              <Label htmlFor="bidStrategy">Bid Strategy</Label>
+              <Label htmlFor="bidStrategy">{t('bid_strategy')}</Label>
               <Select
                 value={formData.bid.strategy}
                 onValueChange={(value) => handleChange('bid', { ...formData.bid, strategy: value })}
               >
                 <SelectTrigger id="bidStrategy">
-                  <SelectValue placeholder="Select bid strategy" />
+                  <SelectValue placeholder={t('select_bid_strategy')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="CPC">Cost Per Click (CPC)</SelectItem>
-                  <SelectItem value="CPM">Cost Per Mille (CPM)</SelectItem>
-                  <SelectItem value="CPA">Cost Per Action (CPA)</SelectItem>
+                  <SelectItem value="CPC">{t('cpc_strategy')}</SelectItem>
+                  <SelectItem value="CPM">{t('cpm_strategy')}</SelectItem>
+                  <SelectItem value="CPA">{t('cpa_strategy')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
             <div className="mb-4">
-              <Label htmlFor="currency">Currency</Label>
+              <Label htmlFor="currency">{t('currency')}</Label>
               <Select
                 value={formData.bid.currency}
                 onValueChange={(value) => handleChange('bid', { ...formData.bid, currency: value })}
               >
                 <SelectTrigger id="currency">
-                  <SelectValue placeholder="Select currency" />
+                  <SelectValue placeholder={t('select_currency')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="USD">USD ($)</SelectItem>
@@ -559,10 +561,10 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
                     });
                   }}
                 />
-                <Label htmlFor="adState">Activate Ad Immediately</Label>
+                <Label htmlFor="adState">{t('activate_ad_immediately')}</Label>
               </div>
               <p className="text-sm text-muted-foreground mt-1">
-                If enabled, the ad will start running as soon as it's created.
+                {t('activate_ad_immediately_info')}
               </p>
             </div>
           </div>
@@ -572,20 +574,20 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-medium mb-2">Ad Details</h3>
+              <h3 className="text-lg font-medium mb-2">{t('ad_details')}</h3>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="font-medium">Title:</p>
+                  <p className="font-medium">{t('title')}:</p>
                   <p>{formData.title}</p>
                 </div>
                 <div>
-                  <p className="font-medium">Description:</p>
+                  <p className="font-medium">{t('description')}:</p>
                   <p>{formData.description}</p>
                 </div>
               </div>
               
               <div className="mt-2">
-                <p className="font-medium">Keywords:</p>
+                <p className="font-medium">{t('keywords')}:</p>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {formData.keywords.length > 0 ? (
                     formData.keywords.map((keyword) => (
@@ -594,7 +596,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
                       </Badge>
                     ))
                   ) : (
-                    <p className="text-sm text-muted-foreground">No keywords (will be auto-generated)</p>
+                    <p className="text-sm text-muted-foreground">{t('no_keywords_auto_generated')}</p>
                   )}
                 </div>
               </div>
@@ -603,21 +605,21 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
             <Separator />
             
             <div>
-              <h3 className="text-lg font-medium mb-2">Product</h3>
+              <h3 className="text-lg font-medium mb-2">{t('product')}</h3>
               {products
                 .filter((product) => product.id === formData.productId)
                 .map((product) => (
                   <div key={product.id} className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="font-medium">Name:</p>
+                      <p className="font-medium">{t('name')}:</p>
                       <p>{product.name}</p>
                     </div>
                     <div>
-                      <p className="font-medium">Price:</p>
+                      <p className="font-medium">{t('price')}:</p>
                       <p>${product.price.toFixed(2)}</p>
                     </div>
                     <div>
-                      <p className="font-medium">Category:</p>
+                      <p className="font-medium">{t('category')}:</p>
                       <p>{product.category}</p>
                     </div>
                   </div>
@@ -627,20 +629,20 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
             <Separator />
             
             <div>
-              <h3 className="text-lg font-medium mb-2">Bid Settings</h3>
+              <h3 className="text-lg font-medium mb-2">{t('bid_settings')}</h3>
               <div className="grid grid-cols-3 gap-4 text-sm">
                 <div>
-                  <p className="font-medium">Amount:</p>
+                  <p className="font-medium">{t('amount')}:</p>
                   <p>{formData.bid.currency} {formData.bid.amount.toFixed(2)}</p>
                 </div>
                 <div>
-                  <p className="font-medium">Strategy:</p>
+                  <p className="font-medium">{t('strategy')}:</p>
                   <p>{formData.bid.strategy}</p>
                 </div>
                 <div>
-                  <p className="font-medium">Status:</p>
+                  <p className="font-medium">{t('status')}:</p>
                   <Badge variant={formData.adState.isActive ? "default" : "secondary"}>
-                    {formData.adState.isActive ? 'Active' : 'Inactive'}
+                    {formData.adState.isActive ? t('active') : t('inactive')}
                   </Badge>
                 </div>
               </div>
@@ -656,11 +658,11 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
   // Render step indicator
   const renderStepIndicator = () => {
     const steps = [
-      { key: 'ad-details' as FormStep, label: 'Ad Details' },
-      { key: 'product-selection' as FormStep, label: 'Product' },
-      { key: 'keywords-selection' as FormStep, label: 'Keywords' },
-      { key: 'bids-budget' as FormStep, label: 'Bids & Budget' },
-      { key: 'review' as FormStep, label: 'Review' }
+      { key: 'ad-details' as FormStep, label: t('ad_details') },
+      { key: 'product-selection' as FormStep, label: t('product') },
+      { key: 'keywords-selection' as FormStep, label: t('keywords') },
+      { key: 'bids-budget' as FormStep, label: t('bids_budget') },
+      { key: 'review' as FormStep, label: t('review') }
     ];
     
     return (
@@ -708,7 +710,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-center">Create New Ad</CardTitle>
+        <CardTitle className="text-center">{t('create_new_ad')}</CardTitle>
       </CardHeader>
       <CardContent>
         {renderStepIndicator()}
@@ -720,7 +722,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
           onClick={handlePrevious}
           disabled={currentStep === 'ad-details'}
         >
-          Previous
+          {t('previous')}
         </Button>
         
         {currentStep === 'review' ? (
@@ -728,15 +730,15 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ campaignId }) => {
             {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Creating...
+                {t('creating')}
               </>
             ) : (
-              'Submit'
+              t('submit')
             )}
           </Button>
         ) : (
           <Button onClick={handleNext}>
-            Next
+            {t('next')}
           </Button>
         )}
       </CardFooter>

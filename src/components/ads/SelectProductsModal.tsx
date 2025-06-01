@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -6,6 +7,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -16,14 +18,14 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormDescription,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { adApi } from '@/lib/adApi';
-import { SelectedProductsRequestDto } from '@/types/ad';
 
 interface SelectProductsModalProps {
   campaignId: number;
@@ -34,7 +36,7 @@ interface SelectProductsModalProps {
 
 // Form schema
 const formSchema = z.object({
-  defaultBidAmount: z.coerce.number().min(0.01, "Bid amount must be greater than 0"),
+  defaultBidAmount: z.coerce.number().min(0.01, "Default bid amount must be greater than 0"),
   productIds: z.array(z.string()).min(1, "At least one product must be selected"),
 });
 
@@ -44,6 +46,7 @@ export const SelectProductsModal: React.FC<SelectProductsModalProps> = ({
   onOpenChange,
   onProductsSelected,
 }) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
@@ -68,9 +71,13 @@ export const SelectProductsModal: React.FC<SelectProductsModalProps> = ({
 
   // Mutation for selecting products
   const { mutate, isPending, error } = useMutation({
-    mutationFn: async (data: SelectedProductsRequestDto) => {
+    mutationFn: async (data: z.infer<typeof formSchema>) => {
       if (!user?.id) throw new Error('User ID is required');
-      return await adApi.selectProductsForSeller(campaignId, user.id, data);
+      const request = {
+        productIds: data.productIds,
+        defaultBidAmount: data.defaultBidAmount,
+      };
+      return await adApi.selectProductsForSeller(campaignId, user.id, request);
     },
     onSuccess: () => {
       onProductsSelected();
@@ -82,17 +89,12 @@ export const SelectProductsModal: React.FC<SelectProductsModalProps> = ({
 
   // Handle form submission
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    const request: SelectedProductsRequestDto = {
-      productIds: values.productIds,
-      defaultBidAmount: values.defaultBidAmount,
-    };
-
-    mutate(request);
+    mutate(values);
   };
 
-  // Handle product selection
-  const handleProductSelection = (productId: string, isChecked: boolean) => {
-    if (isChecked) {
+  // Handle individual product selection
+  const handleProductSelection = (productId: string, checked: boolean) => {
+    if (checked) {
       setSelectedProducts((prev) => [...prev, productId]);
       form.setValue('productIds', [...selectedProducts, productId]);
     } else {
@@ -121,7 +123,8 @@ export const SelectProductsModal: React.FC<SelectProductsModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Select Products for Campaign</DialogTitle>
+          <DialogTitle>{t('ads.modal.selectProducts.title')}</DialogTitle>
+          <DialogDescription>{t('ads.modal.selectProducts.description')}</DialogDescription>
         </DialogHeader>
         
         <Form {...form}>
@@ -131,10 +134,13 @@ export const SelectProductsModal: React.FC<SelectProductsModalProps> = ({
               name="defaultBidAmount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Default Bid Amount</FormLabel>
+                  <FormLabel>{t('ads.modal.selectProducts.defaultBid.label')}</FormLabel>
                   <FormControl>
                     <Input type="number" step="0.01" min="0.01" {...field} />
                   </FormControl>
+                  <FormDescription>
+                    {t('ads.modal.selectProducts.defaultBid.description')}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -145,11 +151,13 @@ export const SelectProductsModal: React.FC<SelectProductsModalProps> = ({
               name="productIds"
               render={() => (
                 <FormItem>
-                  <FormLabel>Select Products</FormLabel>
+                  <FormLabel>{t('ads.modal.selectProducts.selection.title')}</FormLabel>
                   <FormControl>
                     <div className="border rounded-md p-4 max-h-[300px] overflow-y-auto">
                       {isLoadingProducts ? (
-                        <div className="text-center py-4">Loading products...</div>
+                        <div className="text-center py-4">
+                          {t('ads.modal.selectProducts.selection.loading')}
+                        </div>
                       ) : products && products.length > 0 ? (
                         <>
                           <div className="flex items-center mb-2 pb-2 border-b">
@@ -159,7 +167,7 @@ export const SelectProductsModal: React.FC<SelectProductsModalProps> = ({
                               onCheckedChange={handleSelectAll}
                             />
                             <label htmlFor="select-all" className="ml-2 font-medium">
-                              Select All
+                              {t('ads.modal.selectProducts.selection.selectAll')}
                             </label>
                           </div>
                           <div className="space-y-2">
@@ -180,7 +188,9 @@ export const SelectProductsModal: React.FC<SelectProductsModalProps> = ({
                           </div>
                         </>
                       ) : (
-                        <div className="text-center py-4">No products found</div>
+                        <div className="text-center py-4">
+                          {t('ads.modal.selectProducts.selection.noProducts')}
+                        </div>
                       )}
                     </div>
                   </FormControl>
@@ -191,13 +201,16 @@ export const SelectProductsModal: React.FC<SelectProductsModalProps> = ({
             
             {error && (
               <div className="text-red-500 text-sm">
-                {error instanceof Error ? error.message : "An error occurred while selecting products"}
+                {error instanceof Error ? error.message : t('ads.modal.selectProducts.error')}
               </div>
             )}
             
             <DialogFooter>
               <Button type="submit" disabled={isPending || selectedProducts.length === 0}>
-                {isPending ? "Processing..." : "Add Selected Products"}
+                {isPending ? 
+                  t('ads.modal.selectProducts.buttons.processing') : 
+                  t('ads.modal.selectProducts.buttons.add')
+                }
               </Button>
             </DialogFooter>
           </form>
