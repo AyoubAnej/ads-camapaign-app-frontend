@@ -32,7 +32,7 @@ export const UserFilters = ({
     { value: "all_roles", label: t("admin.userManagement.filters.allRoles") },
     { value: "ADMIN", label: t("roles.admin") },
     { value: "ADVERTISER", label: t("roles.advertiser") },
-    { value: "AGENCY_MANAGER", label: t("roles.agencyManager") },
+    { value: "AGENCY_MANAGER", label: t("roles.agency_manager") },
   ];
 
   const statusOptions = [

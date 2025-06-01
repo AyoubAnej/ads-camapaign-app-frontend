@@ -61,15 +61,15 @@ export const UserTable = () => {
     queryKey: ["advertisers"],
     queryFn: advertiserApi.getAllAdvertisers,
     meta: {
-      errorMessage: "Failed to load users",
+      errorMessage: t('admin.userTableToasts.toast.loadError.description'),
     },
   });
 
   React.useEffect(() => {
     if (error) {
       toast({
-        title: "Error",
-        description: "Failed to load users. Please try again later.",
+        title: t('admin.userTableToasts.toast.loadError.title'),
+        description: t('admin.userTableToasts.toast.loadError.description'),
         variant: "destructive",
       });
     }
@@ -83,15 +83,15 @@ export const UserTable = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["advertisers"] });
       toast({
-        title: "User Updated",
-        description: "The user has been updated successfully.",
+        title: t('admin.userTableToasts.toast.updateSuccess.title'),
+        description: t('admin.userTableToasts.toast.updateSuccess.description'),
       });
       setIsEditUserOpen(false);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to update user. Please try again.",
+        title: t('admin.userTableToasts.toast.updateError.title'),
+        description: t('admin.userTableToasts.toast.updateError.description'),
         variant: "destructive",
       });
     },
@@ -102,16 +102,16 @@ export const UserTable = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["advertisers"] });
       toast({
-        title: "User Deleted",
-        description: "The user has been permanently deleted.",
+        title: t('admin.userTableToasts.toast.deleteSuccess.title'),
+        description: t('admin.userTableToasts.toast.deleteSuccess.description'),
         variant: "destructive",
       });
       setIsDeleteUserOpen(false);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to delete user. Please try again.",
+        title: t('admin.userTableToasts.toast.deleteError.title'),
+        description: t('admin.userTableToasts.toast.deleteError.description'),
         variant: "destructive",
       });
     },
@@ -126,16 +126,16 @@ export const UserTable = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["advertisers"] });
       toast({
-        title: "User Deactivated",
-        description: "The user has been deactivated.",
+        title: t('admin.userTableToasts.toast.deactivateSuccess.title'),
+        description: t('admin.userTableToasts.toast.deactivateSuccess.description'),
         variant: "destructive",
       });
       setIsDeactivateModalOpen(false);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to deactivate user. Please try again.",
+        title: t('admin.userTableToasts.toast.deactivateError.title'),
+        description: t('admin.userTableToasts.toast.deactivateError.description'),
         variant: "destructive",
       });
     },
@@ -146,16 +146,16 @@ export const UserTable = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["advertisers"] });
       toast({
-        title: "User Reactivated",
-        description: "The user has been reactivated.",
+        title: t('admin.userTableToasts.toast.reactivateSuccess.title'),
+        description: t('admin.userTableToasts.toast.reactivateSuccess.description'),
         variant: "default",
       });
       setIsReactivateModalOpen(false);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to reactivate user. Please try again.",
+        title: t('admin.userTableToasts.toast.reactivateError.title'),
+        description: t('admin.userTableToasts.toast.reactivateError.description'),
         variant: "destructive",
       });
     },

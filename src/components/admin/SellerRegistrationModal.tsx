@@ -42,15 +42,14 @@ interface SellerRegistrationModalProps {
   }) => void;
 }
 
-const { t } = useTranslation();
 // Form schema for admin registration
 const adminFormSchema = z.object({
-  firstName: z.string().min(1, { message: t('admin.sellerRegistration.modal.validation.firstNameRequired') }),
-  lastName: z.string().min(1, { message: t('admin.sellerRegistration.modal.validation.lastNameRequired') }),
-  email: z.string().email({ message: t('admin.sellerRegistration.modal.validation.invalidEmail') }),
-  password: z.string().min(6, { message: t('admin.sellerRegistration.modal.validation.passwordTooShort') }),
-  phoneNumber: z.string().min(1, { message: t('admin.sellerRegistration.modal.validation.phoneRequired') }),
-  address: z.string().min(1, { message: t('admin.sellerRegistration.modal.validation.addressRequired') }),
+  firstName: z.string().min(1, { message: "First name is required" }),
+  lastName: z.string().min(1, { message: "Last name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+  phoneNumber: z.string().min(1, { message: "Phone number is required" }),
+  address: z.string().min(1, { message: "Address is required" }),
 });
 
 type AdminFormValues = z.infer<typeof adminFormSchema>;
@@ -70,6 +69,8 @@ export const SellerRegistrationModal = ({
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  const { t } = useTranslation();
   
   // Admin registration form
   const adminForm = useForm<AdminFormValues>({

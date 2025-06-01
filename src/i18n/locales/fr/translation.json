@@ -534,7 +534,47 @@
             "addressRequired": "L'adresse est requise"
           }
         }
-      }
+      },
+      "userTableToasts":{
+      "toast": {
+        "loadError": {
+          "title": "Erreur",
+          "description": "Échec du chargement des utilisateurs. Veuillez réessayer plus tard."
+        },
+        "updateSuccess": {
+          "title": "Utilisateur mis à jour",
+          "description": "L'utilisateur a été mis à jour avec succès."
+        },
+        "updateError": {
+          "title": "Erreur",
+          "description": "Échec de la mise à jour de l'utilisateur. Veuillez réessayer."
+        },
+        "deleteSuccess": {
+          "title": "Utilisateur supprimé",
+          "description": "L'utilisateur a été définitivement supprimé."
+        },
+        "deleteError": {
+          "title": "Erreur",
+          "description": "Échec de la suppression de l'utilisateur. Veuillez réessayer."
+        },
+        "deactivateSuccess": {
+          "title": "Utilisateur désactivé",
+          "description": "L'utilisateur a été désactivé."
+        },
+        "deactivateError": {
+          "title": "Erreur",
+          "description": "Échec de la désactivation de l'utilisateur. Veuillez réessayer."
+        },
+        "reactivateSuccess": {
+          "title": "Utilisateur réactivé",
+          "description": "L'utilisateur a été réactivé."
+        },
+        "reactivateError": {
+          "title": "Erreur",
+          "description": "Échec de la réactivation de l'utilisateur. Veuillez réessayer."
+        }
+      }   
+  }
   },
   "roles": {
     "admin": "Administrateur",

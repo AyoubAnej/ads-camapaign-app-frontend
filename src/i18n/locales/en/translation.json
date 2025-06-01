@@ -494,7 +494,47 @@
             "addressRequired": "Address is required"
           }
         }
-      }
+      },
+      "userTableToasts":{
+        "toast": {
+          "loadError": {
+            "title": "Error",
+            "description": "Failed to load users. Please try again later."
+          },
+          "updateSuccess": {
+            "title": "User Updated",
+            "description": "The user has been updated successfully."
+          },
+          "updateError": {
+            "title": "Error",
+            "description": "Failed to update user. Please try again."
+          },
+          "deleteSuccess": {
+            "title": "User Deleted",
+            "description": "The user has been permanently deleted."
+          },
+          "deleteError": {
+            "title": "Error",
+            "description": "Failed to delete user. Please try again."
+          },
+          "deactivateSuccess": {
+            "title": "User Deactivated",
+            "description": "The user has been deactivated."
+          },
+          "deactivateError": {
+            "title": "Error",
+            "description": "Failed to deactivate user. Please try again."
+          },
+          "reactivateSuccess": {
+            "title": "User Reactivated",
+            "description": "The user has been reactivated."
+          },
+          "reactivateError": {
+            "title": "Error",
+            "description": "Failed to reactivate user. Please try again."
+          }
+        }  
+    }
   },
   "roles": {
     "admin": "Administrator",
