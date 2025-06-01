@@ -307,7 +307,8 @@ export const UserTable = () => {
         </Table>
         <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-3 gap-2">
           <div className="w-full sm:w-auto flex justify-start">
-            <span className="text-sm text-muted-foreground">              {totalItems === 0
+            <span className="text-sm text-muted-foreground">              
+              {totalItems === 0
                 ? t('admin.userManagement.noUsers')
                 : t('admin.userManagement.showing', {
                     start: indexOfFirstItem + (totalItems ? 1 : 0),
