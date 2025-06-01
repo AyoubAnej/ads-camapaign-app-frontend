@@ -432,6 +432,14 @@
         "status": "Status",
         "website": "Website",
         "description": "Description"
+      },
+      "placeholders": {
+        "name": "Enter agency name",
+        "address": "Enter agency address",
+        "phone": "Enter agency phone number",
+        "email": "Enter agency email",
+        "website": "https://example.com",
+        "description": "Enter agency description"
       }
     },
     "sellerRegistration": {

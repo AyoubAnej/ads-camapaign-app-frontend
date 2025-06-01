@@ -469,6 +469,14 @@
         "description": "Description",
         "status": "Statut"
       },
+      "placeholders": {
+        "name": "Entrez le nom de l'agence",
+        "address": "Entrez l'adresse de l'agence",
+        "phone": "Entrez le numéro de téléphone",
+        "email": "Entrez l'email de l'agence",
+        "website": "https://exemple.com",
+        "description": "Entrez la description de l'agence"
+      },
       "showing": "Affichage de {{start}} à {{end}} sur {{total}} agences",
       "perPage": "Agences par page",
       "pagination": "Page {{currentPage}} sur {{totalPages}}"
