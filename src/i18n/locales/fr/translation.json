@@ -85,13 +85,15 @@
     "editAd": "Modifier la publicité",
     "deleteAd": "Supprimer la publicité",
     "adDetails": "Détails de la publicité",
+    "noAds": "Aucune annonce trouvée",
+    "resetFilters": "Réinitialiser les filtres",
+    "createFirstAd": "Créez votre première annonce",
     "fields": {
       "title": "Titre",
       "description": "Description",
-      "mediaUrl": "URL des médias",
-      "redirectUrl": "URL de redirection",
       "productId": "ID du produit",
       "status": "Statut",
+      "bidAmount": "Montant de l'enchère",
       "bidStrategy": "Stratégie d'enchères",
       "budget": "Budget",
       "startDate": "Date de début",
@@ -99,20 +101,18 @@
       "createdAt": "Créé le",
       "updatedAt": "Mis à jour le",
       "activatedAt": "Activé le",
-      "deactivatedAt": "Désactivé le"
+      "deactivatedAt": "Désactivé le",
+      "actions": "Actions"
     },
     "placeholders": {
       "title": "Titre de la publicité",
       "description": "Décrivez votre publicité (optionnel)",
-      "mediaUrl": "https://votre-boutique.com/image.png",
-      "redirectUrl": "https://votre-boutique.com/produit",
-      "productId": "Entrez l'ID du produit"
+      "productId": "Entrez l'ID du produit",
+      "searchPlaceholder":"Rechercher des publicités..."
     },
     "descriptions": {
       "title": "Titre accrocheur pour votre publicité",
       "description": "Optionnel : détails supplémentaires sur votre publicité",
-      "mediaUrl": "Image ou vidéo à afficher dans votre publicité",
-      "redirectUrl": "Où les utilisateurs iront en cliquant sur la publicité",
       "productId": "Identifiant unique du produit",
       "bidStrategy": "Comment votre enchère sera gérée"
     },
@@ -631,7 +631,8 @@
       "from": "Du",
       "to": "Au",
       "all": "Tous"
-    },    "table": {
+    },    
+    "table": {
       "noData": "Aucune donnée trouvée",
       "loading": "Chargement des données...",
       "error": "Erreur lors du chargement des données",

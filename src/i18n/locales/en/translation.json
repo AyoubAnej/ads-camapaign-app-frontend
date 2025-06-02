@@ -73,13 +73,15 @@
     "editAd": "Edit Ad",
     "deleteAd": "Delete Ad",
     "adDetails": "Ad Details",
+    "noAds": "No ads found",
+    "resetFilters": "Clear Filters",
+    "createFirstAd": "Create Your First Ad",
     "fields": {
       "title": "Title",
       "description": "Description",
-      "mediaUrl": "Media URL",
-      "redirectUrl": "Redirect URL",
       "productId": "Product ID",
       "status": "Status",
+      "bidAmount": "Bid Amount",
       "bidStrategy": "Bid Strategy",
       "budget": "Budget",
       "startDate": "Start Date",
@@ -87,14 +89,16 @@
       "createdAt": "Created At",
       "updatedAt": "Updated At",
       "activatedAt": "Activated At",
-      "deactivatedAt": "Deactivated At"
+      "deactivatedAt": "Deactivated At",
+      "actions": "Actions"
     },
     "placeholders": {
       "title": "Ad title",
       "description": "Describe your ad (optional)",
       "mediaUrl": "https://your-store.com/image.png",
       "redirectUrl": "https://your-store.com/product",
-      "productId": "Enter product ID"
+      "productId": "Enter product ID",
+      "searchPlaceholder":"Search Ads..."
     },
     "descriptions": {
       "title": "Short, catchy headline for your ad",
@@ -586,6 +590,7 @@
       "loading": "Loading data...",
       "error": "Error loading data",
       "retry": "Retry",
+      "pagination": "Page {{currentPage}} per {{totalPages}}",
       "rowsPerPage": "Rows per page",
       "of": "of",
       "search": "Search...",

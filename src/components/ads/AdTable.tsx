@@ -183,7 +183,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           <div className="relative w-full sm:w-[200px]">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder={t('ads.searchPlaceholder')}
+              placeholder={t('ads.placeholders.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
@@ -202,9 +202,9 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="all">{t('admin.userManagement.filters.allStatuses')}</SelectItem>
+                <SelectItem value="active">{t('ads.status.active')}</SelectItem>
+                <SelectItem value="inactive">{t('ads.status.inactive')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -214,7 +214,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
           className="flex items-center gap-1"
         >
-          <Plus className="h-4 w-4" /> Create Ad
+          <Plus className="h-4 w-4" /> {t('ads.createAd')}
         </Button>
       </div>
 
@@ -227,7 +227,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
 
       {ads.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
-          <p>No ads found</p>
+          <p>{t('ads.noAds')}</p>
           {searchTerm || statusFilter !== 'all' ? (
             <Button 
               variant="outline" 
@@ -237,14 +237,14 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                 setStatusFilter('all');
               }}
             >
-              Clear Filters
+              {t('ads.resetFilters')}
             </Button>
           ) : (
             <Button 
               className="mt-4"
               onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
             >
-              Create Your First Ad
+              {t('ads.createFirstAd')}
             </Button>
           )}
         </div>
@@ -254,12 +254,12 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
             <Table>
               <TableHeader className="bg-muted/50 border-b-2 border-gray-300 dark:border-gray-600">
                 <TableRow className="hover:bg-transparent">
-                  <TableHead className="font-semibold">Title</TableHead>
-                  <TableHead className="font-semibold">Product ID</TableHead>
-                  <TableHead className="font-semibold">Status</TableHead>
-                  <TableHead className="font-semibold">Bid Amount</TableHead>
-                  <TableHead className="font-semibold">Created</TableHead>
-                  <TableHead className="text-right font-semibold">Actions</TableHead>
+                  <TableHead className="font-semibold">{t('ads.fields.title')}</TableHead>
+                  <TableHead className="font-semibold">{t('ads.fields.productId')}</TableHead>
+                  <TableHead className="font-semibold">{t('ads.fields.status')}</TableHead>
+                  <TableHead className="font-semibold">{t('ads.fields.bidAmount')}</TableHead>
+                  <TableHead className="font-semibold">{t('ads.fields.createdAt')}</TableHead>
+                  <TableHead className="text-right font-semibold">{t('ads.fields.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
