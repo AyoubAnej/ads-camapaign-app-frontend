@@ -32,14 +32,13 @@ export const UserFilters = ({
     { value: "all_roles", label: t("admin.userManagement.filters.allRoles") },
     { value: "ADMIN", label: t("roles.admin") },
     { value: "ADVERTISER", label: t("roles.advertiser") },
-    { value: "AGENCY_MANAGER", label: t("roles.agencyManager") },
+    { value: "AGENCY_MANAGER", label: t("roles.agency_manager") },
   ];
 
   const statusOptions = [
     { value: "all_statuses", label: t("admin.userManagement.filters.allStatuses") },
     { value: "ACTIVE", label: t("common.active") },
     { value: "INACTIVE", label: t("common.inactive") },
-    { value: "PENDING", label: t("common.pending") },
   ];
 
   const safeRoleFilter = roleFilter || "all_roles";

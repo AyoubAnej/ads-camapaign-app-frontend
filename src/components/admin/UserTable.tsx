@@ -61,15 +61,15 @@ export const UserTable = () => {
     queryKey: ["advertisers"],
     queryFn: advertiserApi.getAllAdvertisers,
     meta: {
-      errorMessage: "Failed to load users",
+      errorMessage: t('admin.userTableToasts.toast.loadError.description'),
     },
   });
 
   React.useEffect(() => {
     if (error) {
       toast({
-        title: "Error",
-        description: "Failed to load users. Please try again later.",
+        title: t('admin.userTableToasts.toast.loadError.title'),
+        description: t('admin.userTableToasts.toast.loadError.description'),
         variant: "destructive",
       });
     }
@@ -83,15 +83,15 @@ export const UserTable = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["advertisers"] });
       toast({
-        title: "User Updated",
-        description: "The user has been updated successfully.",
+        title: t('admin.userTableToasts.toast.updateSuccess.title'),
+        description: t('admin.userTableToasts.toast.updateSuccess.description'),
       });
       setIsEditUserOpen(false);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to update user. Please try again.",
+        title: t('admin.userTableToasts.toast.updateError.title'),
+        description: t('admin.userTableToasts.toast.updateError.description'),
         variant: "destructive",
       });
     },
@@ -102,16 +102,16 @@ export const UserTable = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["advertisers"] });
       toast({
-        title: "User Deleted",
-        description: "The user has been permanently deleted.",
+        title: t('admin.userTableToasts.toast.deleteSuccess.title'),
+        description: t('admin.userTableToasts.toast.deleteSuccess.description'),
         variant: "destructive",
       });
       setIsDeleteUserOpen(false);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to delete user. Please try again.",
+        title: t('admin.userTableToasts.toast.deleteError.title'),
+        description: t('admin.userTableToasts.toast.deleteError.description'),
         variant: "destructive",
       });
     },
@@ -126,16 +126,16 @@ export const UserTable = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["advertisers"] });
       toast({
-        title: "User Deactivated",
-        description: "The user has been deactivated.",
+        title: t('admin.userTableToasts.toast.deactivateSuccess.title'),
+        description: t('admin.userTableToasts.toast.deactivateSuccess.description'),
         variant: "destructive",
       });
       setIsDeactivateModalOpen(false);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to deactivate user. Please try again.",
+        title: t('admin.userTableToasts.toast.deactivateError.title'),
+        description: t('admin.userTableToasts.toast.deactivateError.description'),
         variant: "destructive",
       });
     },
@@ -146,16 +146,16 @@ export const UserTable = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["advertisers"] });
       toast({
-        title: "User Reactivated",
-        description: "The user has been reactivated.",
+        title: t('admin.userTableToasts.toast.reactivateSuccess.title'),
+        description: t('admin.userTableToasts.toast.reactivateSuccess.description'),
         variant: "default",
       });
       setIsReactivateModalOpen(false);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to reactivate user. Please try again.",
+        title: t('admin.userTableToasts.toast.reactivateError.title'),
+        description: t('admin.userTableToasts.toast.reactivateError.description'),
         variant: "destructive",
       });
     },
@@ -207,9 +207,24 @@ export const UserTable = () => {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4 space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-        <div>
-          <h2 className="text-2xl font-bold">{t('admin.userManagement.title')}</h2>
-          <p className="text-muted-foreground">{t('admin.userManagement.description')}</p>
+        <div className="flex-1">
+          <UserFilters
+            searchQuery={searchQuery}
+            roleFilter={roleFilter}
+            statusFilter={statusFilter}
+            onSearchChange={(value) => {
+              setSearchQuery(value);
+              setCurrentPage(1);
+            }}
+            onRoleFilterChange={(value) => {
+              setRoleFilter(value);
+              setCurrentPage(1);
+            }}
+            onStatusFilterChange={(value) => {
+              setStatusFilter(value);
+              setCurrentPage(1);
+            }}
+          />
         </div>
         
         <div className="flex items-center gap-2">
@@ -228,26 +243,6 @@ export const UserTable = () => {
             {t('admin.sellerRegistration.title')}
           </Button>
         </div>
-      </div>
-
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <UserFilters
-          searchQuery={searchQuery}
-          roleFilter={roleFilter}
-          statusFilter={statusFilter}
-          onSearchChange={(value) => {
-            setSearchQuery(value);
-            setCurrentPage(1);
-          }}
-          onRoleFilterChange={(value) => {
-            setRoleFilter(value);
-            setCurrentPage(1);
-          }}
-          onStatusFilterChange={(value) => {
-            setStatusFilter(value);
-            setCurrentPage(1);
-          }}
-        />
       </div>
 
       <div className="rounded-md border bg-white dark:bg-gray-900">
@@ -307,9 +302,10 @@ export const UserTable = () => {
         </Table>
         <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-3 gap-2">
           <div className="w-full sm:w-auto flex justify-start">
-            <span className="text-sm text-muted-foreground">              {totalItems === 0
-                ? t('admin.userManagement.noUsers')
-                : t('admin.userManagement.showing', {
+            <span className="text-sm text-muted-foreground">              
+              {totalItems === 0
+                ? t('interactions.pagination.noItems')
+                : t('interactions.pagination.showing', {
                     start: indexOfFirstItem + (totalItems ? 1 : 0),
                     end: Math.min(indexOfLastItem, totalItems),
                     total: totalItems

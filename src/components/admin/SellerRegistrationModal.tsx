@@ -16,7 +16,6 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { t } from 'i18next';
 
 interface SellerRegistrationModalProps {
   open: boolean;
@@ -62,6 +61,8 @@ export const SellerRegistrationModal = ({
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  const { t } = useTranslation();
   
   // Admin registration form
   const adminForm = useForm<AdminFormValues>({
@@ -153,8 +154,8 @@ export const SellerRegistrationModal = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['advertisers'] });
       toast({
-        title: 'Success',
-        description: 'Seller has been registered as a user successfully.',
+        title: t('admin.sellerRegistrationToasts.sellerSuccessTitle'),
+        description: t('admin.sellerRegistrationToasts.sellerSuccessDescription'),
       });
       onOpenChange(false);
       setSelectedSellerId(null);
@@ -163,8 +164,8 @@ export const SellerRegistrationModal = ({
     },
     onError: (error) => {
       toast({
-        title: 'Error',
-        description: 'Failed to register seller as user. Please try again.',
+        title: t('admin.sellerRegistrationToasts.sellerErrorTitle'),
+        description: t('admin.sellerRegistrationToasts.sellerErrorDescription'),
         variant: 'destructive',
       });
     }
@@ -195,16 +196,16 @@ export const SellerRegistrationModal = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['advertisers'] });
       toast({
-        title: 'Success',
-        description: 'Admin user has been registered successfully.',
+        title: t('admin.sellerRegistrationToasts.adminSuccessTitle'),
+        description: t('admin.sellerRegistrationToasts.adminSuccessDescription'),
       });
       handleModalClose(false);
       adminForm.reset();
     },
     onError: (error) => {
       toast({
-        title: 'Error',
-        description: 'Failed to register admin user. Please try again.',
+        title: t('admin.sellerRegistrationToasts.adminErrorTitle'),
+        description: t('admin.sellerRegistrationToasts.adminErrorDescription'),
         variant: 'destructive',
       });
     }
@@ -216,8 +217,8 @@ export const SellerRegistrationModal = ({
     
     if (selectedSellerId === null) {
       toast({
-        title: 'Validation Error',
-        description: 'Please select a seller.',
+        title: t('admin.sellerRegistrationToasts.sellerValidationErrorTitle'),
+        description: t('admin.sellerRegistrationToasts.sellerValidationErrorDescription'),
         variant: 'destructive',
       });
       return;
@@ -227,8 +228,8 @@ export const SellerRegistrationModal = ({
     
     if (!seller) {
       toast({
-        title: 'Error',
-        description: 'Selected seller not found.',
+        title: t('admin.sellerRegistrationToasts.sellerNotFoundErrorTitle'),
+        description: t('admin.sellerRegistrationToasts.sellerNotFoundErrorDescription'),
         variant: 'destructive',
       });
       return;
@@ -248,9 +249,9 @@ export const SellerRegistrationModal = ({
     <Dialog open={open} onOpenChange={handleModalClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>{t('admin.userManagement.registerUser')}</DialogTitle>
+          <DialogTitle>Register New User</DialogTitle>
           <DialogDescription>
-            {t('admin.userManagement.newUser')}
+            Create a new user in the system either from an existing seller or as an admin.
           </DialogDescription>
         </DialogHeader>
         
@@ -260,8 +261,8 @@ export const SellerRegistrationModal = ({
           className="w-full"
         >
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="seller">{t('admin.userManagement.sellerToadvertiser')}</TabsTrigger>
-            <TabsTrigger value="admin">{t('admin.userManagement.addAdmin')}</TabsTrigger>
+            <TabsTrigger value="seller">Register from Seller</TabsTrigger>
+            <TabsTrigger value="admin">Register Admin</TabsTrigger>
           </TabsList>
           
           {/* Seller Registration Flow */}
@@ -270,15 +271,15 @@ export const SellerRegistrationModal = ({
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="seller" className="text-right">
-                    {t('admin.userManagement.roles.seller')}
+                    Seller
                   </Label>
                   <div className="col-span-3">
                     <Combobox
                       options={sellerOptions}
                       value={selectedSellerId}
                       onChange={setSelectedSellerId}
-                      placeholder={isLoading ? "Loading sellers..." : "Search by shop name or ID..."}
-                      emptyMessage={sellerOptions.length === 0 ? "All sellers are already registered" : "No sellers found"}
+                      placeholder={isLoading ? `${t('admin.sellerRegistration.modal.placeholders.loadingSellers')}` : `${t('admin.sellerRegistration.modal.placeholders.searchSeller')}`}
+                      emptyMessage={sellerOptions.length === 0 ? `${t('admin.sellerRegistration.modal.placeholders.allRegistered')}` : `${t('admin.sellerRegistration.modal.placeholders.noSellers')}`}
                       disabled={isLoading || sellerOptions.length === 0}
                       loading={isLoading}
                     />
@@ -287,7 +288,7 @@ export const SellerRegistrationModal = ({
                 
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="role" className="text-right">
-                    {t('admin.userManagement.fields.role')}
+                    Role
                   </Label>
                   <Select 
                     value={selectedRole} 
@@ -295,11 +296,11 @@ export const SellerRegistrationModal = ({
                     disabled={selectedRole === 'ADMIN'} // Disable changing to ADMIN in seller flow
                   >
                     <SelectTrigger className="col-span-3">
-                      <SelectValue placeholder="Select a role" />
+                      <SelectValue placeholder={`${t('admin.sellerRegistration.modal.placeholders.role')}`} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ADVERTISER">{t('admin.userManagement.roles.advertiser')}</SelectItem>
-                      <SelectItem value="AGENCY_MANAGER">{t('admin.userManagement.roles.agnecyManager')}</SelectItem>
+                      <SelectItem value="ADVERTISER">Advertiser</SelectItem>
+                      <SelectItem value="AGENCY_MANAGER">Agency Manager</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -308,7 +309,7 @@ export const SellerRegistrationModal = ({
                 {selectedRole === 'AGENCY_MANAGER' && (
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="agencyId" className="text-right">
-                      {t('admin.userManagement.fields.agencyId')}
+                      Agency ID
                     </Label>
                     <div className="col-span-3">
                       <Input
@@ -316,7 +317,7 @@ export const SellerRegistrationModal = ({
                         type="number"
                         value={agencyId}
                         onChange={(e) => setAgencyId(e.target.value)}
-                        placeholder="Enter agency ID"
+                        placeholder={`${t('admin.sellerRegistration.modal.placeholders.agencyId')}`}
                         className="w-full"
                         required={selectedRole === 'AGENCY_MANAGER'}
                       />
@@ -326,16 +327,16 @@ export const SellerRegistrationModal = ({
               </div>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => handleModalClose(false)}>
-                  {t('common.cancel')}
+                  Cancel
                 </Button>
                 <Button 
                   type="submit" 
                   disabled={isLoading || sellerOptions.length === 0 || registerSellerMutation.isPending}
                 >
-                  {isLoading ? 'Loading...' : 
-                   registerSellerMutation.isPending ? 'Registering...' : 
-                   sellerOptions.length === 0 ? 'No Unregistered Sellers' : 
-                   'Register User'}
+                  {isLoading ? t('admin.sellerRegistration.modal.buttons.loading') : 
+                   registerSellerMutation.isPending ? t('admin.sellerRegistration.modal.buttons.registering') : 
+                   sellerOptions.length === 0 ? t('admin.sellerRegistration.modal.buttons.noSellers') : 
+                   t('admin.sellerRegistration.modal.buttons.registerUser')}
                 </Button>
               </DialogFooter>
             </form>
@@ -351,9 +352,9 @@ export const SellerRegistrationModal = ({
                     name="firstName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t('admin.userManagement.fields.firstName')}</FormLabel>
+                        <FormLabel>First Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="John" {...field} />
+                          <Input placeholder={t('admin.sellerRegistration.modal.placeholders.firstName')} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -365,9 +366,9 @@ export const SellerRegistrationModal = ({
                     name="lastName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t('admin.userManagement.fields.lastName')}</FormLabel>
+                        <FormLabel>Last Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Doe" {...field} />
+                          <Input placeholder={t('admin.sellerRegistration.modal.placeholders.lastName')} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -380,7 +381,7 @@ export const SellerRegistrationModal = ({
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t('admin.sellerRegistration.modal.labels.email')}</FormLabel>
                       <FormControl>
                         <Input type="email" placeholder="john.doe@example.com" {...field} />
                       </FormControl>
@@ -394,11 +395,11 @@ export const SellerRegistrationModal = ({
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('admin.userManagement.fields.password')}</FormLabel>
+                      <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input type="password" placeholder="******" {...field} />
                       </FormControl>
-                      <FormDescription>{t('admin.userManagement.mdpconditions.minLength')}</FormDescription>
+                      <FormDescription>Must be at least 6 characters</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -409,7 +410,7 @@ export const SellerRegistrationModal = ({
                   name="phoneNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('admin.userManagement.fields.phoneNumber')}</FormLabel>
+                      <FormLabel>Phone Number</FormLabel>
                       <FormControl>
                         <Input placeholder="+1 (555) 123-4567" {...field} />
                       </FormControl>
@@ -423,7 +424,7 @@ export const SellerRegistrationModal = ({
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('admin.userManagement.fields.adress')}</FormLabel>
+                      <FormLabel>Address</FormLabel>
                       <FormControl>
                         <Input placeholder="123 Main St, City, Country" {...field} />
                       </FormControl>
@@ -434,13 +435,13 @@ export const SellerRegistrationModal = ({
                 
                 <DialogFooter className="pt-4">
                   <Button type="button" variant="outline" onClick={() => handleModalClose(false)}>
-                    {t('common.cancel')}
+                    Cancel
                   </Button>
                   <Button 
                     type="submit" 
                     disabled={registerAdminMutation.isPending}
                   >
-                    {registerAdminMutation.isPending ? 'Registering...' : 'Register Admin'}
+                    {registerAdminMutation.isPending ? t('admin.sellerRegistration.modal.buttons.registering') : t('admin.sellerRegistration.modal.buttons.registerAdmin')}
                   </Button>
                 </DialogFooter>
               </form>

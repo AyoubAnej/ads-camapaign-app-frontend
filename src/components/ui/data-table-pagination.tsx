@@ -1,4 +1,3 @@
-
 import {
   Pagination,
   PaginationContent,
@@ -8,7 +7,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { t } from "i18next";
 
 interface DataTablePaginationProps {
   currentPage: number;
@@ -29,16 +27,12 @@ export function DataTablePagination({
   const startItem = (currentPage - 1) * pageSize + 1;
   const endItem = Math.min(currentPage * pageSize, totalItems);
 
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:justify-between items-center py-4">
       <p className="text-sm text-muted-foreground">
-        {totalItems === 0
-                ? t('admin.userManagement.noUsers')
-                : t('admin.userManagement.showing', {
-                    start: startItem,
-                    end: endItem,
-                    total: totalItems
-                  })}       
+        Showing {startItem} to {endItem} of {totalItems} {itemName}
       </p>
       <Pagination>
         <PaginationContent>

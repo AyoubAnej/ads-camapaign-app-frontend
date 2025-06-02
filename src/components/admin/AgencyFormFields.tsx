@@ -1,4 +1,3 @@
-
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -10,7 +9,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { t } from "i18next";
 
 // Define schema for agency form
 export const agencyFormSchema = z.object({
@@ -28,6 +26,7 @@ interface AgencyFormFieldsProps {
 }
 
 export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
+  const { t } = useTranslation();
   return (
     <>
       <FormField
@@ -35,9 +34,9 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('admin.agencyManagement.fields.name')}</FormLabel>
+            <FormLabel>Agency Name</FormLabel>
             <FormControl>
-              <Input placeholder="Enter agency name" {...field} />
+              <Input placeholder={t('admin.agencyManagement.placeholders.name')} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -49,9 +48,9 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="phoneNumber"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('admin.agencyManagement.fields.phone')}</FormLabel>
+            <FormLabel>Phone Number</FormLabel>
             <FormControl>
-              <Input placeholder="Enter phone number" {...field} />
+              <Input placeholder={t('admin.agencyManagement.placeholders.phone')} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -63,9 +62,9 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="website"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('admin.agencyManagement.fields.website')}</FormLabel>
+            <FormLabel>Website</FormLabel>
             <FormControl>
-              <Input placeholder="https://example.com" {...field} />
+              <Input placeholder={t('admin.agencyManagement.placeholders.website')} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -77,10 +76,10 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('admin.agencyManagement.fields.description')}</FormLabel>
+            <FormLabel>Description</FormLabel>
             <FormControl>
               <Textarea 
-                placeholder="Enter agency description" 
+                placeholder={t('admin.agencyManagement.placeholders.description')} 
                 rows={3} 
                 {...field} 
               />

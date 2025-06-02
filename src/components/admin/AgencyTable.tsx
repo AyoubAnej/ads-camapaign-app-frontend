@@ -229,21 +229,19 @@ export const AgencyTable = () => {
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4 space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">{t('admin.agencyManagement.title')}</h2>
-          <p className="text-muted-foreground">{t('admin.agencyManagement.description')}</p>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+        <div className="relative flex-1">
+          <Input
+            ref={searchInputRef}
+            placeholder={t('admin.agencyManagement.searchPlaceholder') || "Search agencies..."}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-8 w-64"
+          />
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
         </div>
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <Input
-              placeholder="Search agencies..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8 w-64"
-            />
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
-          </div>
+        
+        <div>
           {isAdmin && (
             <Button 
               onClick={() => setIsAddModalOpen(true)}
