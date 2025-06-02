@@ -84,6 +84,7 @@
     "createAd": "Créer une publicité",
     "editAd": "Modifier la publicité",
     "deleteAd": "Supprimer la publicité",
+    "deleteAdConfirmation": "Êtes-vous sûr de vouloir supprimer l'annonce {{ad.title}} (ID : {{ad.adId}}) ?",
     "adDetails": "Détails de la publicité",
     "noAds": "Aucune annonce trouvée",
     "resetFilters": "Réinitialiser les filtres",

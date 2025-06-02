@@ -10,6 +10,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { GetAdResponseDto } from '@/types/ad';
+import { useTranslation } from 'react-i18next';
 
 interface DeleteAdModalProps {
   ad: GetAdResponseDto;
@@ -24,21 +25,22 @@ const DeleteAdModal: React.FC<DeleteAdModalProps> = ({
   onOpenChange,
   onDeleteAd,
 }) => {
+  const { t } = useTranslation();
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete Ad</AlertDialogTitle>
+          <AlertDialogTitle>{t('ads.deleteAd')}</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete the ad "{ad.title}" (ID: {ad.adId})?
+            {t('ads.deleteAdConfirmation', { adTitle: ad.title })} 
             <br />
-            This action cannot be undone.
+            {t('admin.agencyManagement.undoneAction')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
           <AlertDialogAction onClick={onDeleteAd} className="bg-red-600 hover:bg-red-700">
-            Delete
+            {t('common.delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

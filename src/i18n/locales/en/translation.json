@@ -72,6 +72,7 @@
     "createAd": "Create Ad",
     "editAd": "Edit Ad",
     "deleteAd": "Delete Ad",
+    "deleteAdConfirmation": "Are you sure you want to delete the ad {{ad.title}} (ID: {{ad.adId}})?",
     "adDetails": "Ad Details",
     "noAds": "No ads found",
     "resetFilters": "Clear Filters",
@@ -95,16 +96,12 @@
     "placeholders": {
       "title": "Ad title",
       "description": "Describe your ad (optional)",
-      "mediaUrl": "https://your-store.com/image.png",
-      "redirectUrl": "https://your-store.com/product",
       "productId": "Enter product ID",
       "searchPlaceholder":"Search Ads..."
     },
     "descriptions": {
       "title": "Short, catchy headline for your ad",
       "description": "Optional: additional details about your ad",
-      "mediaUrl": "Image or video to display in your ad",
-      "redirectUrl": "Where users will go when clicking the ad",
       "productId": "Unique product identifier",
       "bidStrategy": "How your bid will be managed"
     },
