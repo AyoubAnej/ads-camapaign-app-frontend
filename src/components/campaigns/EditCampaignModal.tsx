@@ -27,6 +27,7 @@ import {
   getCampaignTypeString,
 } from "@/types/campaign";
 import { cn } from "@/lib/utils";
+import { t } from "i18next";
 
 interface EditCampaignModalProps {
   open: boolean;
@@ -117,9 +118,9 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Campaign</DialogTitle>
+          <DialogTitle>{t('campaign.editCampaignDetails')}</DialogTitle>
           <DialogDescription>
-            Update the campaign details. Click save when you're done.
+            {t('campaign.updateCampaignInstructions')}
           </DialogDescription>
         </DialogHeader>
         {error && (
@@ -131,7 +132,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
-                Name
+                {t('campaign.fields.name.label')}
               </Label>
               <Input
                 id="name"
@@ -143,7 +144,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="startDate" className="text-right">
-                Start Date
+                {t('campaign.startDate')}
               </Label>
               <Input
                 id="startDate"
@@ -159,7 +160,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="endDate" className="text-right">
-                End Date
+                {t('campaign.endDate')}
               </Label>
               <Input
                 id="endDate"
@@ -174,7 +175,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="status" className="text-right">
-                Status
+                {t('camapign.fields.status.label')}
               </Label>
               <Select
                 value={globalState.toString()}
@@ -195,7 +196,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="type" className="text-right">
-                Type
+                {t('camapign.type')}
               </Label>
               <Select
                 value={campaignType.toString()}
@@ -227,7 +228,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
               onClick={() => onOpenChange(false)}
               disabled={isSubmitting}
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Saving..." : "Save Changes"}

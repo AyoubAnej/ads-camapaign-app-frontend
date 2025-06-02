@@ -199,7 +199,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
       <div className="flex justify-center items-center h-64 bg-background rounded-lg p-6">
         <div className="flex flex-col items-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-          <p className="text-lg font-medium">Loading campaigns...</p>
+          <p className="text-lg font-medium">{t('campaign.loadingCampaigns')}</p>
         </div>
       </div>
     );
@@ -212,14 +212,14 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-destructive mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h3 className="text-lg font-medium text-destructive">Error Loading Campaign Data</h3>
+          <h3 className="text-lg font-medium text-destructive">{t('campaign.errorLoading')}</h3>
         </div>
         <p className="text-destructive/80 mb-3">{error instanceof Error ? error.message : 'Failed to load campaign data'}</p>
         <Button 
           onClick={() => refetch()} 
           variant="destructive"
         >
-          Try Again
+         {t('campaign.tryAgain')}
         </Button>
       </div>
     );

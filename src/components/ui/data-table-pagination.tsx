@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useTranslation } from "react-i18next";
 
 interface DataTablePaginationProps {
   currentPage: number;

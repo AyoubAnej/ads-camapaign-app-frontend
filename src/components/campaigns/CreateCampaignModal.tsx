@@ -26,6 +26,7 @@ import {
   getGlobalStateString,
   getCampaignTypeString
 } from '@/types/campaign';
+import { t } from 'i18next';
 
 interface CreateCampaignModalProps {
   open: boolean;
@@ -142,9 +143,9 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create New Campaign</DialogTitle>
+          <DialogTitle>{t('campaign.createNewCampaign')}</DialogTitle>
           <DialogDescription>
-            Fill in the details below to create a new campaign.
+            {t('campaign.fillDetailsToCreate')}
           </DialogDescription>
         </DialogHeader>
         {error && (
@@ -156,7 +157,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="advertiser" className="text-right">
-                Advertiser
+                {t('admin.userManagement.roles.advertiser')}
               </Label>
               <Select 
                 value={selectedAdvertiserId} 
@@ -168,9 +169,9 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
                 </SelectTrigger>
                 <SelectContent>
                   {isLoadingAdvertisers ? (
-                    <SelectItem value="loading" disabled>Loading advertisers...</SelectItem>
+                    <SelectItem value="loading" disabled>{t('ads.createForm.advertiser.loadingAdvertiser')}</SelectItem>
                   ) : advertisers.length === 0 ? (
-                    <SelectItem value="none" disabled>No advertisers found</SelectItem>
+                    <SelectItem value="none" disabled>{t('ads.createForm.advertiser.noAdvertiserFound')}</SelectItem>
                   ) : (
                     advertisers.filter(advertiser => advertiser.role !== 'AGENCY_MANAGER' && advertiser.role !== 'ADMIN')
                     .map((advertiser: Advertiser) => (
@@ -185,7 +186,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
 
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
-                Name
+                {t('campaign.fields.name.label')}
               </Label>
               <Input
                 id="name"
@@ -197,7 +198,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="startDate" className="text-right">
-                Start Date
+                {t('campaign.startDate')}
               </Label>
               <Input
                 id="startDate"
@@ -214,7 +215,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="endDate" className="text-right">
-                End Date
+                {t('campaign.endDate')}
               </Label>
               <Input
                 id="endDate"
@@ -230,7 +231,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="status" className="text-right">
-                Status
+                {t('camapign.fields.status.label')}
               </Label>
               <Select 
                 value={globalState.toString()} 
@@ -247,7 +248,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="type" className="text-right">
-                Type
+                {t('camapign.type')}
               </Label>
               <Select 
                 value={campaignType.toString()} 
@@ -266,7 +267,7 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Creating...' : 'New Campaign'}

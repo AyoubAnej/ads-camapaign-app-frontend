@@ -10,6 +10,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { GetCampaignResponseDto } from '@/types/campaign';
+import { t } from 'i18next';
 
 interface DeleteCampaignModalProps {
   open: boolean;
@@ -28,16 +29,15 @@ export const DeleteCampaignModal: React.FC<DeleteCampaignModalProps> = ({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t('admin.userMangement.confirmDelete')}</AlertDialogTitle>
           <AlertDialogDescription>
-            This action will permanently delete the campaign "{campaign.campaignName}" (ID: {campaign.campaignId}).
-            This action cannot be undone.
+            {t('camapaign.deleteCampaignWarning')} "{campaign.campaignName}" (ID: {campaign.campaignId}).
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('commmon.cancel')}</AlertDialogCancel>
           <AlertDialogAction onClick={onDeleteCampaign} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-            Delete
+            {t('commmon.delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
