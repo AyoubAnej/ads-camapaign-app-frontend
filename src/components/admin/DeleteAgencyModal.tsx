@@ -15,6 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useTranslation } from "react-i18next";
 
 interface DeleteAgencyModalProps {
   isOpen: boolean;
@@ -54,15 +55,17 @@ const DeleteAgencyModal = ({ isOpen, onClose, agency, onSuccess }: DeleteAgencyM
     deleteAgencyMutation.mutate();
   };
 
+  const { t } = useTranslation();
+
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete Agency</AlertDialogTitle>
+          <AlertDialogTitle>{t('admin.agencyManagement.deleteAgency')}</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete <span className="font-semibold">{agency.name}</span>?
+            {t('admin.agencyManagement.confirmDelete')} <span className="font-semibold">{agency.name}</span>?
             <br />
-            This action cannot be undone.
+            {t('admin.agencyManagement.undoneAction')}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -76,14 +79,14 @@ const DeleteAgencyModal = ({ isOpen, onClose, agency, onSuccess }: DeleteAgencyM
           <AlertDialogCancel
             disabled={deleteAgencyMutation.isPending}
           >
-            Cancel
+            {t('common.cancel')}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             disabled={deleteAgencyMutation.isPending}
             className="bg-red-500 hover:bg-red-600 text-white"
           >
-            {deleteAgencyMutation.isPending ? "Deleting..." : "Delete"}
+            {deleteAgencyMutation.isPending ? `${t('admin.agencyManagement.deleting')}` : `${t('admin.agencyManagement.delete')}`}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
