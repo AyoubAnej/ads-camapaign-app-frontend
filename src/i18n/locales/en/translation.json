@@ -275,6 +275,16 @@
             "invalid_date": "Invalid date"
           }
         }
+      },
+      "adCreatePage": {
+          "create_ad": {
+            "title": "Create New Ad",
+            "back_to_campaign": "Back to Campaign",
+            "missing_campaign": {
+              "message": "Campaign ID is missing. Please select a campaign first.",
+              "button": "Go to Campaigns"
+            }
+          }
       }
   },
   "campaigns": {

@@ -287,6 +287,16 @@
           "invalid_date": "Date invalide"
         }
       }
+    },
+    "adCreatePage": {
+        "create_ad": {
+          "title": "Créer une nouvelle annonce",
+          "back_to_campaign": "Retour à la campagne",
+          "missing_campaign": {
+            "message": "L'identifiant de la campagne est manquant. Veuillez d'abord sélectionner une campagne.",
+            "button": "Aller aux campagnes"
+          }
+        }
     }
 },
   "campaigns": {
