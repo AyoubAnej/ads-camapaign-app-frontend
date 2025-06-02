@@ -32,7 +32,7 @@ const DeleteAdModal: React.FC<DeleteAdModalProps> = ({
         <AlertDialogHeader>
           <AlertDialogTitle>{t('ads.deleteAd')}</AlertDialogTitle>
           <AlertDialogDescription>
-            {t('ads.deleteAdConfirmation', { adTitle: ad.title })} 
+            {t('ads.deleteAdConfirmation', { ad: { title: ad.title, adId: ad.adId } })} 
             <br />
             {t('admin.agencyManagement.undoneAction')}
           </AlertDialogDescription>
