@@ -187,6 +187,55 @@
         "bidAmountRequired": "Bid amount must be greater than 0",
         "budgetRequired": "Budget is required"
       }
+    },
+    "editAds": {
+        "dialog_title": "Edit Ad",
+        "dialog_description": "Update the details of your advertisement.",
+        "sections": {
+          "ad_details": "Ad Details",
+          "bid_settings": "Bid Settings",
+          "ad_state": "Ad State"
+        },
+        "labels": {
+          "title": "Title",
+          "description": "Description",
+          "keywords": "Keywords",
+          "bid_amount": "Bid Amount",
+          "bid_currency": "Bid Currency",
+          "bid_strategy": "Bid Strategy",
+          "is_active": "Active",
+          "reason": "Reason (if inactive)",
+          "activated_at": "Activated At",
+          "deactivated_at": "Deactivated At"
+        },
+        "placeholders": {
+          "title": "Ad title",
+          "description": "Describe your ad (optional)",
+          "keywords": "shoes, sports, running",
+          "reason": "Reason for deactivation (optional)",
+          "activated_at": "Activation date/time (optional)",
+          "deactivated_at": "Deactivation date/time (optional)"
+        },
+        "descriptions": {
+          "title": "Short, catchy headline for your ad",
+          "description": "Optional: additional details about your ad",
+          "keywords": "Keywords related to this ad (comma separated)",
+          "bid_amount": "Maximum bid per click",
+          "bid_currency": "Currency for bidding",
+          "bid_strategy": "How your bid will be managed",
+          "is_active": "Toggle to activate or deactivate this ad",
+          "reason": "Explain why this ad is inactive",
+          "activated_at": "When this ad became active",
+          "deactivated_at": "When this ad became inactive"
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "submit": "Update Ad",
+          "submitting": "Updating..."
+        },
+        "errors": {
+          "generic": "An error occurred while updating the ad"
+        } 
     }
   },
   "campaigns": {

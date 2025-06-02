@@ -199,6 +199,55 @@
       "bidAmountRequired": "Le montant de l'enchère est requis",
       "budgetRequired": "Le budget est requis"
     }
+  },
+  "editAds": {
+      "dialog_title": "Modifier l'annonce",
+      "dialog_description": "Mettez à jour les détails de votre annonce.",
+      "sections": {
+        "ad_details": "Détails de l'annonce",
+        "bid_settings": "Paramètres d'enchère",
+        "ad_state": "État de l'annonce"
+      },
+      "labels": {
+        "title": "Titre",
+        "description": "Description",
+        "keywords": "Mots-clés",
+        "bid_amount": "Montant de l'enchère",
+        "bid_currency": "Devise de l'enchère",
+        "bid_strategy": "Stratégie d'enchère",
+        "is_active": "Active",
+        "reason": "Raison (si inactif)",
+        "activated_at": "Activée le",
+        "deactivated_at": "Désactivée le"
+      },
+      "placeholders": {
+        "title": "Titre de l'annonce",
+        "description": "Décrivez votre annonce (optionnel)",
+        "keywords": "chaussures, sport, course",
+        "reason": "Raison de la désactivation (optionnel)",
+        "activated_at": "Date/heure d’activation (optionnel)",
+        "deactivated_at": "Date/heure de désactivation (optionnel)"
+      },
+      "descriptions": {
+        "title": "Titre accrocheur pour votre annonce",
+        "description": "Optionnel : détails supplémentaires sur votre annonce",
+        "keywords": "Mots-clés liés à cette annonce (séparés par des virgules)",
+        "bid_amount": "Enchère maximale par clic",
+        "bid_currency": "Devise utilisée pour l'enchère",
+        "bid_strategy": "Comment votre enchère sera gérée",
+        "is_active": "Activez ou désactivez cette annonce",
+        "reason": "Expliquez pourquoi cette annonce est inactive",
+        "activated_at": "Quand cette annonce a été activée",
+        "deactivated_at": "Quand cette annonce a été désactivée"
+      },
+      "buttons": {
+        "cancel": "Annuler",
+        "submit": "Mettre à jour l'annonce",
+        "submitting": "Mise à jour..."
+      },
+      "errors": {
+        "generic": "Une erreur s'est produite lors de la mise à jour de l'annonce"
+      } 
   }
 },
   "campaigns": {

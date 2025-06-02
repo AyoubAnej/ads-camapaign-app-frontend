@@ -31,6 +31,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DollarSign, Info, Tag, BarChart3, CheckCircle2, Tags } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from 'react-i18next';
 
 interface EditAdModalProps {
   ad: GetAdResponseDto;
@@ -178,13 +179,15 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
     mutate(updateData);
   };
 
+  const { t } = useTranslation();
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] max-h-[85vh] p-0 flex flex-col">
         <DialogHeader className="px-6 pt-6 pb-2">
-          <DialogTitle>Edit Ad</DialogTitle>
+          <DialogTitle>{t('ads.editAds.dialog_title')}</DialogTitle>
           <DialogDescription>
-            Update the details of your advertisement.
+            {t('ads.editAds.dialog_description')}
           </DialogDescription>
         </DialogHeader>
         
@@ -195,7 +198,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <Tag className="h-5 w-5 text-primary" />
-                  <h3 className="font-semibold text-lg">Ad Details</h3>
+                  <h3 className="font-semibold text-lg">{t('ads.editAds.sections.ad_details')}</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
@@ -203,9 +206,9 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                     name="title"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Title</FormLabel>
+                        <FormLabel>{t('ads.editAds.labels.title')}</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Ad title" />
+                          <Input {...field} placeholder={t('ads.editAds.placeholders.title')} />
                         </FormControl>
                         <FormDescription>Short, catchy headline for your ad</FormDescription>
                         <FormMessage />
@@ -217,9 +220,9 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                     name="description"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Description</FormLabel>
+                        <FormLabel>{t('ads.editAds.labels.description')}</FormLabel>
                         <FormControl>
-                          <Textarea {...field} placeholder="Describe your ad (optional)" />
+                          <Textarea {...field} placeholder={t('ads.editAds.placeholders.description')} />
                         </FormControl>
                         <FormDescription>Optional: additional details about your ad</FormDescription>
                         <FormMessage />
@@ -231,7 +234,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                     name="keywords"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Keywords</FormLabel>
+                        <FormLabel>{t('ads.editAds.labels.keywords')}</FormLabel>
                         <div className="relative">
                           <div className="absolute left-2 top-2.5 text-muted-foreground">
                             <Tags className="h-4 w-4" />
@@ -245,11 +248,11 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                                 field.onChange(keywords);
                               }}
                               className="pl-8" 
-                              placeholder="shoes, sports, running" 
+                              placeholder={t('ads.editAds.placeholders.keywords')} 
                             />
                           </FormControl>
                         </div>
-                        <FormDescription>Keywords related to this ad (comma separated)</FormDescription>
+                        <FormDescription>{t('ads.editAds.descriptions.keywords')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -269,7 +272,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                     name="bidAmount"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Bid Amount</FormLabel>
+                        <FormLabel>{t('ads.editAds.labels.bid_amount')}</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <span className="absolute left-3 top-2.5 text-muted-foreground">$</span>
@@ -282,7 +285,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                             />
                           </div>
                         </FormControl>
-                        <FormDescription>Maximum bid per click</FormDescription>
+                        <FormDescription>{t('ads.editAds.descriptions.bid_amount')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -292,7 +295,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                     name="bidCurrency"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Bid Currency</FormLabel>
+                        <FormLabel>{t('ads.editAds.labels.bid_currency')}</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
@@ -305,7 +308,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                             <SelectItem value="GBP">GBP</SelectItem>
                           </SelectContent>
                         </Select>
-                        <FormDescription>Currency for bidding</FormDescription>
+                        <FormDescription>{t('ads.editAds.descriptions.bid_currency')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -315,7 +318,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                     name="bidStrategy"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Bid Strategy</FormLabel>
+                        <FormLabel>{t('ads.editAds.labels.bid_strategy')}</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
@@ -331,7 +334,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                             <SelectItem value="TARGET_CPA">Target CPA</SelectItem>
                           </SelectContent>
                         </Select>
-                        <FormDescription>How your bid will be managed</FormDescription>
+                        <FormDescription>{t('ads.editAds.descriptions.bid_strategy')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -343,7 +346,7 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
               <div className="pt-4 border-t border-muted space-y-2">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle2 className="h-5 w-5 text-primary" />
-                  <h3 className="font-semibold text-lg">Ad State</h3>
+                  <h3 className="font-semibold text-lg">{t('ads.editAds.sections.ad_state')}</h3>
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center gap-6">
                   <FormField
@@ -357,8 +360,8 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <FormLabel className="m-0">Active</FormLabel>
-                        <FormDescription className="m-0">Toggle to activate or deactivate this ad</FormDescription>
+                        <FormLabel className="m-0">{t('ads.editAds.labels.is_active')}</FormLabel>
+                        <FormDescription className="m-0">{t('ads.editAds.descriptions.is_active')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -370,9 +373,9 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                       name="reason"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Reason (if inactive)</FormLabel>
-                          <Input {...field} placeholder="Reason for deactivation (optional)" />
-                          <FormDescription>Explain why this ad is inactive</FormDescription>
+                          <FormLabel>{t('ads.editAds.labels.reason')}</FormLabel>
+                          <Input {...field} placeholder={t('ads.editAds.placeholders.reason')} />
+                          <FormDescription>{t('ads.editAds.descriptions.reason')}</FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -387,9 +390,9 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                       name="activatedAt"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Activated At</FormLabel>
-                          <Input {...field} type="datetime-local" placeholder="Activation date/time (optional)" />
-                          <FormDescription>When this ad became active</FormDescription>
+                          <FormLabel>{t('ads.editAds.labels.activated_at')}</FormLabel>
+                          <Input {...field} type="datetime-local" placeholder={t('ads.editAds.placeholders.activated_at')} />
+                          <FormDescription>{t('ads.editAds.descriptions.activated_at')}</FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -401,9 +404,9 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                       name="deactivatedAt"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Deactivated At</FormLabel>
-                          <Input {...field} type="datetime-local" placeholder="Deactivation date/time (optional)" />
-                          <FormDescription>When this ad became inactive</FormDescription>
+                          <FormLabel>{t('ads.editAds.labels.deactivated_at')}</FormLabel>
+                          <Input {...field} type="datetime-local" placeholder={t('ads.editAds.placeholders.deactivated_at')} />
+                          <FormDescription>{t('ads.editAds.descriptions.deactivated_at')}</FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -424,10 +427,10 @@ export const EditAdModal: React.FC<EditAdModalProps> = ({
                 variant="outline" 
                 onClick={handleCloseModal}
               >
-                Cancel
+                {t('ads.editAds.buttons.cancel')}
               </Button>
               <Button type="submit" disabled={isPending}>
-                {isPending ? "Updating..." : "Update Ad"}
+                {isPending ? t('ads.editAds.buttons.submitting') : t('ads.editAds.buttons.submit')}
               </Button>
             </DialogFooter>
           </div>
