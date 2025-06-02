@@ -15,22 +15,22 @@ const Settings = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-gray-500 dark:text-gray-400">Manage your application preferences</p>
+        <h1 className="text-3xl font-bold">{t('common.settings')}</h1>
+        <p className="text-gray-500 dark:text-gray-400">{t('settings.appearance.customizeAppearance')}</p>
       </div>
       
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Appearance</CardTitle>
+            <CardTitle>{t('settings.appearance.title')}</CardTitle>
             <CardDescription>
-              Customize the appearance of the application
+              {t('settings.appearance.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="dark-mode">Dark Mode</Label>
+                <Label htmlFor="dark-mode">{t('settings.appearance.darkMode')}</Label>
                 <p className="text-sm text-muted-foreground">
                   {t('settings.appearance.darkModeDescription')}
                 </p>
