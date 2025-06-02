@@ -35,7 +35,7 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('admin.agencyManagement.placeholders.name')}</FormLabel>
+            <FormLabel>{t('admin.agencyManagement.fields.name')}</FormLabel>
             <FormControl>
               <Input placeholder={t('admin.agencyManagement.placeholders.name')} {...field} />
             </FormControl>
@@ -49,7 +49,7 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="phoneNumber"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('admin.agencyManagement.placeholders.phone')}</FormLabel>
+            <FormLabel>{t('admin.agencyManagement.fields.phone')}</FormLabel>
             <FormControl>
               <Input placeholder={t('admin.agencyManagement.placeholders.phone')} {...field} />
             </FormControl>
@@ -63,7 +63,7 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="website"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('admin.agencyManagement.placeholders.website')}</FormLabel>
+            <FormLabel>{t('admin.agencyManagement.fields.website')}</FormLabel>
             <FormControl>
               <Input placeholder={t('admin.agencyManagement.placeholders.website')} {...field} />
             </FormControl>
@@ -77,7 +77,7 @@ export const AgencyFormFields = ({ form }: AgencyFormFieldsProps) => {
         name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel> {t('admin.agencyManagement.placeholders.description')}</FormLabel>
+            <FormLabel> {t('admin.agencyManagement.fields.description')}</FormLabel>
             <FormControl>
               <Textarea 
                 placeholder={t('admin.agencyManagement.placeholders.description')} 
