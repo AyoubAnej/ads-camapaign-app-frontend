@@ -236,7 +236,46 @@
         "errors": {
           "generic": "An error occurred while updating the ad"
         } 
-    }
+    },
+    "adCard": {
+        "ad_details": {
+          "title": "Ad Details",
+          "status": {
+            "active": "Active",
+            "inactive": "Inactive"
+          },
+          "card": {
+            "ad_id": "Ad ID",
+            "ad_info": "Ad Information",
+            "description": "Description",
+            "created": "Created",
+            "updated": "Updated",
+            "keywords": "Keywords",
+            "no_keywords": "No keywords"
+          },
+          "bidding_info": {
+            "title": "Bidding Information",
+            "bid_amount": "Bid Amount",
+            "currency": "Currency",
+            "strategy": "Strategy"
+          },
+          "product_info": {
+            "title": "Product Information",
+            "product_id": "Product ID",
+            "name": "Name",
+            "price": "Price",
+            "quantity": "Quantity",
+            "category": "Category",
+            "seller_id": "Seller ID",
+            "description": "Description",
+            "not_available": "Product information not available"
+          },
+          "fallbacks": {
+            "na": "N/A",
+            "invalid_date": "Invalid date"
+          }
+        }
+      }
   },
   "campaigns": {
     "title": "Campaigns",

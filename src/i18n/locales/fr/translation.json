@@ -248,7 +248,46 @@
       "errors": {
         "generic": "Une erreur s'est produite lors de la mise à jour de l'annonce"
       } 
-  }
+  },
+  "adCard": {
+      "ad_details": {
+        "title": "Détails de l'annonce",
+        "status": {
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "card": {
+          "ad_id": "ID de l'annonce",
+          "ad_info": "Informations sur l'annonce",
+          "description": "Description",
+          "created": "Créée le",
+          "updated": "Mise à jour le",
+          "keywords": "Mots-clés",
+          "no_keywords": "Aucun mot-clé"
+        },
+        "bidding_info": {
+          "title": "Informations sur l'enchère",
+          "bid_amount": "Montant de l'enchère",
+          "currency": "Devise",
+          "strategy": "Stratégie"
+        },
+        "product_info": {
+          "title": "Informations sur le produit",
+          "product_id": "ID du produit",
+          "name": "Nom",
+          "price": "Prix",
+          "quantity": "Quantité",
+          "category": "Catégorie",
+          "seller_id": "ID du vendeur",
+          "description": "Description",
+          "not_available": "Informations sur le produit non disponibles"
+        },
+        "fallbacks": {
+          "na": "N/D",
+          "invalid_date": "Date invalide"
+        }
+      }
+    }
 },
   "campaigns": {
     "title": "Campagnes",
