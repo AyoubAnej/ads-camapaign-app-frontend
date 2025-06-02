@@ -406,6 +406,8 @@
       "agencyAdded": "Agency added successfully",
       "agencyUpdated": "Agency updated successfully",
       "loading": "Loading agencies...",
+      "saving": "Saving...",
+      "saveChanges": "Save changes",
       "errorLoadingTitle": "Error loading data",
       "errorLoadingMessage": "Failed to load agency data",
       "searchPlaceholder": "Search agencies...",

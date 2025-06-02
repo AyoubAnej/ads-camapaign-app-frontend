@@ -459,6 +459,8 @@
       "agencyUpdated": "Agence mise à jour avec succès",
       "noAgencies": "Aucune agence trouvée",
       "loading": "Chargement des agences...",
+      "saving": "Enregistrement...",
+      "saveChanges": "Enregistrer les modifications",
       "searchPlaceholder": "Rechercher des agences...",
       "deactivateAgency": "Désactiver l'agence",
       "reactivateAgency": "Réactiver l'agence",

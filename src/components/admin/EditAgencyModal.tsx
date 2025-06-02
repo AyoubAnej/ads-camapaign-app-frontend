@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { useTranslation } from "react-i18next";
 
 interface EditAgencyModalProps {
   isOpen: boolean;
@@ -91,11 +92,13 @@ const EditAgencyModal = ({ isOpen, onClose, agency, onSuccess }: EditAgencyModal
     updateAgencyMutation.mutate(agencyData);
   };
 
+  const { t } = useTranslation();
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Edit Agency</DialogTitle>
+          <DialogTitle>{t('admin.agencyManagement.editAgency')}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -121,7 +124,7 @@ const EditAgencyModal = ({ isOpen, onClose, agency, onSuccess }: EditAgencyModal
                 type="submit" 
                 disabled={updateAgencyMutation.isPending}
               >
-                {updateAgencyMutation.isPending ? "Saving..." : "Save Changes"}
+                {updateAgencyMutation.isPending ? `${t('admin.agencyManagement.saving')}` : `${t('admin.agencyManagement.saveChanges')}`}
               </Button>
             </DialogFooter>
           </form>
