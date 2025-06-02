@@ -133,10 +133,9 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
       productId: values.productId,
       title: values.title,
       description: values.description || "",
-      mediaUrl: values.mediaUrl || "",
-      redirectUrl: values.redirectUrl || "",
       adState: adState,
       bid: bid,
+      keywords: []
     };
 
     console.log('Creating ad with data:', JSON.stringify(createRequest, null, 2));
