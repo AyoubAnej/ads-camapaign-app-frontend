@@ -64,9 +64,15 @@
     "impressions": "Impressions",
     "spend": "Spend",
     "startDate": "Start date",
-    "endDate": "End date"
+    "endDate": "End date",
+    "backToCampaignAds": "Back to Campaign Ads",
+    "backToCampaigns": "Back to Campaigns",
+    "campaign": "Campaign",
+    "campaignStartDate": "Start Date",
+    "campaignEndDate": "End Date"
   },
   "ads": {
+    "ad": "Ad",
     "title": "Ads",
     "description": "Manage your ads",
     "createAd": "Create Ad",
@@ -576,6 +582,7 @@
       "agencyDeleted": "Agency deleted successfully",
       "agencyAdded": "Agency added successfully",
       "agencyUpdated": "Agency updated successfully",
+      "noAgencies": "No agencies found",
       "loading": "Loading agencies...",
       "saving": "Saving...",
       "saveChanges": "Save changes",

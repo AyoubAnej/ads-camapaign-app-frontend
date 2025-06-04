@@ -76,9 +76,15 @@
     "impressions": "Impressions",
     "spend": "Dépenses",
     "startDate": "Date de début",
-    "endDate": "Date de fin"
+    "endDate": "Date de fin",
+    "backToCampaignAds": "Retour aux annonces de la campagne",
+    "backToCampaigns": "Retour aux campagnes",
+    "campaign": "Campagne",
+    "campaignStartDate": "Date de début",
+    "campaignEndDate": "Date de fin"
   },
   "ads": {
+    "ad": "Annonce",
     "title": "Publicités",
     "description": "Gérez vos publicités",
     "createAd": "Créer une publicité",

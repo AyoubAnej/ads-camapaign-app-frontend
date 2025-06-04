@@ -14,11 +14,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { AdDetailsCard } from '@/components/ads/AdDetailsCard';
 import { CampaignDetailsCard } from '@/components/campaigns/CampaignDetailsCard';
+import { useTranslation } from 'react-i18next';
 
 export const AdPage = () => {
   const { campaignId, adId } = useParams<{ campaignId: string; adId?: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  const { t } = useTranslation();
   
   // Fetch campaign data
   const { data: campaign, isLoading: isLoadingCampaign, error: campaignError } = useQuery({
@@ -186,28 +189,28 @@ export const AdPage = () => {
         <div>
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-              {adId ? `Ad: ${ad?.title || 'Loading...'}` : campaign?.campaignName || 'Campaign'}
+              {adId ? `${t('ads.ad')}: ${ad?.title || 'Loading...'}` : campaign?.campaignName || 'Campaign'}
             </h1>
             {adId ? null : getCampaignStatusBadge()}
           </div>
           <Button variant="ghost" size="sm" className="-ml-2" onClick={handleBackClick}>
             <ArrowLeft className="h-4 w-4 mr-1" />
-            {adId ? 'Back to Campaign Ads' : 'Back to Campaigns'}
+            {adId ? t('adminDashboard.backToCampaignAds') : t('adminDashboard.backToCampaigns')}
           </Button>
         </div>
         <div className="flex flex-wrap gap-x-6 text-gray-600 dark:text-gray-300 text-sm md:text-base">
           <div className="flex items-center gap-1">
             <Tag className="h-4 w-4" />
-            <span className="font-medium">{campaign?.campaignType || 'Unknown'} Campaign</span>
+            <span className="font-medium">{campaign?.campaignType || 'Unknown'} {t('adminDashboard.campaign')}</span>
           </div>
           <div className="flex items-center gap-1">
             <Calendar className="h-4 w-4" />
-            <span>Started: {formatDate(campaign?.campaignStartDate)}</span>
+            <span>{t('adminDashboard.campaignStartDate')}: {formatDate(campaign?.campaignStartDate)}</span>
           </div>
           {campaign?.campaignEndDate && (
             <div className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
-              <span>Ends: {formatDate(campaign?.campaignEndDate)}</span>
+              <span>{t('adminDashboard.campaignEndDate')}: {formatDate(campaign?.campaignEndDate)}</span>
             </div>
           )}
         </div>
