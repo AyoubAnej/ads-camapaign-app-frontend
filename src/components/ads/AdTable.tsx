@@ -33,9 +33,10 @@ import { useTranslation } from 'react-i18next';
 
 interface AdTableProps {
   campaignId: number;
+  showCreateButton?: boolean;
 }
 
-export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
+export const AdTable: React.FC<AdTableProps> = ({ campaignId, showCreateButton = false }) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -128,11 +129,27 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
     });
   };
 
+  // Get the role-specific prefix for navigation
+  const getRolePrefix = () => {
+    const userRole = user?.role;
+    
+    if (userRole === 'ADMIN') {
+      return '/admin';
+    } else if (userRole === 'ADVERTISER') {
+      return '/advertiser';
+    } else if (userRole === 'AGENCY_MANAGER') {
+      return '/agency';
+    } else {
+      return '';
+    }
+  };
+
   // Handle pagination
   const goToPage = (page: number) => {
-    if (paginatedData) {
-      setCurrentPage(Math.max(1, Math.min(page, paginatedData.totalPages)));
+    if (page < 1 || page > (paginatedData?.totalPages || 1)) {
+      return;
     }
+    setCurrentPage(page);
   };
 
   // Format date
@@ -140,8 +157,7 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
     if (!dateString) return 'N/A';
     try {
       return new Date(dateString).toLocaleDateString();
-    } catch (error) {
-      console.error('Invalid date format:', dateString);
+    } catch (e) {
       return 'Invalid date';
     }
   };
@@ -210,12 +226,18 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           </div>
         </div>
         
-        <Button
-          onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
-          className="flex items-center gap-1"
-        >
-          <Plus className="h-4 w-4" /> {t('ads.createAd')}
-        </Button>
+        {showCreateButton && (
+          <Button
+            onClick={() => {
+              const rolePrefix = getRolePrefix();
+              console.log(`Navigating to ${rolePrefix}/campaigns/${campaignId}/create-ad with role: ${user?.role}`);
+              navigate(`${rolePrefix}/campaigns/${campaignId}/create-ad`);
+            }}
+            className="flex items-center gap-1"
+          >
+            <Plus className="h-4 w-4" /> {t('ads.createAd')}
+          </Button>
+        )}
       </div>
 
       {/* Loading overlay for subsequent fetches */}
@@ -242,7 +264,11 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
           ) : (
             <Button 
               className="mt-4"
-              onClick={() => navigate(`/campaigns/${campaignId}/create-ad`)}
+              onClick={() => {
+                const rolePrefix = getRolePrefix();
+                console.log(`Navigating to ${rolePrefix}/campaigns/${campaignId}/create-ad with role: ${user?.role}`);
+                navigate(`${rolePrefix}/campaigns/${campaignId}/create-ad`);
+              }}
             >
               {t('ads.createFirstAd')}
             </Button>
@@ -289,8 +315,10 @@ export const AdTable: React.FC<AdTableProps> = ({ campaignId }) => {
                           size="sm"
                           className= "border-blue-600 text-blue-600 hover:bg-blue-500 hover:text-white"
                           onClick={() => {
-                            // Navigate to ad details page
-                            navigate(`/campaigns/${campaignId}/ads/${ad.adId}`);
+                            // Navigate to ad details page with role-specific prefix
+                            const rolePrefix = getRolePrefix();
+                            console.log(`Navigating to ${rolePrefix}/campaigns/${campaignId}/ads/${ad.adId} with role: ${user?.role}`);
+                            navigate(`${rolePrefix}/campaigns/${campaignId}/ads/${ad.adId}`);
                           }}
                         >
                           <Eye className="h-4 w-4" />

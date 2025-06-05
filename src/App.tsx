@@ -21,8 +21,8 @@ import CreateAdPage from "@/pages/CreateAdPage";
 // Admin Pages
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminUsers from "@/pages/admin/AdminUsers";
-import AdminCampaigns from "@/pages/admin/AdminCampaigns";
 import AdminAgencies from "@/pages/admin/AdminAgencies";
+import AdminCampaigns from "./pages/admin/adminCampaigns";
 
 // Advertiser Pages
 import AdvertiserDashboard from "@/pages/advertiser/AdvertiserDashboard";
@@ -32,6 +32,7 @@ import AdvertiserCampaigns from "@/pages/advertiser/AdvertiserCampaigns";
 import AgencyManagerDashboard from "@/pages/agency/AgencyManagerDashboard";
 import AgencyCampaigns from "@/pages/agency/AgencyCampaigns";
 import AgencyDetailsPage from "@/pages/agency/AgencyDetailsPage";
+
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -56,7 +57,7 @@ const App = () => {
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/profile" element={<ProfilePage />} />
                       
-                      {/* Campaign and Ad Routes - Available to all authenticated users */}
+                      {/* Legacy Campaign and Ad Routes - Will be deprecated */}
                       <Route path="/campaigns/:campaignId/ads" element={<AdPage />} />
                       <Route path="/campaigns/:campaignId/ads/:adId" element={<AdPage />} />
                       <Route path="/campaigns/:campaignId/create-ad" element={<CreateAdPage />} />
@@ -70,6 +71,9 @@ const App = () => {
                       <Route path="/admin/users" element={<AdminUsers />} />
                       <Route path="/admin/agencies" element={<AdminAgencies />} />
                       <Route path="/admin/campaigns" element={<AdminCampaigns />} />
+                      <Route path="/admin/campaigns/:campaignId/ads" element={<AdPage />} />
+                      <Route path="/admin/campaigns/:campaignId/ads/:adId" element={<AdPage />} />
+                      <Route path="/admin/campaigns/:campaignId/create-ad" element={<CreateAdPage />} />
                       <Route path="/admin/analytics" element={<div className="p-4">Analytics Page</div>} />
                       <Route path="/admin/settings" element={<Settings />} />
                       <Route path="/admin/profile" element={<ProfilePage />} />
@@ -81,6 +85,9 @@ const App = () => {
                     <Route element={<DashboardLayout />}>
                       <Route path="/advertiser/dashboard" element={<AdvertiserDashboard />} />
                       <Route path="/advertiser/campaigns" element={<AdvertiserCampaigns />} />
+                      <Route path="/advertiser/campaigns/:campaignId/ads" element={<AdPage />} />
+                      <Route path="/advertiser/campaigns/:campaignId/ads/:adId" element={<AdPage />} />
+                      <Route path="/advertiser/campaigns/:campaignId/create-ad" element={<CreateAdPage />} />
                       <Route path="/advertiser/analytics" element={<div className="p-4">Advertiser Analytics Page</div>} />
                       <Route path="/advertiser/settings" element={<Settings />} />
                       <Route path="/advertiser/profile" element={<ProfilePage />} />

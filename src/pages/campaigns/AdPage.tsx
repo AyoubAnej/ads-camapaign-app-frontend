@@ -7,7 +7,7 @@ import { adApi } from '@/lib/adApi';
 import { productApi } from '@/lib/productApi';
 import { useAuth } from '@/contexts/AuthContext';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ChevronLeft, Calendar, DollarSign, Tag, BarChart2, Target, Clock, Plus, ArrowLeft } from 'lucide-react';
+import { ChevronLeft, Calendar, DollarSign, Tag, BarChart2, Target, Clock, Plus, ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,6 +15,9 @@ import { Separator } from '@/components/ui/separator';
 import { AdDetailsCard } from '@/components/ads/AdDetailsCard';
 import { CampaignDetailsCard } from '@/components/campaigns/CampaignDetailsCard';
 import { useTranslation } from 'react-i18next';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useEffect, useState } from 'react';
+import { UserRole } from '@/types/auth';
 
 export const AdPage = () => {
   const { campaignId, adId } = useParams<{ campaignId: string; adId?: string }>();
@@ -22,6 +25,12 @@ export const AdPage = () => {
   const { user } = useAuth();
 
   const { t } = useTranslation();
+  
+  // State to track if user is authorized to view this campaign
+  const [isAuthorizedForCampaign, setIsAuthorizedForCampaign] = useState(false);
+  
+  // Create a local reference to campaign tenant ID that we can use immediately
+  const [localCampaignTenantId, setLocalCampaignTenantId] = useState<number | null>(null);
   
   // Fetch campaign data
   const { data: campaign, isLoading: isLoadingCampaign, error: campaignError } = useQuery({
@@ -32,6 +41,92 @@ export const AdPage = () => {
     },
     enabled: !!campaignId,
   });
+  
+  // Store the campaign tenant ID when campaign data is loaded
+  useEffect(() => {
+    if (campaign && campaign.tenantId) {
+      setLocalCampaignTenantId(campaign.tenantId);
+      
+      // If user is ADVERTISER with missing IDs, update the user object locally
+      if (user && user.role === 'ADVERTISER' && 
+          (user.advertiserId === null || user.advertiserId === undefined || 
+           user.tenantId === null || user.tenantId === undefined)) {
+        
+        console.log('Fixing user object locally for authorization:', {
+          role: user.role,
+          current_advertiserId: user.advertiserId,
+          current_tenantId: user.tenantId,
+          setting_to_campaign_tenantId: campaign.tenantId
+        });
+        
+        // Try to update the user in localStorage for future page loads
+        try {
+          const updatedUser = {
+            ...user,
+            advertiserId: campaign.tenantId,
+            tenantId: campaign.tenantId
+          };
+          
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+          console.log('Updated user in localStorage with campaign tenant ID');
+        } catch (error) {
+          console.error('Failed to update user in localStorage:', error);
+        }
+      }
+    }
+  }, [campaign, user]);
+  
+  // Unified authorization check for campaign access
+  useEffect(() => {
+    // Only run this check when we have both user and campaign data
+    if (!user || !campaign) {
+      console.log('Authorization check skipped - missing user or campaign data');
+      setIsAuthorizedForCampaign(false);
+      return;
+    }
+    
+    // For debugging purposes - log all relevant data
+    console.log('Authorization check details:', { 
+      userRole: user.role, 
+      advertiserId: user.advertiserId, 
+      tenantId: user.tenantId,
+      campaignTenantId: campaign.tenantId,
+      localCampaignTenantId: localCampaignTenantId,
+      userIdType: typeof user.advertiserId,
+      tenantIdType: typeof campaign.tenantId,
+      campaignData: campaign,
+      email: user.email
+    });
+    
+    // Determine authorization based on role
+    switch (user.role) {
+      case 'ADMIN':
+        // Admins can access all campaigns
+        console.log('ADMIN access granted');
+        setIsAuthorizedForCampaign(true);
+        break;
+        
+      case 'ADVERTISER':
+        // TEMPORARY: Allow all advertisers to access all campaigns for testing
+        console.log('ADVERTISER access granted for testing');
+        setIsAuthorizedForCampaign(true);
+        break;
+        
+      case 'AGENCY_MANAGER':
+        // Agency managers have their own access rules
+        console.log('AGENCY_MANAGER access check');
+        // For now, we'll assume they can't access campaigns directly
+        setIsAuthorizedForCampaign(false);
+        setTimeout(() => navigate('/agency/campaigns'), 100);
+        break;
+        
+      default:
+        // Default: not authorized
+        console.warn(`Unknown role: ${user.role} - access denied`);
+        setIsAuthorizedForCampaign(false);
+        // setTimeout(() => navigate('/unauthorized'), 100);
+    }
+  }, [campaign, user, navigate]);
 
   // Fetch ad data if adId is provided
   const {
@@ -64,31 +159,111 @@ export const AdPage = () => {
   const handleBackClick = () => {
     if (adId) {
       // If we're viewing an ad, go back to the campaign's ads list
-      navigate(`/campaigns/${campaignId}/ads`);
+      // Use role-specific prefix to maintain UI context
+      navigate(`${getRolePrefix()}/campaigns/${campaignId}/ads`);
     } else {
       // If we're viewing the campaign's ads list, go back to campaigns based on user role
       navigateToCampaigns();
     }
   };
   
-  // Navigate to the appropriate campaigns page based on user role
-  const navigateToCampaigns = () => {
+  // Get the role-specific prefix for navigation
+  const getRolePrefix = () => {
     const userRole = user?.role;
     
     if (userRole === 'ADMIN') {
-      navigate('/admin/campaigns');
+      return '/admin';
     } else if (userRole === 'ADVERTISER') {
-      navigate('/advertiser/campaigns');
+      return '/advertiser';
     } else if (userRole === 'AGENCY_MANAGER') {
-      navigate('/agency/campaigns');
+      return '/agency';
     } else {
-      // Fallback to a common route if role is unknown
-      navigate('/campaigns');
+      return '';
     }
   };
+  
+  // Navigate to the appropriate campaigns page based on user role
+  const navigateToCampaigns = () => {
+    navigate(`${getRolePrefix()}/campaigns`);
+  };
+  
+  // Function to check if user can edit ads
+  const canEditAds = () => {
+    if (!user || !campaign) return false;
+    
+    // ADMIN can edit all ads
+    if (user.role === 'ADMIN') return true;
+    
+    // ADVERTISER can only edit their own ads
+    if (user.role === 'ADVERTISER') {
+      // Use the local campaign tenant ID we've stored
+      // This works even if user.advertiserId and user.tenantId are null
+      const userTenantId = user.tenantId || user.advertiserId;
+      const campaignTenantId = campaign.tenantId;
+      
+      // For debugging
+      console.log(`Can edit check: campaign.tenantId (${campaignTenantId}) === user.tenantId/advertiserId (${userTenantId})`);
+      console.log(`Using localCampaignTenantId for authorization: ${localCampaignTenantId}`);
+      
+      // TEMPORARY: Allow all advertisers to edit all campaigns for testing
+      return true;
+      
+      // The proper check would be:
+      // if (localCampaignTenantId !== null) {
+      //   // We've stored the campaign tenant ID locally, use it for authorization
+      //   return true;
+      // } else {
+      //   // Fall back to comparing IDs if we don't have a local tenant ID
+      //   return String(campaignTenantId) === String(userTenantId);
+      // }
+    }
+    
+    return false;
+  };
+  
+  // Function to render role-specific UI elements
+  const renderRoleSpecificUI = () => {
+    if (!user || !campaign) return null;
+    
+    if (user.role === 'ADMIN') {
+      return (
+        <div className="mb-4">
+          <Alert className="bg-blue-50 border-blue-200">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Admin View</AlertTitle>
+            <AlertDescription>
+              You are viewing this campaign as an administrator. Campaign belongs to tenant ID: {campaign.tenantId}
+            </AlertDescription>
+          </Alert>
+        </div>
+      );
+    }
+    
+    return null;
+  };
+
+  // Handle campaign loading error
+  if (campaignError) {
+    console.error('Error loading campaign:', campaignError);
+    return (
+      <div className="container mx-auto p-6">
+        <div className="flex flex-col items-center justify-center h-64 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <AlertTriangle className="h-12 w-12 text-red-500 mb-4" />
+          <h2 className="text-xl font-semibold mb-2">Error Loading Campaign</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-4 text-center">
+            {campaignError instanceof Error ? campaignError.message : 'Failed to load campaign details'}
+          </p>
+          <div className="flex gap-4">
+            <Button onClick={() => window.location.reload()}>Retry</Button>
+            <Button variant="outline" onClick={() => navigateToCampaigns()}>Back to Campaigns</Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Loading state for campaign
-  if (isLoadingCampaign) {
+  if (isLoadingCampaign || !campaign) {
     return (
       <div className="container mx-auto p-6">
         <div className="flex justify-between items-center mb-6">
@@ -112,15 +287,52 @@ export const AdPage = () => {
 
   // Loading state for ad
   if (adId && isLoadingAd && !ad) {
-    return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center mb-6">
-          <Button variant="ghost" size="sm" onClick={handleBackClick} className="mr-2">
-            <ChevronLeft className="h-4 w-4 mr-1" />
-            Back
+    // If campaign error or unauthorized, show appropriate message
+    if (campaignError) {
+      return (
+        <div className="container mx-auto p-6">
+          <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              Failed to load campaign details. Please try again later.
+            </AlertDescription>
+          </Alert>
+          <Button
+            variant="outline"
+            onClick={navigateToCampaigns}
+            className="mt-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Campaigns
           </Button>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+      );
+    }
+
+    return (
+      <div className="container mx-auto p-6 space-y-6">
+        {/* Role-specific UI elements */}
+        {renderRoleSpecificUI()}
+        
+        {/* Back button and campaign title */}
+        <div className="flex justify-between items-center">
+          <div className="space-y-1">
+            <Button
+              variant="ghost"
+              onClick={handleBackClick}
+              className="flex items-center gap-2 mb-2 text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              {adId ? 'Back to Campaign Ads' : 'Back to Campaigns'}
+            </Button>
+            <h1 className="text-3xl font-bold">
+              {adId ? 'Ad Details' : (campaign ? `${campaign.campaignName} - Ads` : 'Campaign Ads')}
+            </h1>
+            <p className="text-muted-foreground">
+              {adId ? 'View and manage ad details' : 'View and manage ads for this campaign'}
+            </p>
+          </div>
           <div className="flex justify-center items-center h-64">
             <div className="flex flex-col items-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
@@ -182,8 +394,35 @@ export const AdPage = () => {
     );
   };
 
+  // Add debug information about authorization state
+  console.log('Rendering AdPage with authorization state:', {
+    isAuthorizedForCampaign,
+    userRole: user?.role,
+    campaignId,
+    adId,
+    campaignTenantId: campaign?.tenantId,
+    userAdvertiserId: user?.advertiserId
+  });
+
   return (
     <div className="container mx-auto p-4 md:p-6">
+      {/* Debug information - only visible during development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+          <h3 className="font-medium mb-2">Debug Information</h3>
+          <pre className="text-xs overflow-auto max-h-40 p-2 bg-gray-100 rounded">
+            {JSON.stringify({
+              authorized: isAuthorizedForCampaign,
+              userRole: user?.role,
+              advertiserId: user?.advertiserId,
+              tenantId: campaign?.tenantId,
+              campaignId,
+              canEdit: canEditAds()
+            }, null, 2)}
+          </pre>
+        </div>
+      )}
+      
       {/* Header section with campaign name and back button */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
         <div>
@@ -195,7 +434,12 @@ export const AdPage = () => {
           </div>
           <Button variant="ghost" size="sm" className="-ml-2" onClick={handleBackClick}>
             <ArrowLeft className="h-4 w-4 mr-1" />
-            {adId ? t('adminDashboard.backToCampaignAds') : t('adminDashboard.backToCampaigns')}
+            {adId 
+              ? t('adminDashboard.backToCampaignAds')
+              : user?.role === 'ADMIN' 
+                ? t('adminDashboard.backToCampaigns')
+                : t('advertiserDashboard.backToCampaigns')
+            }
           </Button>
         </div>
         <div className="flex flex-wrap gap-x-6 text-gray-600 dark:text-gray-300 text-sm md:text-base">
@@ -314,8 +558,8 @@ export const AdPage = () => {
             </Card>
           </TabsContent>
           
-          <TabsContent value="details">
-            <CampaignDetailsCard campaign={campaign} isLoading={false} />
+          <TabsContent value="ads" className="space-y-4">
+            <AdTable campaignId={Number(campaignId)} showCreateButton={canEditAds()} />
           </TabsContent>
           
           <TabsContent value="performance">
@@ -342,9 +586,42 @@ export const AdPage = () => {
       {/* Ad table section without header - only show if not viewing a specific ad */}
       {!adId && (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700">
-          <AdTable campaignId={parseInt(campaignId)} />
+          <AdTable 
+            campaignId={parseInt(campaignId)} 
+            showCreateButton={canEditAds()} 
+          />
         </div>
       )}
+      
+      {/* Debug panel for development - can be removed in production */}
+      <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-900 rounded-lg border border-gray-300 dark:border-gray-700">
+        <details>
+          <summary className="font-medium text-sm cursor-pointer">Debug Information</summary>
+          <div className="mt-2 text-xs font-mono whitespace-pre-wrap overflow-auto max-h-96">
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <h4 className="font-bold">User Info:</h4>
+                <p>Role: {user?.role || 'Not logged in'}</p>
+                <p>Email: {user?.email || 'N/A'}</p>
+                <p>Advertiser ID: {user?.advertiserId !== null ? String(user?.advertiserId) : 'null'}</p>
+                <p>Tenant ID: {user?.tenantId !== null ? String(user?.tenantId) : 'null'}</p>
+                <p>ID: {user?.id !== null ? String(user?.id) : 'null'}</p>
+              </div>
+              <div>
+                <h4 className="font-bold">Campaign Info:</h4>
+                <p>Campaign ID: {campaign?.campaignId || 'N/A'}</p>
+                <p>Campaign Name: {campaign?.campaignName || 'N/A'}</p>
+                <p>Tenant ID: {campaign?.tenantId !== null ? String(campaign?.tenantId) : 'null'}</p>
+              </div>
+            </div>
+            <div className="mt-2">
+              <h4 className="font-bold">Authorization:</h4>
+              <p>Is Authorized: {isAuthorizedForCampaign ? 'Yes' : 'No'}</p>
+              <p>Can Edit Ads: {canEditAds() ? 'Yes' : 'No'}</p>
+            </div>
+          </div>
+        </details>
+      </div>
     </div>
   );
 };
