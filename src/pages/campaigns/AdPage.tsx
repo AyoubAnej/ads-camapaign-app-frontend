@@ -422,7 +422,7 @@ export const AdPage = () => {
               ? t('adminDashboard.backToCampaignAds')
               : user?.role === 'ADMIN' 
                 ? t('adminDashboard.backToCampaigns')
-                : t('advertiserDashboard.backToCampaigns')
+                : t('adminDashboard.backToCampaigns')
             }
           </Button>
         </div>
