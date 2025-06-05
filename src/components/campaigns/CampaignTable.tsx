@@ -241,7 +241,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
           </Button>
         )}
       </div>
-      <p className="text-muted-foreground">{t('campaigns.manageYourAdvertisingCampaigns')}</p>
+      <p className="text-muted-foreground">{t('campaigns.description')}</p>
 
       <div className="space-y-4">
         {/* Filters and Actions */}
@@ -251,7 +251,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder={t('campaigns.searchPlaceholder')}
+                placeholder={t('campaign.searchPlaceholder')}
                 className="pl-8"
                 value={filters.search}
                 onChange={(e) => setFilters({...filters, search: e.target.value})}
@@ -262,12 +262,12 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
               onValueChange={(value) => setFilters({...filters, status: value})}
             >
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={t('campaigns.allStatuses')} />
+                <SelectValue placeholder={t('campaign.allStatuses')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="All Statuses">{t('campaigns.allStatuses')}</SelectItem>
-                <SelectItem value="Active">{t('campaigns.active')}</SelectItem>
-                <SelectItem value="Inactive">{t('campaigns.inactive')}</SelectItem>
+                <SelectItem value="All Statuses">{t('campaign.allStatuses')}</SelectItem>
+                <SelectItem value="Active">{t('campaign.active')}</SelectItem>
+                <SelectItem value="Inactive">{t('campaign.inactive')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -297,13 +297,13 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
               <TableHeader className="bg-muted/50">
                 <TableRow>
                   <TableHead className="w-[50px]"></TableHead>
-                  <TableHead>{t('campaigns.fields.id')}</TableHead>
-                  <TableHead>{t('campaigns.fields.name')}</TableHead>
-                  <TableHead>{t('campaigns.fields.type')}</TableHead>
+                  <TableHead>{t('campaign.campaignID')}</TableHead>
+                  <TableHead>{t('campaign.fields.name.label')}</TableHead>
+                  <TableHead>{t('campaign.type')}</TableHead>
                   <TableHead>{t('campaigns.fields.status')}</TableHead>
                   <TableHead>{t('campaigns.fields.startDate')}</TableHead>
                   <TableHead>{t('campaigns.fields.endDate')}</TableHead>
-                  <TableHead>{t('campaigns.actions')}</TableHead>
+                  <TableHead>{t('common.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
             <TableBody>
@@ -327,7 +327,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                           "bg-green-200 text-green-600 dark:bg-green-600 dark:text-green-100" : 
                           "bg-red-200 text-red-700 dark:bg-red-700 dark:text-red-100"}
                       >
-                        {campaign.globalState === GlobalState.OK ? t('campaigns.status.active') : t('campaigns.status.inactive')}
+                        {campaign.globalState === GlobalState.OK ? t('campaign.active') : t('campaign.inactive')}
                       </Badge>
                     </TableCell>
                     <TableCell>{new Date(campaign.campaignStartDate).toLocaleDateString()}</TableCell>
@@ -355,7 +355,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                               size="sm"
                               className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
                               onClick={() => openEditModal(campaign)}
-                              title={t('campaigns.editCampaign')}
+                              title={t('campaign.editCampaign')}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
@@ -364,7 +364,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
                               size="sm"
                               className="text-red-500 border-red-600 hover:bg-red-600 hover:text-white"
                               onClick={() => openDeleteModal(campaign)}
-                              title={t('campaigns.deleteCampaign')}
+                              title={t('campaign.deleteCampaign')}
                             >
                               <Trash className="h-4 w-4" />
                             </Button>
@@ -402,9 +402,9 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
         {/* Pagination */}
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            {t('campaigns.showing', { 
-              from: paginatedCampaigns.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0, 
-              to: Math.min(currentPage * itemsPerPage, filteredCampaigns.length), 
+            {t('ui.table.showing', { 
+              start: paginatedCampaigns.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0, 
+              end: Math.min(currentPage * itemsPerPage, filteredCampaigns.length), 
               total: filteredCampaigns.length 
             })}
           </p>

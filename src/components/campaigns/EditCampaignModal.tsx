@@ -175,7 +175,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="status" className="text-right">
-                {t('camapign.fields.status.label')}
+                {t('campaign.status')}
               </Label>
               <Select
                 value={globalState.toString()}
@@ -196,7 +196,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="type" className="text-right">
-                {t('camapign.type')}
+                {t('campaign.type')}
               </Label>
               <Select
                 value={campaignType.toString()}
@@ -231,7 +231,7 @@ export const EditCampaignModal: React.FC<EditCampaignModalProps> = ({
               {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save Changes"}
+              {isSubmitting ? "Saving..." : t('common.save')}
             </Button>
           </DialogFooter>
         </form>

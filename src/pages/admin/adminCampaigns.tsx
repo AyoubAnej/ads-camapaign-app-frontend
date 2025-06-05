@@ -11,10 +11,10 @@ const AdminCampaigns = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
+        {/* <div>
           <h1 className="text-3xl font-bold">All Campaigns</h1>
           <p className="text-gray-500">Manage all campaigns in the system</p>
-        </div>
+        </div> */}
         <Button 
           onClick={() => setShowCreateModal(true)} 
           className="flex items-center gap-2"

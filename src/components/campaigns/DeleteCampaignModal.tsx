@@ -29,15 +29,15 @@ export const DeleteCampaignModal: React.FC<DeleteCampaignModalProps> = ({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('admin.userMangement.confirmDelete')}</AlertDialogTitle>
+          <AlertDialogTitle>{t('campaign.deleteCampaignConfirmation')}</AlertDialogTitle>
           <AlertDialogDescription>
-            {t('camapaign.deleteCampaignWarning')} "{campaign.campaignName}" (ID: {campaign.campaignId}).
+            {t('campaign.deleteCampaignWarning')} "{campaign.campaignName}" (ID: {campaign.campaignId}).
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t('commmon.cancel')}</AlertDialogCancel>
+          <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
           <AlertDialogAction onClick={onDeleteCampaign} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-            {t('commmon.delete')}
+            {t('common.delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -8,7 +8,8 @@
     "updated": "Updated on",
     "dashboard": "Dashboard",
     "users": "Users",
-    "agencies": "Agencies",    "campaigns": "Campaigns",
+    "agencies": "Agencies",    
+    "campaigns": "Campaigns",
     "analytics": "Analytics",
     "settings": "Settings",
     "agencyDetails": "Agency Details",
@@ -161,6 +162,7 @@
       "animations": "Animations",
       "animationsDescription": "Enable or disable interface animations"
     },
+    
     "language": {
       "title": "Language",
       "description": "Choose your preferred language",
@@ -210,6 +212,51 @@
       "signOut": "Sign out"
     }
   },
+  "campaigns": {
+  "title": "Campaigns",
+  "description": "Manage your advertising campaigns",
+  "createCampaign": "Create Campaign",
+  "editCampaign": "Edit Campaign",
+  "deleteCampaign": "Delete Campaign",
+  "campaignDetails": "Campaign Details",
+  "fields": {
+    "name": "Name",
+    "description": "Description",
+    "budget": "Budget",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "status": "Status",
+    "platform": "Platform",
+    "placement": "Placement",
+    "size": "Size",
+    "baseCost": "Base Cost"
+  },
+  "placeholders": {
+    "name": "Campaign name",
+    "description": "Describe your campaign",
+    "budget": "Daily budget",
+    "selectPlatform": "Select a platform",
+    "selectPlacement": "Select a placement",
+    "selectSize": "Select a size",
+    "baseCost": "0.00"
+  },
+  "placements": {
+    "topBanner": "Top Banner",
+    "sidebar": "Sidebar",
+    "inContent": "In Content",
+    "footer": "Footer"
+  },
+  "metrics": {
+    "impressions": "Impressions",
+    "clicks": "Clicks",
+    "ctr": "Click-through Rate",
+    "spend": "Spend",
+    "conversions": "Conversions",
+    "conversionRate": "Conversion Rate",
+    "cpc": "Cost Per Click",
+    "cpa": "Cost Per Acquisition"
+  }
+},
   "admin": {
     "userManagement": {
       "title": "User management",
@@ -257,7 +304,7 @@
     "admin": "Administrator",
     "advertiser": "Advertiser",
     "agencyManager": "Agency Manager"
-  },
+  }
     },
     "agencyManagement": {
       "title": "Agency Management",
@@ -338,7 +385,7 @@
       "nextPage": "Next page",
       "previousPage": "Previous page",
       "showing": "Showing {{start}} to {{end}} of {{total}} entries"
-    },
+    }, 
     "form": {
       "title": {
         "label": "Title",
@@ -492,6 +539,8 @@
     }
 },
   "campaign": {
+    "allStatuses": "All statuses",
+    "searchPlaceholder": "Search campaigns...",
     "tryAgain": "Try again",
     "campaignID": "Campaign ID",
     "campaignInformation": "Campaign Information",
@@ -515,6 +564,7 @@
     "noCampaigns": "No campaigns found",
     "searchCampaigns": "Search campaigns...",
     "loadingCampaigns": "Loading campaigns...",
+    "loadingdetails": "Loading campaign details...",
     "createNewCampaign": "Create New Campaign",
     "editCampaignDetails": "Edit Campaign Details",
     "updateCampaignInstructions": "Update the campaign details. Click save when you're done.", 
@@ -524,7 +574,6 @@
     "campaignUpdated": "Campaign updated successfully",
     "campaignDeleted": "Campaign deleted successfully",
     "errorLoading": "Error loading campaigns",
-   
     "title": "Campaign Management",
     "description": "Manage your advertising campaigns",
     "createCampaign": "Create Campaign",
@@ -557,7 +606,7 @@
             "completed": "Completed"
           }
         }
-      }, camapign.fields.status.label
+      }, 
       "buttons": {
         "create": {
           "label": "Create Campaign",

@@ -1056,7 +1056,7 @@
   "roles": {
     "admin": "Administrateur",
     "advertiser": "Annonceur",
-    "agency_manager": "Gestionnaire d'agence"
+    "agency_manager": "ManagerAgence"
   },
   "ui": {
     "loading": "Chargement...",
@@ -1695,6 +1695,8 @@
     }
   },
   "campaign": {
+    "allStatuses": "Tous les statuts",
+    "searchPlaceholder": "Rechercher des camapgnes...",
     "errorLoading": "Erreur lors du chargement des données de la campagne",
     "tryAgain": "Réessayer",
     "campaignID": "ID de la campagne",
@@ -1703,8 +1705,9 @@
     "noCampaigns": "Aucune campagne trouvée",
     "searchCampaigns": "Rechercher des campagnes...",
     "loadingCampaigns": "Chargement des campagnes...",
+    "loadingdetails": "chargement des détails de la campagne...",
     "createNewCampaign": "Créer une nouvelle campagne",  
-    "editCampaignDetails": "Modifier les détails de la campagne", {t('campaign.editCampaignDetails')},
+    "editCampaignDetails": "Modifier les détails de la campagne", 
     "updateCampaignInstructions": "Mettez à jour les détails de la campagne. Cliquez sur Enregistrer lorsque vous avez terminé.",
     "deleteCampaignConfirmation": "Êtes-vous sûr de vouloir supprimer cette campagne ?",
     "deleteCampaignWarning": "Cette action est irréversible. Toutes les données associées seront perdues.",
@@ -1773,5 +1776,4 @@
         "processing": "Suppression..."
       }
     }
-  }
-}
+  }}
