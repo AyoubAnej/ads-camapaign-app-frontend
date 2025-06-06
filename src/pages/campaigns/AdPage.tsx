@@ -113,11 +113,9 @@ export const AdPage = () => {
         break;
         
       case 'AGENCY_MANAGER':
-        // Agency managers have their own access rules
-        console.log('AGENCY_MANAGER access check');
-        // For now, we'll assume they can't access campaigns directly
-        setIsAuthorizedForCampaign(false);
-        setTimeout(() => navigate('/agency/campaigns'), 100);
+        // Agency managers can access campaigns and ads
+        console.log('AGENCY_MANAGER access granted');
+        setIsAuthorizedForCampaign(true);
         break;
         
       default:
@@ -422,7 +420,7 @@ export const AdPage = () => {
               ? t('adminDashboard.backToCampaignAds')
               : user?.role === 'ADMIN' 
                 ? t('adminDashboard.backToCampaigns')
-                : t('adminDashboard.backToCampaigns')
+                : t('advertiserDashboard.backToCampaigns')
             }
           </Button>
         </div>

@@ -100,6 +100,9 @@ const App = () => {
                       <Route path="/agency/dashboard" element={<AgencyManagerDashboard />} />
                       <Route path="/agency/campaigns" element={<AgencyCampaigns />} />
                       <Route path="/agency/details" element={<AgencyDetailsPage />} />
+                      <Route path="/agency/campaigns/:campaignId/ads" element={<AdPage />} />
+                      <Route path="/agency/campaigns/:campaignId/ads/:adId" element={<AdPage />} />
+                      <Route path="/agency/campaigns/:campaignId/create-ad" element={<CreateAdPage />} />
                       <Route path="/agency/analytics" element={<div className="p-4">Agency Analytics Page</div>} />
                       <Route path="/agency/settings" element={<Settings />} />
                       <Route path="/agency/profile" element={<ProfilePage />} />
