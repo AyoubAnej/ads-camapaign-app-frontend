@@ -183,8 +183,26 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
     refetch();
   };
 
+  // Get the role-specific prefix for navigation
+  const getRolePrefix = () => {
+    const userRole = user?.role;
+    
+    if (userRole === 'ADMIN') {
+      return '/admin';
+    } else if (userRole === 'ADVERTISER') {
+      return '/advertiser';
+    } else if (userRole === 'AGENCY_MANAGER') {
+      return '/agency';
+    } else {
+      return '';
+    }
+  };
+
+  // Navigate to campaign ads with role-specific prefix to maintain UI context
   const handleViewAds = (campaignId: number) => {
-    navigate(`/campaigns/${campaignId}/ads`);
+    const rolePrefix = getRolePrefix();
+    console.log(`Navigating to ${rolePrefix}/campaigns/${campaignId}/ads with role: ${user?.role}`);
+    navigate(`${rolePrefix}/campaigns/${campaignId}/ads`);
   };
 
   // Function to determine if user can edit/delete campaigns
