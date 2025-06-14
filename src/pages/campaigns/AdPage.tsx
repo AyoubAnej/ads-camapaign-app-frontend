@@ -113,11 +113,9 @@ export const AdPage = () => {
         break;
         
       case 'AGENCY_MANAGER':
-        // Agency managers have their own access rules
-        console.log('AGENCY_MANAGER access check');
-        // For now, we'll assume they can't access campaigns directly
-        setIsAuthorizedForCampaign(false);
-        setTimeout(() => navigate('/agency/campaigns'), 100);
+        // Agency managers can access campaigns and ads
+        console.log('AGENCY_MANAGER access granted');
+        setIsAuthorizedForCampaign(true);
         break;
         
       default:
@@ -406,22 +404,6 @@ export const AdPage = () => {
 
   return (
     <div className="container mx-auto p-4 md:p-6">
-      {/* Debug information - only visible during development */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
-          <h3 className="font-medium mb-2">Debug Information</h3>
-          <pre className="text-xs overflow-auto max-h-40 p-2 bg-gray-100 rounded">
-            {JSON.stringify({
-              authorized: isAuthorizedForCampaign,
-              userRole: user?.role,
-              advertiserId: user?.advertiserId,
-              tenantId: campaign?.tenantId,
-              campaignId,
-              canEdit: canEditAds()
-            }, null, 2)}
-          </pre>
-        </div>
-      )}
       
       {/* Header section with campaign name and back button */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
@@ -592,36 +574,6 @@ export const AdPage = () => {
           />
         </div>
       )}
-      
-      {/* Debug panel for development - can be removed in production */}
-      <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-900 rounded-lg border border-gray-300 dark:border-gray-700">
-        <details>
-          <summary className="font-medium text-sm cursor-pointer">Debug Information</summary>
-          <div className="mt-2 text-xs font-mono whitespace-pre-wrap overflow-auto max-h-96">
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <h4 className="font-bold">User Info:</h4>
-                <p>Role: {user?.role || 'Not logged in'}</p>
-                <p>Email: {user?.email || 'N/A'}</p>
-                <p>Advertiser ID: {user?.advertiserId !== null ? String(user?.advertiserId) : 'null'}</p>
-                <p>Tenant ID: {user?.tenantId !== null ? String(user?.tenantId) : 'null'}</p>
-                <p>ID: {user?.id !== null ? String(user?.id) : 'null'}</p>
-              </div>
-              <div>
-                <h4 className="font-bold">Campaign Info:</h4>
-                <p>Campaign ID: {campaign?.campaignId || 'N/A'}</p>
-                <p>Campaign Name: {campaign?.campaignName || 'N/A'}</p>
-                <p>Tenant ID: {campaign?.tenantId !== null ? String(campaign?.tenantId) : 'null'}</p>
-              </div>
-            </div>
-            <div className="mt-2">
-              <h4 className="font-bold">Authorization:</h4>
-              <p>Is Authorized: {isAuthorizedForCampaign ? 'Yes' : 'No'}</p>
-              <p>Can Edit Ads: {canEditAds() ? 'Yes' : 'No'}</p>
-            </div>
-          </div>
-        </details>
-      </div>
     </div>
   );
 };

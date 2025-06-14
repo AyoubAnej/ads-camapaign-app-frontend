@@ -6,10 +6,11 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { languages, getInitials } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { 
-  User, Settings, LogOut, Bell, Menu, X, Sun, Moon, Globe, 
+  User, Settings, LogOut, Menu, X, Sun, Moon, Globe, 
   PanelLeft, PanelRightClose,
   Languages
 } from 'lucide-react';
+import NotificationBell from '@/components/notifications/NotificationBell';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -157,14 +158,7 @@ const Navbar = ({ sidebarCollapsed, toggleSidebar }: NavbarProps) => {
           </Button>
           
           {/* Notifications */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-          >
-            <Bell className="w-5 h-5" />
-            <span className="sr-only">View notifications</span>
-          </Button>
+          <NotificationBell />
           
           {/* User menu */}
           <DropdownMenu modal={false}>

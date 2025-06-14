@@ -48,6 +48,17 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
+  // Determine if user is an advertiser to handle the ID automatically
+  const isAdvertiser = user?.role === 'ADVERTISER';
+  const advertiserId = isAdvertiser ? String(user?.advertiserId || user?.tenantId || user?.id) : selectedAdvertiserId;
+  
+  // Set the advertiser ID from the user object when it's available
+  useEffect(() => {
+    if (isAdvertiser && user?.advertiserId) {
+      console.log('Setting advertiser ID from JWT token:', user.advertiserId);
+    }
+  }, [isAdvertiser, user]);
+  
   // Fetch advertisers for dropdown
   const { data: advertisers = [], isLoading: isLoadingAdvertisers } = useQuery({
     queryKey: ['advertisers'],
@@ -71,10 +82,16 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
       setEndDate('');
       setGlobalState(GlobalState.OK);
       setCampaignType(CampaignType.SPONSORED);
-      setSelectedAdvertiserId('');
+      
+      // Only reset selectedAdvertiserId for non-ADVERTISER users
+      // For ADVERTISER users, we'll use their ID from the JWT
+      if (!isAdvertiser) {
+        setSelectedAdvertiserId('');
+      }
+      
       setError(null);
     }
-  }, [open]);
+  }, [open, isAdvertiser]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,11 +111,14 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
       const startDateISO = new Date(startDate).toISOString();
       const endDateISO = endDate ? new Date(endDate).toISOString() : null;
 
-      if (!selectedAdvertiserId) {
+      // For ADVERTISER role, we use their own ID from the JWT
+      // For other roles, we require a selection from the dropdown
+      if (!isAdvertiser && !selectedAdvertiserId) {
         throw new Error('Advertiser selection is required');
       }
-
-      const tenantId = parseInt(selectedAdvertiserId);
+      
+      // Use the advertiserId variable which handles both cases
+      const tenantId = parseInt(advertiserId);
       if (isNaN(tenantId)) {
         throw new Error('Invalid advertiser ID');
       }
@@ -123,6 +143,17 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
         }
       };
 
+      // Log the tenant ID source for debugging
+      console.log('Campaign creation details:', {
+        userRole: user?.role,
+        isAdvertiser,
+        tenantIdSource: isAdvertiser ? 'JWT token (user object)' : 'Selected from dropdown',
+        tenantId,
+        userAdvertiserId: user?.advertiserId,
+        userTenantId: user?.tenantId,
+        userId: user?.id
+      });
+      
       console.log('Sending campaign data:', JSON.stringify(campaignData, null, 2));
       
       await campaignApi.createCampaign(campaignData);
@@ -154,34 +185,47 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
         )}
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="advertiser" className="text-right">
-                Advertiser
-              </Label>
-              <Select 
-                value={selectedAdvertiserId} 
-                onValueChange={setSelectedAdvertiserId}
-                disabled={isLoadingAdvertisers}
-              >
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select an advertiser" />
-                </SelectTrigger>
-                <SelectContent>
-                  {isLoadingAdvertisers ? (
-                    <SelectItem value="loading" disabled>Loading advertisers...</SelectItem>
-                  ) : advertisers.length === 0 ? (
-                    <SelectItem value="none" disabled>No advertisers found</SelectItem>
-                  ) : (
-                    advertisers.filter(advertiser => advertiser.role !== 'AGENCY_MANAGER' && advertiser.role !== 'ADMIN')
-                    .map((advertiser: Advertiser) => (
-                      <SelectItem key={advertiser.id} value={advertiser.id.toString()}>
-                        {advertiser.id} - {advertiser.shopName }
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
+            {/* Only show advertiser selection for non-ADVERTISER roles */}
+            {!isAdvertiser && (
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="advertiser" className="text-right">
+                  Advertiser
+                </Label>
+                <Select 
+                  value={selectedAdvertiserId} 
+                  onValueChange={setSelectedAdvertiserId}
+                  disabled={isLoadingAdvertisers}
+                >
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select an advertiser" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {isLoadingAdvertisers ? (
+                      <SelectItem value="loading" disabled>Loading advertisers...</SelectItem>
+                    ) : advertisers.length === 0 ? (
+                      <SelectItem value="none" disabled>No advertisers found</SelectItem>
+                    ) : (
+                      advertisers.filter(advertiser => advertiser.role !== 'AGENCY_MANAGER' && advertiser.role !== 'ADMIN')
+                      .map((advertiser: Advertiser) => (
+                        <SelectItem key={advertiser.id} value={advertiser.id.toString()}>
+                          {advertiser.id} - {advertiser.shopName }
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+            
+            {/* Display the advertiser ID being used for ADVERTISER users */}
+            {isAdvertiser && user?.advertiserId && (
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label className="text-right">Advertiser ID</Label>
+                <div className="col-span-3 text-sm text-muted-foreground border rounded p-2">
+                  Using your advertiser ID: {user.advertiserId}
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">

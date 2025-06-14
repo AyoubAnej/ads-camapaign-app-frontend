@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   Dialog,
   DialogContent,
@@ -25,12 +25,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { adApi } from '@/lib/adApi';
+import { campaignApi } from '@/lib/campaignApi';
 import { CreateAdRequestDto } from '@/types/ad';
 import { StateObject, BidObject } from '@/types/campaign';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DollarSign, Image, Link2, Info, Tag, BarChart3, CheckCircle2 } from 'lucide-react';
+import { DollarSign, Image, Link2, Info, Tag, BarChart3, CheckCircle2, Store } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from '@/contexts/AuthContext';
 
 interface CreateAdModalProps {
   campaignId: number;
@@ -63,6 +65,23 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
 }) => {
   // Toast notifications
   const { toast } = useToast();
+  const { user } = useAuth();
+  
+  // Fetch campaign data to get advertiser information
+  const { data: campaign, isLoading: isLoadingCampaign } = useQuery({
+    queryKey: ['campaign', campaignId],
+    queryFn: async () => {
+      if (!campaignId) return null;
+      return await campaignApi.getCampaign(campaignId);
+    },
+    enabled: !!campaignId && open, // Only fetch when modal is open and campaignId exists
+  });
+  
+  // Determine if user is an advertiser
+  const isAdvertiser = user?.role === 'ADVERTISER';
+  
+  // Get the advertiser ID from the campaign or user
+  const advertiserId = campaign?.tenantId || (isAdvertiser ? user?.advertiserId : null);
   
   // Initialize form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -137,6 +156,16 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
       bid: bid,
       keywords: []
     };
+    
+    // Log the advertiser information for debugging
+    console.log('Ad creation details:', {
+      campaignId,
+      advertiserId,
+      userRole: user?.role,
+      isAdvertiser,
+      campaignTenantId: campaign?.tenantId,
+      userAdvertiserId: user?.advertiserId
+    });
 
     console.log('Creating ad with data:', JSON.stringify(createRequest, null, 2));
     mutate(createRequest);
@@ -156,6 +185,18 @@ export const CreateAdModal: React.FC<CreateAdModalProps> = ({
           <form onSubmit={form.handleSubmit(onSubmit)} className="py-2 flex-1 overflow-y-auto px-6">
             <div className="space-y-6">
               {/* --- Ad Details Section --- */}
+              {/* Display advertiser information */}
+              {advertiserId && (
+                <div className="mb-4 bg-muted/50 p-3 rounded-md border">
+                  <div className="flex items-center gap-2">
+                    <Store className="h-5 w-5 text-primary" />
+                    <p className="text-sm text-muted-foreground">
+                      This ad will be created for the advertiser associated with the campaign
+                    </p>
+                  </div>
+                </div>
+              )}
+              
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <Tag className="h-5 w-5 text-primary" />

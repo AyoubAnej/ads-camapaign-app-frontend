@@ -207,7 +207,7 @@ export const CampaignTable: React.FC<CampaignTableProps> = ({
 
   // Function to determine if user can edit/delete campaigns
   const canEditCampaigns = () => {
-    return user?.role === 'ADMIN' || user?.role === 'ADVERTISER';
+    return user?.role === 'ADMIN' || user?.role === 'ADVERTISER' || user?.role === 'AGENCY_MANAGER';
   };
 
   if (isLoading) {

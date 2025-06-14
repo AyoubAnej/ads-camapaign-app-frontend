@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { NotificationProvider } from "@/contexts/NotificationContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/layouts/DashboardLayout";
 
@@ -15,6 +16,8 @@ import Unauthorized from "@/pages/Unauthorized";
 import NotFound from "@/pages/NotFound";
 import Settings from "@/pages/Settings";
 import ProfilePage from "@/pages/ProfilePage";
+import NotificationsPage from './pages/NotificationsPage';
+import AdminNotificationsPage from './pages/admin/AdminNotificationsPage';
 import { AdPage } from "@/pages/campaigns/AdPage";
 import CreateAdPage from "@/pages/CreateAdPage";
 
@@ -44,9 +47,10 @@ const App = () => {
           <LanguageProvider>
             <BrowserRouter>
               <AuthProvider>
-                <Toaster />
-                <Sonner />
-                <Routes>
+                <NotificationProvider>
+                  <Toaster />
+                  <Sonner />
+                  <Routes>
                   {/* Public Routes */}
                   <Route path="/login" element={<Login />} />
                   <Route path="/unauthorized" element={<Unauthorized />} />
@@ -56,6 +60,7 @@ const App = () => {
                     <Route element={<DashboardLayout />}>
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/profile" element={<ProfilePage />} />
+                      <Route path="/notifications" element={<NotificationsPage />} />
                       
                       {/* Legacy Campaign and Ad Routes - Will be deprecated */}
                       <Route path="/campaigns/:campaignId/ads" element={<AdPage />} />
@@ -77,6 +82,7 @@ const App = () => {
                       <Route path="/admin/analytics" element={<div className="p-4">Analytics Page</div>} />
                       <Route path="/admin/settings" element={<Settings />} />
                       <Route path="/admin/profile" element={<ProfilePage />} />
+                      <Route path="/admin/notifications" element={<AdminNotificationsPage />} />
                     </Route>
                   </Route>
                   
@@ -91,6 +97,7 @@ const App = () => {
                       <Route path="/advertiser/analytics" element={<div className="p-4">Advertiser Analytics Page</div>} />
                       <Route path="/advertiser/settings" element={<Settings />} />
                       <Route path="/advertiser/profile" element={<ProfilePage />} />
+                      <Route path="/advertiser/notifications" element={<NotificationsPage />} />
                     </Route>
                   </Route>
                   
@@ -100,9 +107,13 @@ const App = () => {
                       <Route path="/agency/dashboard" element={<AgencyManagerDashboard />} />
                       <Route path="/agency/campaigns" element={<AgencyCampaigns />} />
                       <Route path="/agency/details" element={<AgencyDetailsPage />} />
+                      <Route path="/agency/campaigns/:campaignId/ads" element={<AdPage />} />
+                      <Route path="/agency/campaigns/:campaignId/ads/:adId" element={<AdPage />} />
+                      <Route path="/agency/campaigns/:campaignId/create-ad" element={<CreateAdPage />} />
                       <Route path="/agency/analytics" element={<div className="p-4">Agency Analytics Page</div>} />
                       <Route path="/agency/settings" element={<Settings />} />
                       <Route path="/agency/profile" element={<ProfilePage />} />
+                      <Route path="/agency/notifications" element={<NotificationsPage />} />
                     </Route>
                   </Route>
                   
@@ -112,6 +123,7 @@ const App = () => {
                   {/* Catch-all route */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
+                </NotificationProvider>
               </AuthProvider>
             </BrowserRouter>
           </LanguageProvider>

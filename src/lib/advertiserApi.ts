@@ -1,4 +1,5 @@
 import { advertiserAxios } from "./axios";
+import { notificationApi } from "./notificationApi";
 
 export interface Advertiser {
   id: number; // Now using id for frontend
@@ -98,7 +99,35 @@ export const advertiserApi = {
   ): Promise<Advertiser> => {
     try {
       const response = await advertiserAxios.put(`/${advertiserId}`, data);
-      return normalizeAdvertiserData(response.data);
+      const updatedAdvertiser = normalizeAdvertiserData(response.data);
+      
+      // Create a notification for the updated advertiser
+      try {
+        // Create different notification messages based on role
+        const role = updatedAdvertiser.role;
+        let notificationType = 'Updated';
+        let message = 'Your account information has been updated';
+        
+        if (role === 'ADMIN') {
+          notificationType = 'AdminUpdated';
+          message = 'Your admin account information has been updated';
+        } else if (role === 'AGENCY_MANAGER') {
+          notificationType = 'AgencyManagerUpdated';
+          message = 'Your agency manager account information has been updated';
+        }
+        
+        await notificationApi.createNotification(
+          advertiserId,
+          message,
+          notificationType as any,
+          updatedAdvertiser.agencyId
+        );
+      } catch (notificationError) {
+        // Log but don't throw the error to avoid breaking the update flow
+        console.error('Failed to create notification for account update:', notificationError);
+      }
+      
+      return updatedAdvertiser;
     } catch (error) {
       console.error(`Failed to update advertiser ${advertiserId}:`, error);
       throw error;

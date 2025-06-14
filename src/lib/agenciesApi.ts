@@ -1,6 +1,8 @@
 
 import { Agency, CreateAgencyDto, UpdateAgencyDto, PagedResult, AgencyStatus } from '@/types/agency';
 import { agencyAxios } from './axios';
+import { notificationApi } from './notificationApi';
+import { decodeJWT } from './jwtHelper';
 
 interface GetAgenciesParams {
   page?: number;
@@ -78,6 +80,25 @@ export const agencyApi = {
    */
   updateAgency: async (id: number, agencyData: UpdateAgencyDto): Promise<Agency> => {
     const response = await agencyAxios.put<Agency>(`/${id}`, agencyData);
+    
+    try {
+      // Get the agency manager ID from the updated agency
+      const updatedAgency = response.data;
+      
+      // Create a notification for the agency manager
+      if (updatedAgency && updatedAgency.managerId) {
+        await notificationApi.createNotification(
+          updatedAgency.managerId,
+          `Your agency ${updatedAgency.name} information has been updated`,
+          'AgencyManagerUpdated',
+          id
+        );
+      }
+    } catch (error) {
+      console.error('Failed to create notification for agency update:', error);
+      // Don't throw the error, just log it to avoid breaking the update flow
+    }
+    
     return response.data;
   },
 
