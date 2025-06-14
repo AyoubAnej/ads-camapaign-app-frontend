@@ -27,6 +27,7 @@ export interface Agency {
   updatedAt: string;
   deactivatedAt?: string;
   deactivationReason?: string;
+  managerId?: number; // ID of the agency manager user
 }
 
 export interface CreateAgencyDto {
