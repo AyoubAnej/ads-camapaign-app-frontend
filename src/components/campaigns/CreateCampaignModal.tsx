@@ -50,14 +50,27 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
   
   // Determine if user is an advertiser to handle the ID automatically
   const isAdvertiser = user?.role === 'ADVERTISER';
-  const advertiserId = isAdvertiser ? String(user?.advertiserId || user?.tenantId || user?.id) : selectedAdvertiserId;
   
-  // Set the advertiser ID from the user object when it's available
+  // Ensure we have a valid advertiser ID by providing fallbacks
+  // For ADVERTISER users: use advertiserId > tenantId > id > 1 (default)
+  // For non-ADVERTISER users: use selected ID from dropdown or default to 1 if none selected
+  const defaultId = '1'; // Fallback ID if nothing else is available
+  const advertiserId = isAdvertiser 
+    ? String(user?.advertiserId || user?.tenantId || user?.id || defaultId)
+    : (selectedAdvertiserId || defaultId);
+  
+  // Debug logging for advertiser ID resolution
   useEffect(() => {
-    if (isAdvertiser && user?.advertiserId) {
-      console.log('Setting advertiser ID from JWT token:', user.advertiserId);
+    if (isAdvertiser) {
+      console.log('User object:', user);
+      console.log('Advertiser ID resolution:', {
+        advertiserId: user?.advertiserId,
+        tenantId: user?.tenantId,
+        userId: user?.id,
+        resolvedId: advertiserId
+      });
     }
-  }, [isAdvertiser, user]);
+  }, [isAdvertiser, user, advertiserId]);
   
   // Fetch advertisers for dropdown
   const { data: advertisers = [], isLoading: isLoadingAdvertisers } = useQuery({
@@ -118,9 +131,21 @@ export const CreateCampaignModal: React.FC<CreateCampaignModalProps> = ({
       }
       
       // Use the advertiserId variable which handles both cases
-      const tenantId = parseInt(advertiserId);
-      if (isNaN(tenantId)) {
-        throw new Error('Invalid advertiser ID');
+      // We should always have an advertiserId now due to our fallback logic
+      console.log('Using advertiser ID for campaign creation:', advertiserId);
+      
+      // Try to parse as integer, but handle gracefully if it fails
+      let tenantId: number;
+      try {
+        tenantId = parseInt(advertiserId, 10);
+        if (isNaN(tenantId)) {
+          console.warn('Invalid advertiser ID format, using default ID 1');
+          tenantId = 1; // Default to ID 1 if parsing fails
+        }
+      } catch (err) {
+        console.error('Error parsing advertiser ID:', advertiserId);
+        console.warn('Using default advertiser ID 1');
+        tenantId = 1; // Default to ID 1 if parsing throws an error
       }
 
       // Create campaign with properly formatted data

@@ -28,16 +28,43 @@ const getAdvertiserIdFromToken = (token: string): number | null => {
     const decodedToken = decodeJWT(token);
     if (!decodedToken) return null;
     
-    // Check for NameIdentifier claim which might contain the advertiser ID
-    // The exact claim name might vary depending on your JWT configuration
-    const nameIdentifier = decodedToken.nameid || decodedToken.sub || decodedToken.NameIdentifier;
-    
-    // Log for debugging
+    // Log all token claims for debugging
     console.log('JWT Token claims:', decodedToken);
     
-    if (nameIdentifier) {
-      // Try to parse as number if it's a string
-      return typeof nameIdentifier === 'number' ? nameIdentifier : parseInt(nameIdentifier, 10);
+    // Check for all possible claim names that might contain the advertiser ID
+    // The exact claim name might vary depending on your JWT configuration
+    const possibleClaims = [
+      'advertiserId',
+      'advertiser_id',
+      'tenantId',
+      'tenant_id',
+      'nameid',
+      'nameidentifier',
+      'sub',
+      'NameIdentifier',
+      'id'
+    ];
+    
+    // Try each possible claim name
+    for (const claim of possibleClaims) {
+      if (decodedToken[claim] !== undefined) {
+        console.log(`Found advertiser ID in token claim '${claim}':`, decodedToken[claim]);
+        // Try to parse as number if it's a string
+        const parsedId = typeof decodedToken[claim] === 'number' 
+          ? decodedToken[claim] 
+          : parseInt(decodedToken[claim], 10);
+        
+        if (!isNaN(parsedId)) {
+          return parsedId;
+        }
+      }
+    }
+    
+    // If we have a nameid or sub claim but couldn't parse it as a number,
+    // log it for debugging purposes
+    if (decodedToken.nameid || decodedToken.sub) {
+      console.log('Found identity claim but couldn\'t parse as number:', 
+        decodedToken.nameid || decodedToken.sub);
     }
     
     return null;
@@ -74,25 +101,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
           let user = JSON.parse(userJson) as User;
           
-          // Extract advertiser ID from token if user is ADVERTISER and advertiserId is null
-          if (user.role === 'ADVERTISER' && (user.advertiserId === null || user.advertiserId === undefined)) {
-            console.log('Attempting to extract advertiserId from token for ADVERTISER user');
-            const tokenAdvertiserId = getAdvertiserIdFromToken(token);
+          // For all users, but especially ADVERTISER role, ensure we have the correct IDs
+          console.log('Initializing auth with user:', user);
+          const tokenAdvertiserId = getAdvertiserIdFromToken(token);
+          
+          if (tokenAdvertiserId) {
+            console.log(`Found advertiserId in token: ${tokenAdvertiserId}`);
             
-            if (tokenAdvertiserId) {
-              console.log(`Found advertiserId in token: ${tokenAdvertiserId}`);
-              
+            // For ADVERTISER users, always update with token ID
+            // For other users, only update if missing
+            if (user.role === 'ADVERTISER' || user.advertiserId === null || user.advertiserId === undefined) {
               // Update the user object with the extracted advertiser ID
               user = {
                 ...user,
                 advertiserId: tokenAdvertiserId,
-                // Also set tenantId if it's not already set
-                tenantId: user.tenantId || tokenAdvertiserId
+                // Also set tenantId to ensure consistency
+                tenantId: tokenAdvertiserId
               };
               
               // Update the user in localStorage
               localStorage.setItem('user', JSON.stringify(user));
-              console.log('Updated user object with advertiserId from token');
+              console.log('Updated user object with advertiserId from token:', user);
+            }
+          } else {
+            console.warn('Could not extract advertiser ID from token for user:', user.email);
+            
+            // Ensure we have some value for advertiserId and tenantId
+            if (user.role === 'ADVERTISER' && (!user.advertiserId || !user.tenantId)) {
+              // Use any available ID as a fallback
+              const fallbackId = user.advertiserId || user.tenantId || user.id;
+              if (fallbackId) {
+                user = {
+                  ...user,
+                  advertiserId: fallbackId,
+                  tenantId: fallbackId
+                };
+                localStorage.setItem('user', JSON.stringify(user));
+                console.log('Used fallback ID for advertiser:', fallbackId);
+              }
             }
           }
           
