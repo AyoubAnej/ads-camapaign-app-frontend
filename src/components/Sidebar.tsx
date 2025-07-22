@@ -2,6 +2,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
+import Logo from '@/components/Logo';
 import { 
   Users, LineChart, Settings, LayoutDashboard, 
   Target, BriefcaseBusiness, ChevronRight, Building,
@@ -103,17 +104,22 @@ const Sidebar = ({ collapsed, toggle }: SidebarProps) => {
         {/* Logo row with toggle button */}
         <div className="absolute top-0 left-0 w-full flex justify-between items-center h-20 px-4 bg-blue-900/80 backdrop-blur-sm border-b border-blue-700/30">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 backdrop-blur-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-white">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="16" />
-                <line x1="8" y1="12" x2="16" y2="12" />
-              </svg>
-            </div>
-            {!collapsed && (
-              <span className="text-xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                Cdiscount
-              </span>
+            {collapsed ? (
+              <Logo 
+                size="medium" 
+                withText={false} 
+                variant="circle" 
+                theme="dark" 
+                className="flex items-center justify-center"
+              />
+            ) : (
+              <Logo 
+                size="medium" 
+                withText={true} 
+                variant="default" 
+                theme="dark" 
+                className="flex items-center justify-center"
+              />
             )}
           </div>
           {/* Toggle Button */}

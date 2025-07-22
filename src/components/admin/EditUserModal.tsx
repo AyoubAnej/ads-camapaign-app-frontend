@@ -117,7 +117,7 @@ export const EditUserModal = ({ open, onOpenChange, user, onEditUser }: EditUser
                 <SelectContent>
                   <SelectItem value="ADMIN">{t('roles.admin')}</SelectItem>
                   <SelectItem value="ADVERTISER">{t('roles.advertiser')}</SelectItem>
-                  <SelectItem value="AGENCY_MANAGER">{t('roles.agencyManager')}</SelectItem>
+                  <SelectItem value="AGENCY_MANAGER">{t('roles.agency_manager')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

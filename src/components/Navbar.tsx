@@ -5,6 +5,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { languages, getInitials } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
+import Logo from '@/components/Logo';
 import { 
   User, Settings, LogOut, Menu, X, Sun, Moon, Globe, 
   PanelLeft, PanelRightClose,

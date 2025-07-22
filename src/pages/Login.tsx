@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import Logo from '@/components/Logo';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -58,11 +59,13 @@ const Login = () => {
         <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-700 to-blue-900 dark:from-blue-800 dark:to-blue-950 p-8 md:p-12 text-white flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="16" />
-                <line x1="8" y1="12" x2="16" y2="12" />
-              </svg>
+              <Logo 
+                size="large" 
+                withText={false} 
+                variant="minimal" 
+                theme="dark" 
+                className="flex-shrink-0"
+              />
               <h1 className="text-3xl md:text-4xl font-bold">{t('brandInfo.appName')}</h1>
             </div>
             <h2 className="text-2xl md:text-3xl font-bold mb-6">{t('brandInfo.appDescription')}</h2>
